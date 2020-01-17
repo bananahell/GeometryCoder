@@ -39,12 +39,19 @@ dec.params.nBits    = log2(limit + 1);
 dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[dec.geometryCube , cabac] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1);
+[locations, dec.geometryCube, cabac] = decodeGeoCube(dec.geometryCube, dec, [], cabac, 1, limit + 1);
+dec.pointCloud = locations;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.
 if (isempty(dec.params.outputPlyFile) == 0)
     locPoints = slices2Ptcld(dec.geometryCube, axis);
+    
+    if(isequal(locPoints, dec.pointCloud))
+        display("geocube and list match!");
+    else
+        display("geocube and list don' match...");
+    end
     %pc        = pointCloud(locPoints);
     %[vertex, ~] = plyRead(filename, 0);
 
@@ -53,7 +60,8 @@ if (isempty(dec.params.outputPlyFile) == 0)
     disp(['Writing output Ply to ' file ' .'])
     %pcwrite(pc,file);
     %pc.export(file, 'PrecCoord', 0);
-    plyWrite(locPoints, file);
+    %plyWrite(locPoints, file);
+    plyWrite(dec.pointCloud, file);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

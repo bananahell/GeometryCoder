@@ -5,11 +5,11 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac] = decodeGeoCube(geoCube,cabac, iStart,iEnd, Y)
+function [locations, geoCube,cabac] = decodeGeoCube(geoCube, dec, locations, cabac, iStart,iEnd, Y)
 
 [sy,sx,sz] = size(geoCube);
 
-if (nargin == 4)
+if (nargin == 6)
     %Initializes the tag.
     cabac.BACEngineDecoder = initBACDecoder(cabac.BACEngineDecoder);
     
@@ -57,6 +57,7 @@ if (bit == 0)
             else
                 %This means I already have enough images for a 3D context.
                 Yleft_left = silhouette(geoCube,lStart - N, lEnd - N);
+                %Yleft_left2 = silhouetteFromCloud(locations, imSize, axis, iStart, iEnd, sparseM);
                 [Yleft, cabac] = decodeImageBAC_withMask_3DContexts_ORImages2(Yleft, mask_Yleft, Yleft_left, cabac);
             end
         end
@@ -99,19 +100,42 @@ if (bit == 0)
         %This means I have reached a leaf.
         %Write the decoded images in the geoCube.
         geoCube(:,:,lStart) = Yleft;
+        
+        [x,y] = find(Yleft);
+        if(dec.dimensionSliced == 'x')
+            locations = [locations; padarray([x y], [0 1], lStart, 'pre') - 1];
+        elseif(dec.dimensionSliced == 'y')
+            temp = padarray([x y], [0 1], lStart, 'pre');
+            temp(:,[1 2]) = temp(:,[2 1]);
+            locations = [locations; temp - 1];
+        elseif(dec.dimensionSliced == 'z')
+            locations = [locations; padarray([x y], [0 1], lStart, 'post') - 1];
+        end
+        
         geoCube(:,:,rStart) = Yright;
+        
+        [x,y] = find(Yright);
+        if(dec.dimensionSliced == 'x')
+            locations = [locations; padarray([x y], [0 1], rStart, 'pre') - 1];
+        elseif(dec.dimensionSliced == 'y')
+            temp = padarray([x y], [0 1], rStart, 'pre');
+            temp(:,[1 2]) = temp(:,[2 1]);
+            locations = [locations; temp - 1];
+        elseif(dec.dimensionSliced == 'z')
+            locations = [locations; padarray([x y], [0 1], rStart, 'post') - 1];
+        end
     else
         %Then I have to call this function recursively
         if (encodeYleft && (lEnd > lStart))            
-            [geoCube,cabac] = decodeGeoCube(geoCube,cabac, lStart,lEnd, Yleft);
+            [locations, geoCube,cabac] = decodeGeoCube(geoCube, dec, locations, cabac, lStart,lEnd, Yleft);
         end
         
         if (encodeYright && (rEnd > rStart))
-            [geoCube,cabac] = decodeGeoCube(geoCube,cabac, rStart,rEnd, Yright);
+            [locations, geoCube,cabac] = decodeGeoCube(geoCube, dec, locations, cabac, rStart,rEnd, Yright);
         end        
     end
         
 else
     %Decode this range using the single mode encoding.
-    [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y);
+    [locations, geoCube,cabac] = decodeSliceAsSingles(geoCube, dec, locations, cabac, iStart,iEnd, Y);
 end
