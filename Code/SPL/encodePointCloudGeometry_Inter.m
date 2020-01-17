@@ -42,8 +42,8 @@ end
 
 %----------------------------------------------
 %These are the settings for the SPL Results.
-numberOfContextsIndependent = 1;
-numberOfContextsMasked      = 1;
+numberOfContextsIndependent = 3;
+numberOfContextsMasked      = 3;
 windowSizeFor3DContexts     = 1;
 numberOf3DContexts          = 9;
 windowSizeFor4DContexts     = 0;
