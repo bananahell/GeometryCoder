@@ -56,8 +56,8 @@ if (bit == 0)
                 [Yleft, cabac] = decodeImageBAC_withMask2(Yleft, mask_Yleft, cabac);
             else
                 %This means I already have enough images for a 3D context.
-                Yleft_left = silhouette(geoCube,lStart - N, lEnd - N);
-                %Yleft_left2 = silhouetteFromCloud(locations, imSize, axis, iStart, iEnd, sparseM);
+                %Yleft_left = silhouette(geoCube,lStart - N, lEnd - N);
+                Yleft_left = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, lStart - N, lEnd - N, false);
                 [Yleft, cabac] = decodeImageBAC_withMask_3DContexts_ORImages2(Yleft, mask_Yleft, Yleft_left, cabac);
             end
         end
