@@ -24,7 +24,7 @@ end
 
 %Iterate to find the best axis
 for k = 1:1:3
-
+   
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

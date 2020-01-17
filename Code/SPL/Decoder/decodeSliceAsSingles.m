@@ -38,17 +38,18 @@ for i = iStart:1:(iEnd-1)
         [A, cabac] = decodeImageBAC_withMask_3DContexts2(A, idx_i, idx_j, Yleft, cabac);
         
         %Puts it in the geoCube.
-        geoCube(:,:,i) = A;
-        [x,y] = find(A);
-        if(dec.dimensionSliced == 'x')
-            locations = [locations; padarray([x y], [0 1], i, 'pre') - 1];
-        elseif(dec.dimensionSliced == 'y')
-            temp = padarray([x y], [0 1], i, 'pre');
-            temp(:,[1 2]) = temp(:,[2 1]);
-            locations = [locations; temp - 1];
-        elseif(dec.dimensionSliced == 'z')
-            locations = [locations; padarray([x y], [0 1], i, 'post') - 1];
-        end
+        %geoCube(:,:,i) = A;
+        locations = expandPointCloud(A, locations, dec.dimensionSliced, i);
+%         [x,y] = find(A);
+%         if(dec.dimensionSliced == 'x')
+%             locations = [locations; padarray([x y], [0 1], i, 'pre') - 1];
+%         elseif(dec.dimensionSliced == 'y')
+%             temp = padarray([x y], [0 1], i, 'pre');
+%             temp(:,[1 2]) = temp(:,[2 1]);
+%             locations = [locations; temp - 1];
+%         elseif(dec.dimensionSliced == 'z')
+%             locations = [locations; padarray([x y], [0 1], i, 'post') - 1];
+%         end
         
         %Prepares for the last mask!        
         maskLast = or(A,maskLast);    
@@ -83,16 +84,16 @@ if (bit == 1)
     [A, cabac] = decodeImageBAC_withMask_3DContexts2(A, idx_i, idx_j, Yleft, cabac);
    
     %Puts it in the geoCube.
-    geoCube(:,:,iEnd) = A;   
-    
-    [x,y] = find(A);
-    if(dec.dimensionSliced == 'x')
-        locations = [locations; padarray([x y], [0 1], iEnd, 'pre') - 1];
-    elseif(dec.dimensionSliced == 'y')
-        temp = padarray([x y], [0 1], iEnd, 'pre');
-        temp(:,[1 2]) = temp(:,[2 1]);
-        locations = [locations; temp - 1];
-    elseif(dec.dimensionSliced == 'z')
-        locations = [locations; padarray([x y], [0 1], iEnd, 'post') - 1];
-    end
+    %geoCube(:,:,iEnd) = A;   
+    locations = expandPointCloud(A, locations, dec.dimensionSliced, iEnd);
+%     [x,y] = find(A);
+%     if(dec.dimensionSliced == 'x')
+%         locations = [locations; padarray([x y], [0 1], iEnd, 'pre') - 1];
+%     elseif(dec.dimensionSliced == 'y')
+%         temp = padarray([x y], [0 1], iEnd, 'pre');
+%         temp(:,[1 2]) = temp(:,[2 1]);
+%         locations = [locations; temp - 1];
+%     elseif(dec.dimensionSliced == 'z')
+%         locations = [locations; padarray([x y], [0 1], iEnd, 'post') - 1];
+%     end
 end

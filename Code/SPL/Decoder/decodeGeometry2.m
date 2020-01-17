@@ -36,22 +36,15 @@ dec.dimensionSliced = axis;
 dec.params.nBits    = log2(limit + 1);
 
 %Initializes the decoded cube
-dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
+%dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[locations, dec.geometryCube, cabac] = decodeGeoCube(dec.geometryCube, dec, [], cabac, 1, limit + 1);
-dec.pointCloud = locations;
+[dec.pointCloud, dec.geometryCube, cabac] = decodeGeoCube(dec.geometryCube, dec, [], cabac, 1, limit + 1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.
 if (isempty(dec.params.outputPlyFile) == 0)
     locPoints = slices2Ptcld(dec.geometryCube, axis);
-    
-    if(isequal(locPoints, dec.pointCloud))
-        display("geocube and list match!");
-    else
-        display("geocube and list don' match...");
-    end
     %pc        = pointCloud(locPoints);
     %[vertex, ~] = plyRead(filename, 0);
 

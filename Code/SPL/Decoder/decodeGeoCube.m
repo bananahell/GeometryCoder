@@ -7,7 +7,10 @@
 % E-mail: eduardopeixoto@ieee.org
 function [locations, geoCube,cabac] = decodeGeoCube(geoCube, dec, locations, cabac, iStart,iEnd, Y)
 
-[sy,sx,sz] = size(geoCube);
+%[sy,sx,sz] = size(geoCube);
+sx = dec.pcLimit+1;
+sy = dec.pcLimit+1;
+sz = dec.pcLimit+1;
 
 if (nargin == 6)
     %Initializes the tag.
@@ -99,31 +102,31 @@ if (bit == 0)
     if (N == 1)
         %This means I have reached a leaf.
         %Write the decoded images in the geoCube.
-        geoCube(:,:,lStart) = Yleft;
+        %geoCube(:,:,lStart) = Yleft;
+        locations = expandPointCloud(Yleft, locations, dec.dimensionSliced, lStart);
+%         [x,y] = find(Yleft);
+%         if(dec.dimensionSliced == 'x')
+%             locations = [locations; padarray([x y], [0 1], lStart, 'pre') - 1];
+%         elseif(dec.dimensionSliced == 'y')
+%             temp = padarray([x y], [0 1], lStart, 'pre');
+%             temp(:,[1 2]) = temp(:,[2 1]);
+%             locations = [locations; temp - 1];
+%         elseif(dec.dimensionSliced == 'z')
+%             locations = [locations; padarray([x y], [0 1], lStart, 'post') - 1];
+%         end
         
-        [x,y] = find(Yleft);
-        if(dec.dimensionSliced == 'x')
-            locations = [locations; padarray([x y], [0 1], lStart, 'pre') - 1];
-        elseif(dec.dimensionSliced == 'y')
-            temp = padarray([x y], [0 1], lStart, 'pre');
-            temp(:,[1 2]) = temp(:,[2 1]);
-            locations = [locations; temp - 1];
-        elseif(dec.dimensionSliced == 'z')
-            locations = [locations; padarray([x y], [0 1], lStart, 'post') - 1];
-        end
-        
-        geoCube(:,:,rStart) = Yright;
-        
-        [x,y] = find(Yright);
-        if(dec.dimensionSliced == 'x')
-            locations = [locations; padarray([x y], [0 1], rStart, 'pre') - 1];
-        elseif(dec.dimensionSliced == 'y')
-            temp = padarray([x y], [0 1], rStart, 'pre');
-            temp(:,[1 2]) = temp(:,[2 1]);
-            locations = [locations; temp - 1];
-        elseif(dec.dimensionSliced == 'z')
-            locations = [locations; padarray([x y], [0 1], rStart, 'post') - 1];
-        end
+        %geoCube(:,:,rStart) = Yright;
+        locations = expandPointCloud(Yright, locations, dec.dimensionSliced, rStart);
+%         [x,y] = find(Yright);
+%         if(dec.dimensionSliced == 'x')
+%             locations = [locations; padarray([x y], [0 1], rStart, 'pre') - 1];
+%         elseif(dec.dimensionSliced == 'y')
+%             temp = padarray([x y], [0 1], rStart, 'pre');
+%             temp(:,[1 2]) = temp(:,[2 1]);
+%             locations = [locations; temp - 1];
+%         elseif(dec.dimensionSliced == 'z')
+%             locations = [locations; padarray([x y], [0 1], rStart, 'post') - 1];
+%         end
     else
         %Then I have to call this function recursively
         if (encodeYleft && (lEnd > lStart))            
