@@ -21,9 +21,12 @@
 
 %Files Used:
 %Change this to reflect your system
-inputPly   = '/Users/edil/2-development/point_cloud/ricardo9/ply/frame0000.ply';
-binaryFile = '../ricardo_frame0000.bin';
-outputPly  = '../dec_ricardo_frame0000.ply';
+inputPly   = 'C:\Users\drcft\OneDrive\Documents\UnB\Mestrado\Pesquisas\Correlacao\Point Clouds\ricardo9\ricardo9\ply\frame0000.ply'
+% inputPly   = 'C:\Users\drcft\OneDrive\Documents\UnB\Mestrado\Pesquisas\Sequences\longdress_vox10\longdress_vox10_1300.ply';
+% binaryFile = '..\longdress_vox10_1300.bin';
+% outputPly  = '..\longdress_vox10_1300.ply';
+binaryFile = '..\ricardo9_frame0000.bin';
+outputPly  = '..\ricardo9_frame0000.ply';
 
 %Runs the Encoder
 enc = encodePointCloudGeometry(inputPly,binaryFile);
@@ -49,4 +52,16 @@ if (checkPly == 1)
 else
     disp('The encoder and decoder Ply Geometry are NOT equal.')
 end
+disp('==============================================')%
+
+% Compute metrics for lossy encoding
+pc = pcread(inputPly);
+V_a = pc.Location;
+pc = pcread(outputPly);
+V_b = pc.Location;
+
+pt2pt = src_metrics_point_metrics(V_a, V_b);
+
+disp(strcat('MSE Point-to-Point:', {' '}, int2str(pt2pt.p2point_mse)));
+disp(strcat('PSNR Point-to-Point:', {' '}, int2str(pt2pt.p2point_psnr), 'dB'));
 disp('==============================================')%

@@ -16,6 +16,9 @@ testEncodeAsSingles     = 1;
 nBitsDyadic             = Inf;
 nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.
+
+%Parameter for lossy coding.
+nSlices = 16;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,6 +42,12 @@ if (nargin == 6)
     %disp(['Rate Y(' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nBitsY) '.'])  
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%If number of slices is less than a specific number, go straight to
+%encoding as singles (for lossy compression) 
+if((iEnd - iStart) <= nSlices)
+    testDyadicDecomposition = 0;
+end
 
 %keyboard;
 
@@ -146,7 +155,7 @@ if (testDyadicDecomposition)
         nBitsDyadic = nBitsDyadic + nBitsRight;
     end
     
-    %disp(['i = (' num2str(iStart) ',' num2str(iEnd) ')'])
+    disp(['i = (' num2str(iStart) ',' num2str(iEnd) ')'])
     %disp(['l = (' num2str(lStart) ',' num2str(lEnd) ')'])
     %disp(['r = (' num2str(rStart) ',' num2str(rEnd) ')'])
     %keyboard;
@@ -187,7 +196,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Testing the second option - encoding as singles.
-if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= 16))
+if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= nSlices))
     cabacSingle = cabac_in;
     
     nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size();
