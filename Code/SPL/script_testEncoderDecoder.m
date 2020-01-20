@@ -22,8 +22,8 @@
 %Files Used:
 %Change this to reflect your system
 inputPly   = '/Users/edil/2-development/point_cloud/ricardo9/ply/frame0000.ply';
-binaryFile = '../ricardo_frame0000.bin';
-outputPly  = '../dec_ricardo_frame0000.ply';
+binaryFile = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/ricardo_frame0000.bin';
+outputPly  = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/dec_ricardo_frame0000.ply';
 
 %Runs the Encoder
 enc = encodePointCloudGeometry(inputPly,binaryFile);
@@ -32,7 +32,7 @@ enc = encodePointCloudGeometry(inputPly,binaryFile);
 dec = decodePointCloudGeometry(binaryFile,outputPly);
 
 %Checks the geometry cubes.
-checkCube = isequal(enc.geometryCube,dec.geometryCube);
+%checkCube = isequal(enc.geometryCube,dec.geometryCube);
 
 %Checks the two Ply
 checkPly  = comparePlys(inputPly, outputPly);

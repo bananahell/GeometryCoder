@@ -4,7 +4,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y)
+function [locations, geoCube,cabac] = decodeSliceAsSingles(geoCube, dec, locations, cabac, iStart,iEnd, Y)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Uses the parent as mask.
@@ -27,7 +27,8 @@ for i = iStart:1:(iEnd-1)
         if (i == 1)
             Yleft = zeros(sy,sx,'logical');
         else
-            Yleft = geoCube(:,:,i-1);
+            %Yleft = geoCube(:,:,i-1);
+            Yleft = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i-1, i-1, false);
         end   
         
         %Allocates the image
@@ -37,7 +38,18 @@ for i = iStart:1:(iEnd-1)
         [A, cabac] = decodeImageBAC_withMask_3DContexts2(A, idx_i, idx_j, Yleft, cabac);
         
         %Puts it in the geoCube.
-        geoCube(:,:,i) = A;
+        %geoCube(:,:,i) = A;
+        locations = expandPointCloud(A, locations, dec.dimensionSliced, i);
+%         [x,y] = find(A);
+%         if(dec.dimensionSliced == 'x')
+%             locations = [locations; padarray([x y], [0 1], i, 'pre') - 1];
+%         elseif(dec.dimensionSliced == 'y')
+%             temp = padarray([x y], [0 1], i, 'pre');
+%             temp(:,[1 2]) = temp(:,[2 1]);
+%             locations = [locations; temp - 1];
+%         elseif(dec.dimensionSliced == 'z')
+%             locations = [locations; padarray([x y], [0 1], i, 'post') - 1];
+%         end
         
         %Prepares for the last mask!        
         maskLast = or(A,maskLast);    
@@ -61,7 +73,8 @@ if (bit == 1)
     if (iEnd == 1)
         Yleft = zeros(sy,sx,'logical');
     else
-        Yleft = geoCube(:,:,iEnd-1);
+        %Yleft = geoCube(:,:,iEnd-1);
+        Yleft = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, iEnd-1, iEnd-1, false);
     end
     
     %Allocates the image with the current information
@@ -71,5 +84,16 @@ if (bit == 1)
     [A, cabac] = decodeImageBAC_withMask_3DContexts2(A, idx_i, idx_j, Yleft, cabac);
    
     %Puts it in the geoCube.
-    geoCube(:,:,iEnd) = A;    
+    %geoCube(:,:,iEnd) = A;   
+    locations = expandPointCloud(A, locations, dec.dimensionSliced, iEnd);
+%     [x,y] = find(A);
+%     if(dec.dimensionSliced == 'x')
+%         locations = [locations; padarray([x y], [0 1], iEnd, 'pre') - 1];
+%     elseif(dec.dimensionSliced == 'y')
+%         temp = padarray([x y], [0 1], iEnd, 'pre');
+%         temp(:,[1 2]) = temp(:,[2 1]);
+%         locations = [locations; temp - 1];
+%     elseif(dec.dimensionSliced == 'z')
+%         locations = [locations; padarray([x y], [0 1], iEnd, 'post') - 1];
+%     end
 end

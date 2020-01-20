@@ -36,10 +36,10 @@ dec.dimensionSliced = axis;
 dec.params.nBits    = log2(limit + 1);
 
 %Initializes the decoded cube
-dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
+%dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[dec.geometryCube , cabac] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1);
+[dec.pointCloud, dec.geometryCube, cabac] = decodeGeoCube(dec.geometryCube, dec, [], cabac, 1, limit + 1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.
@@ -53,7 +53,8 @@ if (isempty(dec.params.outputPlyFile) == 0)
     disp(['Writing output Ply to ' file ' .'])
     %pcwrite(pc,file);
     %pc.export(file, 'PrecCoord', 0);
-    plyWrite(locPoints, file);
+    %plyWrite(locPoints, file);
+    plyWrite(dec.pointCloud, file);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
