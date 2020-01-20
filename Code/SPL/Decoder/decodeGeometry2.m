@@ -38,8 +38,16 @@ dec.params.nBits    = log2(limit + 1);
 %Initializes the decoded cube
 dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Initializes decoder structure to store received Y's from the encoder
+%Necessary for lossy compression
+nSlices = 16;
+depth = dec.params.nBits - log2(nSlices);
+% disp(['nbits = ' num2str(dec.params.nBits) ', ' num2str(depth+1)]);
+dec_Y = cell(depth+1,2^depth);
 
-[dec.geometryCube , cabac] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+[dec.geometryCube , cabac, ~] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1, dec_Y);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.

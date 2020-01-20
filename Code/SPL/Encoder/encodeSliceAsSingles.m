@@ -13,7 +13,8 @@ step = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Downsampling Y for lossy compression
-Y_downsampled = imresize(logical(Y), 1/nDownsample);
+Y_downsampled = imresize(logical(Y), 1/nDownsample, 'nearest');
+% Y_downsampled = downsample(logical(Y), nDownsample);
 
 %Uses the parent as mask.
 [sy, sx]  = size(Y_downsampled);
@@ -23,7 +24,7 @@ maskLast = zeros(sy,sx,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 nones = sum(Y_downsampled(:));
-disp(['Single encoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
+% disp(['Single encoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Iterates through all the slices
@@ -33,7 +34,8 @@ for i = iStart:step:(iEnd)
     A = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     
     %Downsampling A for lossy compression
-    A_downsampled = imresize(logical(A), 1/nDownsample);
+    A_downsampled = imresize(logical(A), 1/nDownsample, 'nearest');
+%     A_downsampled = downsample(logical(A), nDownsample);
     
     %if(not(isequal(A,AA)))
     %    display('Slices are not equal...')
@@ -65,9 +67,12 @@ for i = iStart:step:(iEnd)
         else
             %Yleft = geoCube(:,:,i-1);
             Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i-step, i-step, sparseM);
-            Yleft_downsampled = imresize(logical(Yleft), 1/nDownsample);
+            Yleft_downsampled = imresize(logical(Yleft), 1/nDownsample, 'nearest');
+%             Yleft_downsampled = downsample(logical(Yleft), nDownsample);
         end
-        
+%         disp(['Single encoding A: ' num2str(sum(A_downsampled(:)))]);
+%         disp(['Single encoding Yleft: ' num2str(sum(Yleft_downsampled(:)))]);
+
         %Actually encodes the image.
         cabac = encodeImageBAC_withMask_3DContexts2(A_downsampled,idx_i, idx_j,Yleft_downsampled,cabac);
     end

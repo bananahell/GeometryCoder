@@ -7,10 +7,11 @@
 function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y)
 
 %Parameters for lossy compression
-nUpsample = 1;
+nUpsample = 2;
 step = 1;
 
-Y_downsampled = imresize(logical(Y),1/nUpsample);
+Y_downsampled = imresize(logical(Y),1/nUpsample, 'nearest');
+% Y_downsampled = downsample(logical(Y),nUpsample);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Uses the parent as mask.
 %mask = Y;
@@ -21,7 +22,7 @@ maskLast = zeros(sy,sx,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 nones = sum(Y_downsampled(:));
-disp(['Single encoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
+% disp(['Single decoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,7 +40,8 @@ for i = iStart:step:(iEnd)
         else
             Yleft = geoCube(:,:,i-step);
             %Downsample from lossy compression
-            Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample);
+            Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample, 'nearest');
+%             Yleft_downsampled = downsample(logical(Yleft), nUpsample);
         end   
         
         %Allocates the image
@@ -47,11 +49,13 @@ for i = iStart:step:(iEnd)
         
         %Decodes the current image.
         [A, cabac] = decodeImageBAC_withMask_3DContexts2(A, idx_i, idx_j, Yleft_downsampled, cabac);
-        
+%         disp(['Single decoding A: ' num2str(sum(A(:)))]);
+%         disp(['Single decoding Yleft: ' num2str(sum(Yleft_downsampled(:)))]);
         %Upsample downsampled image to put in the cube
-        A_upsampled = imresize(logical(A), nUpsample, 'box');
+        A_upsampled = imresize(logical(A), nUpsample, 'nearest');
+%         A_upsampled = upsample(logical(A), nUpsample);
         %Puts it in the geoCube.
-        geoCube(:,:,i) = (A_upsampled);
+        geoCube(:,:,i) = (A_upsampled & Y);
         
         if((i ~= 1) && (step > 1))
             inter_slices = morph_binary(geoCube(:,:,i), ...

@@ -128,7 +128,11 @@ if (testDyadicDecomposition)
                 cabacDyadic = encodeImageBAC_withMask2(Yleft,mask_Yleft,cabacDyadic);
             else
                 %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
+%                 disp(['i = (' num2str(iStart) ',' num2str(iEnd) '): ' num2str(sum(Y(:)))]);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
+%                 disp(['Y left left ' num2str(sum(Yleft_left(:)))]);
+%                 disp(['Y left ' num2str(sum(Yleft(:)))]);
+%                 disp(['Y right: ' num2str(sum(Yright(:)))]);
                 cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages2(Yleft,mask_Yleft,Yleft_left,cabacDyadic);
             end
                         
@@ -154,8 +158,7 @@ if (testDyadicDecomposition)
         %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
         nBitsDyadic = nBitsDyadic + nBitsRight;
     end
-    
-    disp(['i = (' num2str(iStart) ',' num2str(iEnd) ')'])
+%     disp(['i = (' num2str(iStart) ',' num2str(iEnd) ')'])
     %disp(['l = (' num2str(lStart) ',' num2str(lEnd) ')'])
     %disp(['r = (' num2str(rStart) ',' num2str(rEnd) ')'])
     %keyboard;

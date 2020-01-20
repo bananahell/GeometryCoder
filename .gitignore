@@ -11,3 +11,6 @@ Code/longdress_vox10_1300_d_1_s_3.bin
 Code/longdress_vox10_1300_d_1_s_3.ply
 Code/ricardo_frame0000.bin
 Code/ricardo_frame0001.bin
+*.ply
+*.bin
+*.asv
