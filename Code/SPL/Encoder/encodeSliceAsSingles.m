@@ -8,8 +8,8 @@
 function cabac = encodeSliceAsSingles(~, enc, currAxis, cabac,iStart,iEnd,Y, sparseM)
 
 %Parameters for lossy compression
-nDownsample = 2;
-step = 1;
+nDownsample = 1;
+step = 2;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Downsampling Y for lossy compression

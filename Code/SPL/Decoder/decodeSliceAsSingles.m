@@ -7,8 +7,8 @@
 function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y)
 
 %Parameters for lossy compression
-nUpsample = 2;
-step = 1;
+nUpsample = 1;
+step = 2;
 
 Y_downsampled = imresize(logical(Y),1/nUpsample, 'nearest');
 % Y_downsampled = downsample(logical(Y),nUpsample);
@@ -55,7 +55,8 @@ for i = iStart:step:(iEnd)
         A_upsampled = imresize(logical(A), nUpsample, 'nearest');
 %         A_upsampled = upsample(logical(A), nUpsample);
         %Puts it in the geoCube.
-        geoCube(:,:,i) = (A_upsampled & Y);
+%         geoCube(:,:,i) = (A_upsampled & Y);
+        geoCube(:,:,i) = (A_upsampled);
         
         if((i ~= 1) && (step > 1))
             inter_slices = morph_binary(geoCube(:,:,i), ...
