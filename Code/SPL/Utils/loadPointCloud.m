@@ -8,6 +8,8 @@ filename = [enc.params.dataFolder enc.params.pointCloudFile];
 %pc = pointCloud(filename);
 [vertex, ~] = plyRead(filename, 0);
 
+ptCloud = getPointCloudStruct();
+
 ptCloud.Location = vertex;
 ptCloud.Count = length(vertex);
 mm = min(vertex);
@@ -28,18 +30,3 @@ enc.pointCloud             = ptCloud;
 enc.pcLimit                = limit;
 enc.numberOfOccupiedVoxels = length(ptCloud.Location);
 enc.params.nBits           = log2(limit + 1);
-
-%If the prediction file is set, then use it.
-if (isempty(enc.params.predictionFile) == 0)
-    [vertex, ~] = plyRead(enc.params.predictionFile, 0);
-    
-    ptCloud.Location = vertex;
-    ptCloud.Count = length(vertex);
-    mm = min(vertex);
-    mx = max(vertex);
-    ptCloud.XLimits = [mm(1) mx(1)];
-    ptCloud.YLimits = [mm(2) mx(2)];
-    ptCloud.ZLimits = [mm(3) mx(3)];
-    
-    enc.predictionPointCloud = ptCloud;
-end

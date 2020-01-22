@@ -30,23 +30,21 @@ outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
 enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
 
 %Runs the Decoder
-%dec = decodePointCloudGeometry(binaryFile,outputPly);
+dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
 
 %Checks the geometry cubes.
 %checkCube = isequal(enc.geometryCube,dec.geometryCube);
 
 %Checks the two Ply
-%checkPly  = comparePlys(inputPly, outputPly);
-checkCube = 0;
-checkPly  = 0;
+checkPly  = comparePlys(inputPly, outputPly);
 
 disp(' ')
 disp('==============================================')
-if (checkCube == 1)
-    disp('The encoder and decoder geometry cubes are equal.')
-else
-    disp('The encoder and decoder geometry cubes are NOT equal.')
-end
+% if (checkCube == 1)
+%     disp('The encoder and decoder geometry cubes are equal.')
+% else
+%     disp('The encoder and decoder geometry cubes are NOT equal.')
+% end
 if (checkPly == 1)
     disp('The encoder and decoder Ply Geometry are equal.')
 else

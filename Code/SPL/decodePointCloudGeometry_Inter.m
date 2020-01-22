@@ -1,20 +1,20 @@
-% function enc = encodePointCloudGeometry
+% function dec = decodePointCloudGeometry
 %  - Input Parameters: 
-%     - inputFile  - The complete path for the point cloud to be encoded.
-%     - outputFile - The complete path for the output binary file.
+%     - inputFile  - The complete path for the input binary file.
+%     - outputFile - The complete path for the output Ply
 %
 %  - Output Parameters
-%     - enc        - the Encoder Data structure.
+%     - dec        - the Decoder Data structure.
 %
-% Ex: enc =
-% encodePointCloudGeometry(
-%    'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply' ,
-%    'C:\workspace\ricardo_frame0000.bin' );
+% Ex: dec =
+% decodePointCloudGeometry(
+%    'C:\workspace\ricardo_frame0000.bin' ,
+%    'C:\workspace\dec_ricardo_frame0000.ply' );
 %   
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 % 29/10/2019
-function enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
+function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
 
 disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
 disp('Author: Eduardo Peixoto')
@@ -31,6 +31,9 @@ else
     end
 end
 
+%This file only needs to be open.
+predictionFile(predictionFile == '\') = '/';
+
 if (isempty(outputFile))
     error('Empty output File.');
 else
@@ -39,6 +42,7 @@ else
     end
 end
 %----------------------------------------------
+
 
 %----------------------------------------------
 %These are the settings for the ICIP Results.
@@ -59,39 +63,30 @@ verbose        = 0;
 inputFile(inputFile == '\') = '/'; 
 idx = find(inputFile == '/',1,'last');
 if (isempty(idx))
-    dataFolder = '';
-    pointCloudFile = inputFile;
+    workspaceFolder = '';
+    bitstreamFile   = inputFile;
 else
-    dataFolder = inputFile(1:idx);
-    pointCloudFile = inputFile(idx+1:end);    
+    workspaceFolder = inputFile(1:idx);
+    bitstreamFile   = inputFile(idx+1:end);    
 end
 
-%This file only needs to be open.
-predictionFile(predictionFile == '\') = '/'; 
-
 outputFile(outputFile == '\') = '/'; 
-idx = find(outputFile == '/',1,'last');
-if (isempty(idx))
-    workspaceFolder = '';
-    bitstreamFile = outputFile;
-else
-    workspaceFolder = outputFile(1:idx);
-    bitstreamFile = outputFile(idx+1:end);    
-end 
 %----------------------------------------------
+
+
 
 %-----------------------------------------------
 params = getEncoderParams();
 params.sequence        = '';
 params.workspaceFolder = workspaceFolder;
-params.dataFolder      = dataFolder;
-params.pointCloudFile  = pointCloudFile;
+params.dataFolder      = '';
+params.pointCloudFile  = '';
 params.predictionFile  = predictionFile;
 params.bitstreamFile   = bitstreamFile;
-params.outputPlyFile   = '';
+params.outputPlyFile   = outputFile;
 params.matlabFile      = '';
 params.testMode        = testMode;
-params.verbose         = verbose;
+params.verbose         = 0;
 params.JBIGFolder      = '';
 params.BACParams.numberOfContextsIndependent = numberOfContextsIndependent;
 params.BACParams.numberOfContextsMasked      = numberOfContextsMasked;
@@ -100,31 +95,20 @@ params.BACParams.numberOf3DContexts          = numberOf3DContexts;
 params.BACParams.windowSizeFor4DContexts     = windowSizeFor4DContexts;
 params.BACParams.numberOf4DContexts          = numberOf4DContexts;
 params.BACParams.numberOfContextsParams      = numberOfContextsParams;
-
 %-----------------------------------------------
 
-%-----------------------------------------------
-enc = getEncoder();
-enc.params = params;
-
+%Decodes the PointCloud
 tStart = tic;
-%Loads the PointCloud to be encoded.
-enc = loadPointCloud(enc);
+dec = getDecoder();
+dec.params = params;
 
 %Loads the prediction point cloud.
-enc.predictionPointCloud = loadPredictionPointCloud(enc.params.predictionFile);
+dec.predictionPointCloud = loadPredictionPointCloud(dec.params.predictionFile);
 
-%Encodes the PointCloud
-[enc, ~] = encodeGeometryInter(enc);
+dec = decodeGeometryInter(dec);
+decTime = toc(tStart);
 
-encTime = toc(tStart);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Writes the output.
-disp(' ')
 disp(' ')
 disp('==============================================')
-disp(['Encoding file ' pointCloudFile ''])
-disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
-disp(['Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.'])
+disp(['Decoding time for ' bitstreamFile '  = ' num2str(decTime,'%2.1f') ' seconds.'])
 disp('==============================================')
