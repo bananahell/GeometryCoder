@@ -21,7 +21,10 @@ for i = iStart:1:(iEnd-1)
     %Gets the current slice to be encoded.
     %A = geoCube(:,:,i);
     A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
+    
     pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
+    %[pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, i, i);
+    
     
     %if(not(isequal(A,AA)))
     %    display('Slices are not equal...')
@@ -69,7 +72,10 @@ end
 %Encodes the last image.
 %A = geoCube(:,:,iEnd);
 A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
+
 pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
+%[pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, iEnd, iEnd);
+
 nSymbolsA = sum(A(:));
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -25,8 +25,11 @@ if (nargin == 6)
     %1 - Gets the main image.
     %Y = silhouette(geoCube,iStart,iEnd);    
     Y  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iStart, iEnd, sparseM);
+    
     pY = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iStart, iEnd, sparseM);
-        
+    %[pY, d1, d2, d3] = findBestPredictionMatch(Y, enc, currAxis, iStart, iEnd);
+    
+    
     %if(not(isequal(Y, YY)))
     %    display('Y silhouttes not equal...');
     %    display([iStart iEnd]);
@@ -71,6 +74,9 @@ if (testDyadicDecomposition)
     
     pYleft  = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, lStart, lEnd, sparseM);
     pYright = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, rStart, rEnd, sparseM);
+    %[pYleft, d1, d2, d3]  = findBestPredictionMatch(Yleft , enc, currAxis, lStart, lEnd);
+    %[pYright, d1, d2, d3] = findBestPredictionMatch(Yright, enc, currAxis, rStart, rEnd);
+    
     
     %if(not(isequal(Yleft, YYleft)))
     %    display('Yleft silhouttes not equal...');
@@ -126,6 +132,7 @@ if (testDyadicDecomposition)
             else
                 %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
+                
                 cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
             end
                         

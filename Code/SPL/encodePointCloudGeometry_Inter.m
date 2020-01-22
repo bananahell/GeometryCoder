@@ -16,7 +16,7 @@
 % 29/10/2019
 function enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
 
-disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
+disp('Running Point Cloud Inter Geometry Coder based on Dyadic Decomposition')
 disp('Author: Eduardo Peixoto')
 disp('E-mail: eduardopeixoto@ieee.org')
 disp('Universidade de Brasilia')

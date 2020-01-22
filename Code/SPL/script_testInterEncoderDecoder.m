@@ -21,22 +21,22 @@
 
 %Files Used:
 %Change this to reflect your system
-prevPly    = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply';
-inputPly   = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0001.ply';
-binaryFile = 'C:\eduardo\workspace\ICIP_Inter\ricardo_frame0001.bin';
-outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
+prevPly    = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0000.ply';
+inputPly   = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0001.ply';
+binaryFile = 'C:\eduardo\workspace\ICIP_Inter\andrew_frame0001.bin';
+outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_andrew_frame0001.ply';
 
 %Runs the Encoder
 enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
 
 %Runs the Decoder
-dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
+%dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
 
 %Checks the geometry cubes.
 %checkCube = isequal(enc.geometryCube,dec.geometryCube);
 
 %Checks the two Ply
-checkPly  = comparePlys(inputPly, outputPly);
+%checkPly  = comparePlys(inputPly, outputPly);
 
 disp(' ')
 disp('==============================================')
