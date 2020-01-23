@@ -4,7 +4,7 @@
 function [A, cabac] = decodeImageBAC_withMask_3DContexts_ORImages_Inter(A, mask, Yleft, pA, cabac)
 
 %This function uses the contexts in:
-% cabac.BACContexts_3DT_ORImages
+% cabac.BACContexts_3DT
 
 w4D   = cabac.BACParams.windowSizeFor4DContexts;
 padpA = padarray(pA, [w4D w4D]);
@@ -30,8 +30,8 @@ for k = 1:1:length(idx_i)
     
     %Gets the current count for this context.
     currCount = [0 0];
-    currCount(1) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1);
-    currCount(2) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2);
+    currCount(1) = cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1);
+    currCount(2) = cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2);
     
     %Gets the current BAC context for this context
     p1s = currCount(2) / (sum(currCount));
@@ -52,9 +52,9 @@ for k = 1:1:length(idx_i)
     
     %Updates the context.
     if (currSymbol == false)
-        cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) + 1;
+        cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) = cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) + 1;
     else
-        cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) + 1;
+        cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) = cabac.BACContexts_3DT(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) + 1;
     end
     
 end

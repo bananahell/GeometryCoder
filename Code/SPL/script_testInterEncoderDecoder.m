@@ -21,10 +21,20 @@
 
 %Files Used:
 %Change this to reflect your system
-prevPly    = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0000.ply';
-inputPly   = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0001.ply';
-binaryFile = 'C:\eduardo\workspace\ICIP_Inter\andrew_frame0001.bin';
-outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_andrew_frame0001.ply';
+% prevPly    = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0000.ply';
+% inputPly   = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0001.ply';
+% binaryFile = 'C:\eduardo\workspace\ICIP_Inter\andrew_frame0001.bin';
+% outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_andrew_frame0001.ply';
+
+prevPly    = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply';
+inputPly   = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0001.ply';
+binaryFile = 'C:\eduardo\workspace\ICIP_Inter\ricardo_frame0001.bin';
+outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
+
+% prevPly    = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0536.ply';
+% inputPly   = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0537.ply';
+% binaryFile = 'C:\eduardo\workspace\ICIP_Inter\soldier_0537.bin';
+% outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_soldier_0537.ply';
 
 %Runs the Encoder
 enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
@@ -32,19 +42,11 @@ enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
 %Runs the Decoder
 %dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
 
-%Checks the geometry cubes.
-%checkCube = isequal(enc.geometryCube,dec.geometryCube);
-
 %Checks the two Ply
 %checkPly  = comparePlys(inputPly, outputPly);
 
 disp(' ')
 disp('==============================================')
-% if (checkCube == 1)
-%     disp('The encoder and decoder geometry cubes are equal.')
-% else
-%     disp('The encoder and decoder geometry cubes are NOT equal.')
-% end
 if (checkPly == 1)
     disp('The encoder and decoder Ply Geometry are equal.')
 else

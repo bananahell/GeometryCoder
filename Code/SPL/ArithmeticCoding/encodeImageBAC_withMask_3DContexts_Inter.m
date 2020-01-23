@@ -20,9 +20,6 @@ currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
 numberOfContexts = cabac.BACParams.numberOfContextsMasked;
 
-%[sy sx] = size(A);
-%sizeA   = size(A);
-
 %[idx_i, idx_j] = find(mask');
 for k = 1:1:length(idx_i)
     y = idx_j(k);
@@ -31,7 +28,7 @@ for k = 1:1:length(idx_i)
     currSymbol        = A(y,x);
     contextNumber2D   = get2DContext(padA, [y x], numberOfContexts);
     contextNumberLeft = getContextLeft(padYleft,[y x], w);
-    contextNumber4D = getContextLeft(padpA, [y x], w4D);
+    contextNumber4D   = getContextLeft(padpA, [y x], w4D);
     
     %Gets the current count for this context.
     currCount = [0 0];

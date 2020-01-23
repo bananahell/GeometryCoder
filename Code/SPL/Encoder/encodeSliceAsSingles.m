@@ -58,6 +58,11 @@ for i = iStart:1:(iEnd-1)
     end
     
     %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+    
+    %fid = fopen('intra_single.txt','a');
+    %fprintf(fid,'%d \t %d \n',i, nBitsImage);
+    %fclose(fid);
+    
     %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,5 +103,10 @@ if (nSymbolsA ~= 0)
     cabac = encodeImageBAC_withMask_3DContexts2(A,idx_i, idx_j,Yleft,cabac);
 end
 %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+
+%fid = fopen('intra_single.txt','a');
+%fprintf(fid,'%d \t %d \n',iEnd, nBitsImage);
+%fclose(fid);
+
 %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

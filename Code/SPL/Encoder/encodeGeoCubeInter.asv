@@ -12,7 +12,7 @@ function cabac_out = encodeGeoCubeInter(geoCube, enc,cabac_in, currAxis, iStart,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
 testDyadicDecomposition = 1;
-testEncodeAsSingles     = 1;
+testEncodeAsSingles     = 0;
 nBitsDyadic             = Inf;
 nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.
@@ -29,6 +29,7 @@ if (nargin == 6)
     pY = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iStart, iEnd, sparseM);
     %[pY, d1, d2, d3] = findBestPredictionMatch(Y, enc, currAxis, iStart, iEnd);
     
+    
     %if(not(isequal(Y, YY)))
     %    display('Y silhouttes not equal...');
     %    display([iStart iEnd]);
@@ -39,10 +40,10 @@ if (nargin == 6)
     %cabac_in = encodeImageBAC(Y,cabac_in);
     cabac_in = encodeImageBAC_Inter(Y,pY,cabac_in);    
     
-    %nBitsY   = cabac_in.BACEngine.bitstream.size();
-    %fid = fopen('inter.txt','a');
-    %fprintf(fid,'%d \t %d \n',iEnd - iStart + 1, nBitsY);
-    %fclose(fid);
+    nBitsY   = cabac_in.BACEngine.bitstream.size();
+    fid = fopen('inter.txt','a');
+    fprintf(fid,'%d \t %d \n',iEnd - iStart + 1, nBitsY);
+    fclose(fid);
     
     %disp(['Rate Y(' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nBitsY) '.'])  
 end
@@ -141,9 +142,10 @@ if (testDyadicDecomposition)
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
             
-            %fid = fopen('inter.txt','a');
-            %fprintf(fid,'%d \t %d \n',lEnd - lStart + 1, nBitsLeft);
-            %fclose(fid);
+            nBitsY   = cabac_in.BACEngine.bitstream.size();
+            fid = fopen('inter.txt','a');
+            fprintf(fid,'%d \t %d \n',iEnd - iStart + 1, nBitsY);
+            fclose(fid);
         end
         %disp(['Rate Yleft(' num2str(lStart) ',' num2str(lEnd) ') = ' num2str(nBitsLeft) '.'])        
         nBitsDyadic = nBitsDyadic + nBitsLeft;
@@ -161,10 +163,6 @@ if (testDyadicDecomposition)
             cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
-            
-            %fid = fopen('inter.txt','a');
-            %fprintf(fid,'%d \t %d \n',rEnd - rStart + 1, nBitsRight);
-            %fclose(fid);
         end
         %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
         %keyboard;

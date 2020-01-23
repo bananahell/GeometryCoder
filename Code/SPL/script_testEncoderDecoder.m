@@ -21,9 +21,13 @@
 
 %Files Used:
 %Change this to reflect your system
-inputPly   = '/Users/edil/2-development/point_cloud/ricardo9/ply/frame0000.ply';
-binaryFile = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/ricardo_frame0000.bin';
-outputPly  = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/dec_ricardo_frame0000.ply';
+%inputPly   = '/Users/edil/2-development/point_cloud/ricardo9/ply/frame0000.ply';
+%binaryFile = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/ricardo_frame0000.bin';
+%outputPly  = '/Users/edil/2-development/point_cloud/GeometryCoderDev/Code/dec_ricardo_frame0000.ply';
+
+inputPly   = 'C:\eduardo\Sequences\PointClouds\sarah9\ply\frame0001.ply';
+binaryFile = 'C:\eduardo\workspace\ICIP_Inter\sarah_frame0001.bin';
+outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_sarah_frame0001.ply';
 
 %Runs the Encoder
 enc = encodePointCloudGeometry(inputPly,binaryFile);

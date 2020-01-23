@@ -48,6 +48,7 @@ windowSizeFor3DContexts     = 1;
 numberOf3DContexts          = 9;
 windowSizeFor4DContexts     = 0;
 numberOf4DContexts          = 1;
+numberOf2DContextsSingle    = 5;
 numberOfContextsParams      = 4;
 
 

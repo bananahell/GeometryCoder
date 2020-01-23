@@ -34,7 +34,11 @@ if (nargin == 6)
     %nBitsY   = 0;
     %Encodes the image Y.
     cabac_in = encodeImageBAC(Y,cabac_in);
+    
     %nBitsY   = cabac_in.BACEngine.bitstream.size();
+    %fid = fopen('intra.txt','a');
+    %fprintf(fid,'%d \t %d \n',iEnd - iStart + 1, nBitsY);
+    %fclose(fid);
     
     %disp(['Rate Y(' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nBitsY) '.'])  
 end
@@ -124,6 +128,10 @@ if (testDyadicDecomposition)
             end
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
+            
+            %fid = fopen('intra.txt','a');
+            %fprintf(fid,'%d \t %d \n',lEnd - lStart + 1, nBitsLeft);
+            %fclose(fid);
         end
         %disp(['Rate Yleft(' num2str(lStart) ',' num2str(lEnd) ') = ' num2str(nBitsLeft) '.'])
         nBitsDyadic = nBitsDyadic + nBitsLeft;
@@ -141,6 +149,10 @@ if (testDyadicDecomposition)
             cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages2(Yright,mask_Yright,Yright_left,cabacDyadic);
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
+            
+            %fid = fopen('intra.txt','a');
+            %fprintf(fid,'%d \t %d \n',rEnd - rStart + 1, nBitsRight);
+            %fclose(fid);
         end
         %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
         nBitsDyadic = nBitsDyadic + nBitsRight;

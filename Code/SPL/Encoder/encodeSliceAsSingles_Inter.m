@@ -58,10 +58,15 @@ for i = iStart:1:(iEnd-1)
         end
         
         %Actually encodes the image.
-        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
+        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);        
     end
     
     %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+    
+    %fid = fopen('inter_single.txt','a');
+    %fprintf(fid,'%d \t %d \n',i, nBitsImage);
+    %fclose(fid);
+    
     %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,8 +108,13 @@ if (nSymbolsA ~= 0)
     end
     
     %Actually encodes the image.
-    cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
+    cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);    
 end
 %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+
+%fid = fopen('inter_single.txt','a');
+%fprintf(fid,'%d \t %d \n',iEnd, nBitsImage);
+%fclose(fid);
+
 %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

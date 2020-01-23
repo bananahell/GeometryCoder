@@ -34,7 +34,6 @@ else
     
     %And 3D Contexts are now 4D
     cabac.BACContexts_3DT             = initCountContexts_4D(nC_4D, nC_3D, nC_2D);
-    cabac.BACContexts_3DT_ORImages    = initCountContexts_4D(nC_4D, nC_3D, nC_2D);
 end
 
 %Initializes the Parameter Contexts

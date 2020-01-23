@@ -50,8 +50,8 @@ numberOfContextsIndependent = 3;
 numberOfContextsMasked      = 3;
 windowSizeFor3DContexts     = 1;
 numberOf3DContexts          = 9;
-windowSizeFor4DContexts     = 0;
-numberOf4DContexts          = 1;
+windowSizeFor4DContexts     = 1;
+numberOf4DContexts          = 0;
 numberOfContextsParams      = 4;
 
 testMode       = [1 1];
