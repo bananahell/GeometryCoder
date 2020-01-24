@@ -9,8 +9,15 @@ function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y)
 %Parameters for lossy compression
 nUpsample = 1;
 step = 2;
+%Structure to improve morphologically the upsampled image 
+if(nUpsample < 2)
+    se = strel('disk',3);
+else
+    se = strel('disk',5);
+end
 
-Y_downsampled = imresize(logical(Y),1/nUpsample, 'nearest');
+Y_downsampled = imresize(logical(Y),1/nUpsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
 % Y_downsampled = downsample(logical(Y),nUpsample);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Uses the parent as mask.
@@ -21,9 +28,8 @@ maskLast = zeros(sy,sx,'logical');
 [idx_i, idx_j] = find(Y_downsampled');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-nones = sum(Y_downsampled(:));
+% nones = sum(Y_downsampled(:));
 % disp(['Single decoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Iterates through all the slices
@@ -40,7 +46,8 @@ for i = iStart:step:(iEnd)
         else
             Yleft = geoCube(:,:,i-step);
             %Downsample from lossy compression
-            Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample, 'nearest');
+            Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
 %             Yleft_downsampled = downsample(logical(Yleft), nUpsample);
         end   
         
@@ -52,15 +59,24 @@ for i = iStart:step:(iEnd)
 %         disp(['Single decoding A: ' num2str(sum(A(:)))]);
 %         disp(['Single decoding Yleft: ' num2str(sum(Yleft_downsampled(:)))]);
         %Upsample downsampled image to put in the cube
-        A_upsampled = imresize(logical(A), nUpsample, 'nearest');
+        A_upsampled = imresize(logical(A), nUpsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
 %         A_upsampled = upsample(logical(A), nUpsample);
         %Puts it in the geoCube.
 %         geoCube(:,:,i) = (A_upsampled & Y);
+%         if (((i+step) <= iEnd) && nUpsample ~= 1)
+%             A_upsampled = imclose(A_upsampled, se);
+%             A_upsampled = and(A_upsampled, logical(Y));
+%         end
         geoCube(:,:,i) = (A_upsampled);
         
         if((i ~= 1) && (step > 1))
-            inter_slices = morph_binary(geoCube(:,:,i), ...
-                geoCube(:,:,i-step),step-1);
+%             inter_slices = morph_binary(geoCube(:,:,i), ...
+%                 geoCube(:,:,i-step),step-1);
+%             geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
+            
+            inter_slices = improved_morph_binary(geoCube(:,:,i), ...
+                geoCube(:,:,i-step),step-1,logical(Y));
             geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
         end
         %Prepares for the last mask!        

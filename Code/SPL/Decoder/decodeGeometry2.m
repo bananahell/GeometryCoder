@@ -40,7 +40,7 @@ dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Initializes decoder structure to store received Y's from the encoder
 %Necessary for lossy compression
-nSlices = 32;
+nSlices = 64;
 depth = dec.params.nBits - log2(nSlices);
 % disp(['nbits = ' num2str(dec.params.nBits) ', ' num2str(depth+1)]);
 dec_Y = cell(depth+1,2^depth);

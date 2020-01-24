@@ -5,10 +5,11 @@
 
 % To achieve that, the codec is run over a group of 4 frames
 
-nFrames = 4;
+nFrames = 1;
 
 PSNR = zeros(nFrames, 1);
-MSE = zeros(nFrames,1);
+MSE_1 = zeros(nFrames,1);
+MSE_2 = zeros(nFrames,1);
 Rates = zeros(nFrames,1);
 
 % for i = 1:nFrames
@@ -18,11 +19,12 @@ Rates = zeros(nFrames,1);
 %     outputPly{i}  = ['..\test_nSlices\longdress_vox10_13' num2str(i-1,'%02d') '.ply'];
 % end
 
-parfor i = 1:nFrames
+% parfor i = 1:nFrames
+for i = 1:nFrames
     inputPly   = ['C:\Users\drcft\OneDrive\Documents\UnB\Mestrado\Pesquisas\Sequences\longdress_vox10\longdress_vox10_13' ...
         num2str(i-1,'%02d') '.ply'];
-    binaryFile = ['..\test_nSlices\longdress_vox10_13' num2str(i-1,'%02d') '.bin'];
-    outputPly  = ['..\test_nSlices\longdress_vox10_13' num2str(i-1,'%02d') '.ply'];
+    binaryFile = ['..\test_improvements\step\longdress_vox10_13' num2str(i-1,'%02d') '_d1_s2' '.bin'];
+    outputPly  = ['..\test_improvements\step\longdress_vox10_13' num2str(i-1,'%02d') '_d1_s2' '.ply'];
     
     %Runs the Encoder
     enc = encodePointCloudGeometry(inputPly,binaryFile);
@@ -39,6 +41,7 @@ parfor i = 1:nFrames
     pt2pt = src_metrics_point_metrics(V_a, V_b);
     
     Rates(i) = enc.rate_bpov;
-    MSE(i) = max(pt2pt.p2point_mse);
+    MSE_1(i) = pt2pt.p2point_mse(1);
+    MSE_2(i) = pt2pt.p2point_mse(2);
     PSNR(i) = pt2pt.p2point_psnr;
 end

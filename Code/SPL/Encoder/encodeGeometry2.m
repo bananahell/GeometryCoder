@@ -25,7 +25,7 @@ end
 %Iterate to find the best axis
 %for k = 1:1:1
 % disp('TESTING 1 AXIS ONLY!')
-for k = 2:1:2
+for k = 1:1:1
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -10,10 +10,17 @@ function cabac = encodeSliceAsSingles(~, enc, currAxis, cabac,iStart,iEnd,Y, spa
 %Parameters for lossy compression
 nDownsample = 1;
 step = 2;
+%Structure to improve morphologically the upsampled image 
+if(nDownsample < 2)
+    se = strel('disk',3);
+else
+    se = strel('disk',5);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Downsampling Y for lossy compression
-Y_downsampled = imresize(logical(Y), 1/nDownsample, 'nearest');
+Y_downsampled = imresize(logical(Y), 1/nDownsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
 % Y_downsampled = downsample(logical(Y), nDownsample);
 
 %Uses the parent as mask.
@@ -23,7 +30,7 @@ maskLast = zeros(sy,sx,'logical');
 [idx_i, idx_j] = find(Y_downsampled');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-nones = sum(Y_downsampled(:));
+% nones = sum(Y_downsampled(:));
 % disp(['Single encoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -34,7 +41,8 @@ for i = iStart:step:(iEnd)
     A = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     
     %Downsampling A for lossy compression
-    A_downsampled = imresize(logical(A), 1/nDownsample, 'nearest');
+    A_downsampled = imresize(logical(A), 1/nDownsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
 %     A_downsampled = downsample(logical(A), nDownsample);
     
     %if(not(isequal(A,AA)))
@@ -67,7 +75,16 @@ for i = iStart:step:(iEnd)
         else
             %Yleft = geoCube(:,:,i-1);
             Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i-step, i-step, sparseM);
-            Yleft_downsampled = imresize(logical(Yleft), 1/nDownsample, 'nearest');
+            Yleft_downsampled = imresize(logical(Yleft), 1/nDownsample, 'Method', 'nearest', ...
+    'Antialiasing', false);
+%             if (i ~= iStart && nDownsample ~= 1)
+%                 Yleft_downsampled = imresize(Yleft_downsampled, nDownsample, 'Method', 'nearest', ...
+%         'Antialiasing', false);
+%                 Yleft_downsampled = imclose(Yleft_downsampled, se);
+%                 Yleft_downsampled = and(Yleft_downsampled, logical(Y));
+%                 Yleft_downsampled = imresize(Yleft_downsampled, 1/nDownsample, 'Method', 'nearest', ...
+%         'Antialiasing', false);
+%             end
 %             Yleft_downsampled = downsample(logical(Yleft), nDownsample);
         end
 %         disp(['Single encoding A: ' num2str(sum(A_downsampled(:)))]);

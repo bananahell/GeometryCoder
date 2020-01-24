@@ -18,7 +18,7 @@ nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.
 
 %Parameter for lossy coding.
-nSlices = 32;
+nSlices = 64;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
