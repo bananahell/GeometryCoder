@@ -8,14 +8,14 @@
 function cabac = encodeSliceAsSingles(~, enc, currAxis, cabac,iStart,iEnd,Y, sparseM)
 
 %Parameters for lossy compression
-nDownsample = 1;
-step = 2;
+nDownsample = enc.params.lossyParams.nDownsample;
+step = enc.params.lossyParams.step;
 %Structure to improve morphologically the upsampled image 
-if(nDownsample < 2)
-    se = strel('disk',3);
-else
-    se = strel('disk',5);
-end
+% if(nDownsample < 2)
+%     se = strel('disk',3);
+% else
+%     se = strel('disk',5);
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Downsampling Y for lossy compression

@@ -5,7 +5,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube,cabac, iStart,iEnd, dec_Y,Y)
+function [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube,cabac, iStart,iEnd, lossy_params,Y)
 
 [sy,sx,sz] = size(geoCube);
 
@@ -24,7 +24,8 @@ end
 %lossy compression
 nBits = log2(sz);
 % disp(['values= ' num2str(size(dec_Y))]);
-dec_Y{(nBits-log2(iEnd - iStart + 1)+1), ((iStart-1)/(iEnd-iStart+1))+1} = Y;
+lossy_params.dec_Y{(nBits-log2(iEnd - iStart + 1)+1), ((iStart-1)/(iEnd-iStart+1))+1} = Y;
+% lossy_params.dec_Y = dec_Y;
 
 %Decodes the correct image.
 if (bit == 0)
@@ -66,7 +67,7 @@ if (bit == 0)
                 %Getting Yleft_left from the structure of storage of Y's
                 %(for lossy compression)                
 %                 disp(['i = (' num2str(iStart) ',' num2str(iEnd) '): ' num2str(sum(Y(:)))]);
-                Yleft_left = dec_Y{(nBits-log2(N)+1), ((lStart-N-1)/N)+1};
+                Yleft_left = lossy_params.dec_Y{(nBits-log2(N)+1), ((lStart-N-1)/N)+1};
 %                 disp(['Y left left ' num2str(sum(Yleft_left(:)))]);
 %                 disp(['values= ' num2str((nBits-log2(N)+1)) ' and ' ...
 %                      num2str(((lStart-N-1)/N)+1)]);
@@ -121,15 +122,16 @@ if (bit == 0)
     else
         %Then I have to call this function recursively
         if (encodeYleft && (lEnd > lStart))            
-            [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube,cabac, lStart,lEnd, dec_Y, Yleft);
+            [geoCube,cabac,lossy_params.dec_Y] = decodeGeoCube(geoCube,cabac, lStart,lEnd, lossy_params, Yleft);
         end
         
         if (encodeYright && (rEnd > rStart))
-            [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube,cabac, rStart,rEnd, dec_Y, Yright);
-        end        
+            [geoCube,cabac,lossy_params.dec_Y] = decodeGeoCube(geoCube,cabac, rStart,rEnd, lossy_params, Yright);
+        end
     end
         
 else
     %Decode this range using the single mode encoding.
-    [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y);
+    [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y, lossy_params);
 end
+dec_Y = lossy_params.dec_Y;

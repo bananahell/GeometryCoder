@@ -12,6 +12,9 @@ MSE_1 = zeros(nFrames,1);
 MSE_2 = zeros(nFrames,1);
 Rates = zeros(nFrames,1);
 
+lossy_params.nDownsample = 4;
+lossy_params.step = 4;
+
 % for i = 1:nFrames
 %     inputPly{i}   = ['C:\Users\drcft\OneDrive\Documents\UnB\Mestrado\Pesquisas\Sequences\longdress_vox10\longdress_vox10_13' ...
 %         num2str(i-1,'%02d') '.ply'];
@@ -23,14 +26,14 @@ Rates = zeros(nFrames,1);
 for i = 1:nFrames
     inputPly   = ['C:\Users\drcft\OneDrive\Documents\UnB\Mestrado\Pesquisas\Sequences\longdress_vox10\longdress_vox10_13' ...
         num2str(i-1,'%02d') '.ply'];
-    binaryFile = ['..\test_improvements\step\longdress_vox10_13' num2str(i-1,'%02d') '_d1_s2' '.bin'];
-    outputPly  = ['..\test_improvements\step\longdress_vox10_13' num2str(i-1,'%02d') '_d1_s2' '.ply'];
+    binaryFile = ['..\test_improvements\downsampling_step\longdress_vox10_13' num2str(i-1,'%02d') '_d75_sx' '.bin'];
+    outputPly  = ['..\test_improvements\downsampling_step\longdress_vox10_13' num2str(i-1,'%02d') '_d75_sx' '.ply'];
     
     %Runs the Encoder
-    enc = encodePointCloudGeometry(inputPly,binaryFile);
+    enc = encodePointCloudGeometry(inputPly,binaryFile, lossy_params);
 
     %Runs the Decoder
-    dec = decodePointCloudGeometry(binaryFile,outputPly);
+    dec = decodePointCloudGeometry(binaryFile,outputPly, lossy_params);
     
     % Compute metrics for lossy encoding
     pc = pcread(inputPly);

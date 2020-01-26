@@ -14,7 +14,7 @@
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 % 29/10/2019
-function dec = decodePointCloudGeometry(inputFile, outputFile)
+function dec = decodePointCloudGeometry(inputFile, outputFile, lossy_params)
 
 disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
 disp('Author: Eduardo Peixoto')
@@ -87,6 +87,7 @@ params.BACParams.numberOfContextsMasked      = numberOfContextsMasked;
 params.BACParams.windowSizeFor3DContexts     = windowSizeFor3DContexts;
 params.BACParams.numberOf3DContexts          = numberOf3DContexts;
 params.BACParams.numberOfContextsParams      = numberOfContextsParams;
+params.lossyParams = lossy_params;
 %-----------------------------------------------
 
 %Decodes the PointCloud

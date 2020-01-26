@@ -45,9 +45,12 @@ depth = dec.params.nBits - log2(nSlices);
 % disp(['nbits = ' num2str(dec.params.nBits) ', ' num2str(depth+1)]);
 dec_Y = cell(depth+1,2^depth);
 
+lossy_params = dec.params.lossyParams;
+lossy_params.dec_Y = dec_Y;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[dec.geometryCube , cabac, ~] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1, dec_Y);
+[dec.geometryCube , cabac, ~] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1, lossy_params);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.

@@ -4,11 +4,11 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y)
+function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y, lossy_params)
 
 %Parameters for lossy compression
-nUpsample = 1;
-step = 2;
+nUpsample = lossy_params.nDownsample;
+step = lossy_params.step;
 %Structure to improve morphologically the upsampled image 
 if(nUpsample < 2)
     se = strel('disk',3);
@@ -48,6 +48,10 @@ for i = iStart:step:(iEnd)
             %Downsample from lossy compression
             Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample, 'Method', 'nearest', ...
     'Antialiasing', false);
+            if (((i ~= iStart) && nUpsample ~= 1))
+                geoCube(:,:,i-step) = imclose(geoCube(:,:,i-step), se);
+                geoCube(:,:,i-step) = and(geoCube(:,:,i-step), logical(Y));
+            end
 %             Yleft_downsampled = downsample(logical(Yleft), nUpsample);
         end   
         
@@ -64,10 +68,6 @@ for i = iStart:step:(iEnd)
 %         A_upsampled = upsample(logical(A), nUpsample);
         %Puts it in the geoCube.
 %         geoCube(:,:,i) = (A_upsampled & Y);
-%         if (((i+step) <= iEnd) && nUpsample ~= 1)
-%             A_upsampled = imclose(A_upsampled, se);
-%             A_upsampled = and(A_upsampled, logical(Y));
-%         end
         geoCube(:,:,i) = (A_upsampled);
         
         if((i ~= 1) && (step > 1))
