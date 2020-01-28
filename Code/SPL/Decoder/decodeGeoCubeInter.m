@@ -19,7 +19,7 @@ if (nargin == 6)
     Y = zeros(sy,sx,'logical');
     pY = silhouetteFromCloud(dec.predictionPointCloud.Location, dec.pcLimit+1, dec.dimensionSliced, iStart, iEnd, false);
     
-    [Y,cabac] = decodeImageBAC_Inter(Y,pY,cabac);
+    [Y,cabac] = decodeImageBAC_Inter(Y,pY,cabac);    
 end
 
 %Reads 1 bit from the param bitstream.
@@ -60,7 +60,7 @@ if (bit == 0)
         
         if (nSymbolsLeft > 0)
             if (lStart == 1)
-                [Yleft, cabac] = decodeImageBAC_withMask_Inter(Yleft, mask_Yleft, pYleft, cabac);
+                [Yleft, cabac] = decodeImageBAC_withMask_Inter(Yleft, mask_Yleft, pYleft, cabac);                
             else
                 %This means I already have enough images for a 3D context.
                 %Yleft_left = silhouette(geoCube,lStart - N, lEnd - N);

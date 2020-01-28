@@ -20,9 +20,6 @@ numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
 A_3D = zeros(size(A),'logical');
 A_4D = zeros(size(A),'logical');
 
-pSum3D = 0;
-pSum4D = 0;
-
 %Estimate the image with 3D and 4D contexts.
 for k = 1:1:length(idx_i)
     y = idx_j(k);
@@ -47,14 +44,6 @@ for k = 1:1:length(idx_i)
     p1s3D = currCount3D(2) / (sum(currCount3D));
     A_3D(y,x) = (p1s3D >= 0.5);    
     
-    if (currSymbol == false)
-        pSum3D = pSum3D + (1 - p1s3D);
-        pSum4D = pSum4D + (1 - p1s4D);
-    else
-        pSum3D = pSum3D + p1s3D;
-        pSum4D = pSum4D + p1s4D;
-    end
-    
     %Updates the context.
     if (currSymbol == false)
         cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,1) = cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,1) + 1;
@@ -71,9 +60,6 @@ nBitsDiff3D = sum(diff3D(:));
 
 diff4D = xor(and(mask,A_4D), and(mask,A));
 nBitsDiff4D = sum(diff4D(:));
-
-avgPSum3D = pSum3D / length(idx_i);
-avgPSum4D = pSum4D / length(idx_i);
 
 %disp(['3D - ' num2str(nBitsDiff3D,'%5d') ' - ' num2str(avgPSum3D,'%1.4f') ' .'])
 %disp(['4D - ' num2str(nBitsDiff4D,'%5d') ' - ' num2str(avgPSum4D,'%1.4f') ' .'])

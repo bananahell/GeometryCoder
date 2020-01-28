@@ -28,7 +28,6 @@ params.JBIGFolder      = '';
 params.numberOfSlicesToTestSingleMode = 16;
 params.test3DOnlyContextsForInter     = 0;
 params.fastChoice3Dvs4D               = 0;
-params.use4DContextsOnSingle          = 1;
 params.useMEforPrevImageSingle        = 0;
 
 params.BACParams.numberOfContextsIndependent = 3;
@@ -67,10 +66,6 @@ if (defaultParameters == 0)
             case 'fastChoice3Dvs4D'
                 checkSizeAndValue('fastChoice3Dvs4D',value,[1 1],[0 1]);
                 params.fastChoice3Dvs4D = value;
-                
-            case 'use4DContextsOnSingle'
-                checkSizeAndValue('use4DContextsOnSingle',value,[1 1],[0 1]);
-                params.use4DContextsOnSingle = value;
                 
             case 'useMEforPrevImageSingle'
                 checkSizeAndValue('useMEforPrevImageSingle',value,[1 1],[0 1]);

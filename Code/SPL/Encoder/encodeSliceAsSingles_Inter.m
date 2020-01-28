@@ -23,15 +23,11 @@ for i = iStart:1:(iEnd-1)
     A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     
     %Testing the motion estimation.
-    if (enc.params.use4DContextsOnSingle == 1)
-        if (enc.params.useMEforPrevImageSingle == 1)
-            [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, i, i);
-        else
-            pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
-        end
+    if (enc.params.useMEforPrevImageSingle == 1)
+        [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, i, i);
+    else
+        pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     end
-    
-    
     
     %if(not(isequal(A,AA)))
     %    display('Slices are not equal...')
@@ -64,19 +60,20 @@ for i = iStart:1:(iEnd-1)
             Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i-1, i-1, sparseM);
         end
         
-        %Actually encodes the image.
-        if (enc.params.use4DContextsOnSingle == 1)
+        if (enc.params.test3DOnlyContextsForInter == 1)
+            testMode4D_3D = [1 1];
             
-            testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+            %Check if the fast choice will be applied.
             if ( enc.params.fastChoice3Dvs4D == 1)
                 bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
                 testMode4D_3D(bestChoice + 1) = 0;
             end
-                        
-            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D);        
+            
+            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D, 1);
         else
-            cabac = encodeImageBAC_withMask_3DContexts3(A,idx_i, idx_j,Yleft,cabac);        
+            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, [1 0], 0);
         end
+        
     end
     
 %     nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
@@ -99,12 +96,10 @@ end
 A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
 
 %Testing the motion estimation.
-if (enc.params.use4DContextsOnSingle == 1)
-    if (enc.params.useMEforPrevImageSingle == 1)
-        [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, iEnd, iEnd);
-    else
-        pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
-    end
+if (enc.params.useMEforPrevImageSingle == 1)
+    [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, iEnd, iEnd);
+else
+    pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
 end
 
 nSymbolsA = sum(A(:));
@@ -133,19 +128,20 @@ if (nSymbolsA ~= 0)
         Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd-1, iEnd-1, sparseM);
     end
     
-    %Actually encodes the image.
-    if (enc.params.use4DContextsOnSingle == 1)
+    if (enc.params.test3DOnlyContextsForInter == 1)
+        testMode4D_3D = [1 1];
         
-        testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+        %Check if the fast choice will be applied.        
         if ( enc.params.fastChoice3Dvs4D == 1)
             bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
             testMode4D_3D(bestChoice + 1) = 0;
         end
         
-        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D);
+        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D, 1);
     else
-        cabac = encodeImageBAC_withMask_3DContexts3(A,idx_i, idx_j,Yleft,cabac);    
+        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, [1 0], 0);
     end
+    
 end
 % nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
 % 

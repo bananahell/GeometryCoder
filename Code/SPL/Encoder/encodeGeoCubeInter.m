@@ -133,24 +133,36 @@ if (testDyadicDecomposition)
             
             %Test with new amazing 3D context
             if (lStart == 1)
-                %cabacDyadic = encodeImageBAC_withMask2(Yleft,mask_Yleft,cabacDyadic);
-                testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
-                if ( enc.params.fastChoice3Dvs4D == 1)
-                    bestChoice = estimateBestContext_ImageWithMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic);
-                    testMode4D_3D(bestChoice + 1) = 0;
+                if (enc.params.test3DOnlyContextsForInter == 1)
+                    testMode4D_3D = [1 1];
+                    
+                    %Check if the fast choice will be applied.
+                    if ( enc.params.fastChoice3Dvs4D == 1)
+                        bestChoice = estimateBestContext_ImageWithMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                        testMode4D_3D(bestChoice + 1) = 0;
+                    end
+                    
+                    cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, testMode4D_3D, 1);
+                else
+                    cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, [1 0], 0);                    
                 end                
-                cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, testMode4D_3D);
             else
                 %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
                 
-                testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
-                if ( enc.params.fastChoice3Dvs4D == 1)
-                    bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
-                    testMode4D_3D(bestChoice + 1) = 0;
-                end 
-                
-                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, testMode4D_3D);
+                if (enc.params.test3DOnlyContextsForInter == 1)
+                    testMode4D_3D = [1 1];
+                    
+                    %Check if the fast choice will be applied.
+                    if ( enc.params.fastChoice3Dvs4D == 1)
+                        bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                        testMode4D_3D(bestChoice + 1) = 0;
+                    end
+                    
+                    cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, testMode4D_3D, 1);
+                else
+                    cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, [1 0], 0);
+                end
             end
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
@@ -175,13 +187,19 @@ if (testDyadicDecomposition)
             %Test with new amazing 3D context
             Yright_left = Yleft;
             
-            testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
-            if ( enc.params.fastChoice3Dvs4D == 1)
-                bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
-                testMode4D_3D(bestChoice + 1) = 0;
-            end
+            if (enc.params.test3DOnlyContextsForInter == 1)
+                testMode4D_3D = [1 1];
                 
-            cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, testMode4D_3D);
+                %Check if the fast choice will be applied.
+                if ( enc.params.fastChoice3Dvs4D == 1)
+                    bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+                    testMode4D_3D(bestChoice + 1) = 0;
+                end
+                
+                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, testMode4D_3D, 1);
+            else
+                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, [1 0], 0);
+            end
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
             

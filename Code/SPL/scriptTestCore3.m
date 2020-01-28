@@ -29,7 +29,7 @@
 %Change this to reflect your system
 %The output folders must exist before the script is executed.
 datasetFolder  = 'C:\eduardo\Sequences\PointClouds\';
-outputFolder   = 'C:\eduardo\workspace\ICIP_Inter\Test2701\';
+outputFolder   = 'C:\eduardo\workspace\ICIP_Inter\Test2801\';
 
 k = 0;
 
@@ -214,12 +214,11 @@ for k = 1:1:N
         encTime = toc(encStartTime);
         
         decStartTime = tic;
-        %dec = decodePointCloudGeometry_Inter(binaryFile, prevFile, outputFile);
+        dec = decodePointCloudGeometry_Inter(binaryFile, prevFile, outputFile);
         decTime = toc(decStartTime);
 
         %Checks the two Ply
-        %checkPly  = comparePlys(inputFile, outputFile);
-        checkPly = 0;
+        checkPly  = comparePlys(inputFile, outputFile);
         
         bestAxis = find('xyz' == enc.dimensionSliced);
         

@@ -24,8 +24,8 @@ end
 
 %Iterate to find the best axis
 for k = 1:1:3
-%for (k = 1:1:1)
-%    warning('TESTING ONE AXIS ONLY')
+% for (k = 1:1:1)
+%     warning('TESTING ONE AXIS ONLY')
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,7 +39,7 @@ for k = 1:1:3
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Initializes the cabac.
     cabac = getCABAC();
-    cabac = initCABAC(cabac, enc.params.BACParams, 1, enc.params.test3DOnlyContextsForInter, enc.params.use4DContextsOnSingle);
+    cabac = initCABAC(cabac, enc.params.BACParams, 1, enc.params.test3DOnlyContextsForInter);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     

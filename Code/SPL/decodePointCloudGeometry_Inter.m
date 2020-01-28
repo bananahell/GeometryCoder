@@ -16,6 +16,12 @@
 % 29/10/2019
 function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
 
+if (nargin == 3)
+    defaultParameters = 1;
+else
+    defaultParameters = 0;
+end
+
 disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
 disp('Author: Eduardo Peixoto')
 disp('E-mail: eduardopeixoto@ieee.org')
@@ -43,21 +49,6 @@ else
 end
 %----------------------------------------------
 
-
-%----------------------------------------------
-%These are the settings for the ICIP Results.
-numberOfContextsIndependent = 3;
-numberOfContextsMasked      = 3;
-windowSizeFor3DContexts     = 1;
-numberOf3DContexts          = 9;
-windowSizeFor4DContexts     = 1;
-numberOf4DContexts          = 0;
-numberOfContextsParams      = 4;
-
-testMode       = [1 1];
-verbose        = 0;
-%----------------------------------------------
-
 %----------------------------------------------
 %Parses the input
 inputFile(inputFile == '\') = '/'; 
@@ -73,28 +64,19 @@ end
 outputFile(outputFile == '\') = '/'; 
 %----------------------------------------------
 
-
-
 %-----------------------------------------------
-params = getEncoderParams();
-params.sequence        = '';
+if (defaultParameters == 1)
+    params = initParams();
+else
+    params = initParams(varargin);
+end
+
 params.workspaceFolder = workspaceFolder;
 params.dataFolder      = '';
 params.pointCloudFile  = '';
+params.outputPlyFile   = outputFile;
 params.predictionFile  = predictionFile;
 params.bitstreamFile   = bitstreamFile;
-params.outputPlyFile   = outputFile;
-params.matlabFile      = '';
-params.testMode        = testMode;
-params.verbose         = 0;
-params.JBIGFolder      = '';
-params.BACParams.numberOfContextsIndependent = numberOfContextsIndependent;
-params.BACParams.numberOfContextsMasked      = numberOfContextsMasked;
-params.BACParams.windowSizeFor3DContexts     = windowSizeFor3DContexts;
-params.BACParams.numberOf3DContexts          = numberOf3DContexts;
-params.BACParams.windowSizeFor4DContexts     = windowSizeFor4DContexts;
-params.BACParams.numberOf4DContexts          = numberOf4DContexts;
-params.BACParams.numberOfContextsParams      = numberOfContextsParams;
 %-----------------------------------------------
 
 %Decodes the PointCloud
