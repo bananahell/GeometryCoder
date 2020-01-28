@@ -40,9 +40,12 @@ if (nargin == 6)
     cabac_in = encodeImageBAC_Inter(Y,pY,cabac_in);    
     
     %nBitsY   = cabac_in.BACEngine.bitstream.size();
-    %fid = fopen('inter.txt','a');
-    %fprintf(fid,'%d \t %d \n',iEnd - iStart + 1, nBitsY);
-    %fclose(fid);
+%     diff = xor(Y,pY);
+%     nY    = (enc.pcLimit+1) * (enc.pcLimit+1);
+%     nDiff = sum(diff(:));
+%     fid = fopen('inter.txt','a');
+%     fprintf(fid,'%d \t %d \t %d \t %d \n',iEnd - iStart + 1, nY, nDiff, nBitsY);
+%     fclose(fid);
     
     %disp(['Rate Y(' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nBitsY) '.'])  
 end
@@ -131,19 +134,32 @@ if (testDyadicDecomposition)
             %Test with new amazing 3D context
             if (lStart == 1)
                 %cabacDyadic = encodeImageBAC_withMask2(Yleft,mask_Yleft,cabacDyadic);
-                cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+                if ( enc.params.fastChoice3Dvs4D == 1)
+                    bestChoice = estimateBestContext_ImageWithMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                    testMode4D_3D(bestChoice + 1) = 0;
+                end                
+                cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, testMode4D_3D);
             else
                 %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
                 
-                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+                if ( enc.params.fastChoice3Dvs4D == 1)
+                    bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                    testMode4D_3D(bestChoice + 1) = 0;
+                end 
+                
+                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, testMode4D_3D);
             end
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
             
-            %fid = fopen('inter.txt','a');
-            %fprintf(fid,'%d \t %d \n',lEnd - lStart + 1, nBitsLeft);
-            %fclose(fid);
+%             fid = fopen('inter.txt','a');
+%             diff = xor(and(mask_Yleft,pYleft),and(mask_Yleft,Yleft));           
+%             nDiff = sum(diff(:));
+%             fprintf(fid,'%d \t %d \t %d \t %d \n',lEnd - lStart + 1,nSymbolsLeft, nDiff, nBitsLeft);
+%             fclose(fid);
         end
         %disp(['Rate Yleft(' num2str(lStart) ',' num2str(lEnd) ') = ' num2str(nBitsLeft) '.'])        
         nBitsDyadic = nBitsDyadic + nBitsLeft;
@@ -158,13 +174,22 @@ if (testDyadicDecomposition)
             
             %Test with new amazing 3D context
             Yright_left = Yleft;
-            cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+            
+            testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+            if ( enc.params.fastChoice3Dvs4D == 1)
+                bestChoice = estimateBestContext_ImageWithMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+                testMode4D_3D(bestChoice + 1) = 0;
+            end
+                
+            cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, testMode4D_3D);
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
             
-            %fid = fopen('inter.txt','a');
-            %fprintf(fid,'%d \t %d \n',rEnd - rStart + 1, nBitsRight);
-            %fclose(fid);
+%             fid = fopen('inter.txt','a');
+%             diff = xor(and(mask_Yright,pYright),and(mask_Yright,Yright));           
+%             nDiff = sum(diff(:));
+%             fprintf(fid,'%d \t %d \t %d \t %d \n',rEnd - rStart + 1,nSymbolsRight, nDiff, nBitsRight);
+%             fclose(fid);
         end
         %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
         %keyboard;

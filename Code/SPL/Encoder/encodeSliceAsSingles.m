@@ -40,7 +40,7 @@ for i = iStart:1:(iEnd-1)
    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Encodes the slice
-    %nBits = cabac.BACEngine.bitstream.size();   
+    nBits = cabac.BACEngine.bitstream.size();   
     if (nSymbolsA ~= 0)
         %Prepares for the last mask!        
         maskLast = or(A,maskLast);
@@ -57,11 +57,11 @@ for i = iStart:1:(iEnd-1)
         cabac = encodeImageBAC_withMask_3DContexts2(A,idx_i, idx_j,Yleft,cabac);
     end
     
-    %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+    nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
     
-    %fid = fopen('intra_single.txt','a');
-    %fprintf(fid,'%d \t %d \n',i, nBitsImage);
-    %fclose(fid);
+    fid = fopen('intra_single.txt','a');
+    fprintf(fid,'%d \t %d \n',i, nBitsImage);
+    fclose(fid);
     
     %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 end
@@ -83,7 +83,7 @@ else
     cabac = encodeParam(true,cabac);
 end
 
-%nBits = cabac.BACEngine.bitstream.size();
+nBits = cabac.BACEngine.bitstream.size();
 %For the last slice, the mask is a bit different. 
 if (nSymbolsA ~= 0)
     mask = and(Y,maskLast);
@@ -102,11 +102,11 @@ if (nSymbolsA ~= 0)
     %Actually encodes the image.
     cabac = encodeImageBAC_withMask_3DContexts2(A,idx_i, idx_j,Yleft,cabac);
 end
-%nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
 
-%fid = fopen('intra_single.txt','a');
-%fprintf(fid,'%d \t %d \n',iEnd, nBitsImage);
-%fclose(fid);
+fid = fopen('intra_single.txt','a');
+fprintf(fid,'%d \t %d \n',iEnd, nBitsImage);
+fclose(fid);
 
 %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

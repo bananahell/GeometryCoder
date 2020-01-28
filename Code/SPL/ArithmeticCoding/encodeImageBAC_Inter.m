@@ -4,7 +4,7 @@ function cabac = encodeImageBAC_Inter(A, pA, cabac)
 
 %This function uses the contexts in:
 % cabac.BACContexts_2DT_Independent
-
+nC4D  = cabac.BACParams.numberOf4DContexts;
 w4D   = cabac.BACParams.windowSizeFor4DContexts;
 padpA = padarray(pA, [w4D w4D]);
 
@@ -22,7 +22,8 @@ for y = 1:1:sy
     for x = 1:1:sx
         currSymbol    = A(y,x);
         contextNumber   = get2DContext(padA, [y x], numberOfContexts);
-        contextNumber4D = getContextLeft(padpA, [y x], w4D);
+        contextNumber4D = getContextFromImage(padpA, [y x], w4D, nC4D);
+        
         
         %Gets the current count for this context.
         currCount = cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,:);        

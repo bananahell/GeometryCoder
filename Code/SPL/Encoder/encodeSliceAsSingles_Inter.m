@@ -22,8 +22,15 @@ for i = iStart:1:(iEnd-1)
     %A = geoCube(:,:,i);
     A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     
-    pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
-    %[pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, i, i);
+    %Testing the motion estimation.
+    if (enc.params.use4DContextsOnSingle == 1)
+        if (enc.params.useMEforPrevImageSingle == 1)
+            [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, i, i);
+        else
+            pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
+        end
+    end
+    
     
     
     %if(not(isequal(A,AA)))
@@ -58,14 +65,27 @@ for i = iStart:1:(iEnd-1)
         end
         
         %Actually encodes the image.
-        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);        
+        if (enc.params.use4DContextsOnSingle == 1)
+            
+            testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+            if ( enc.params.fastChoice3Dvs4D == 1)
+                bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
+                testMode4D_3D(bestChoice + 1) = 0;
+            end
+                        
+            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D);        
+        else
+            cabac = encodeImageBAC_withMask_3DContexts3(A,idx_i, idx_j,Yleft,cabac);        
+        end
     end
     
-    %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
-    
-    %fid = fopen('inter_single.txt','a');
-    %fprintf(fid,'%d \t %d \n',i, nBitsImage);
-    %fclose(fid);
+%     nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+%     
+%     fid = fopen('inter_single.txt','a');
+%     diff = xor(and(Y,pA),and(Y,A));           
+%     nDiff = sum(diff(:));
+%     fprintf(fid,'%d \t %d \t %d \t %d \n',i,nSymbolsA, nDiff, nBitsImage);
+%     fclose(fid);
     
     %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 end
@@ -78,8 +98,14 @@ end
 %A = geoCube(:,:,iEnd);
 A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
 
-pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
-%[pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, iEnd, iEnd);
+%Testing the motion estimation.
+if (enc.params.use4DContextsOnSingle == 1)
+    if (enc.params.useMEforPrevImageSingle == 1)
+        [pA, d1, d2, d3]  = findBestPredictionMatch(A , enc, currAxis, iEnd, iEnd);
+    else
+        pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
+    end
+end
 
 nSymbolsA = sum(A(:));
     
@@ -108,13 +134,26 @@ if (nSymbolsA ~= 0)
     end
     
     %Actually encodes the image.
-    cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);    
+    if (enc.params.use4DContextsOnSingle == 1)
+        
+        testMode4D_3D = [1 enc.params.test3DOnlyContextsForInter];
+        if ( enc.params.fastChoice3Dvs4D == 1)
+            bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
+            testMode4D_3D(bestChoice + 1) = 0;
+        end
+        
+        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D);
+    else
+        cabac = encodeImageBAC_withMask_3DContexts3(A,idx_i, idx_j,Yleft,cabac);    
+    end
 end
-%nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
-
-%fid = fopen('inter_single.txt','a');
-%fprintf(fid,'%d \t %d \n',iEnd, nBitsImage);
-%fclose(fid);
+% nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
+% 
+% fid = fopen('inter_single.txt','a');
+% diff = xor(and(Y,pA),and(Y,A));           
+% nDiff = sum(diff(:));
+% fprintf(fid,'%d \t %d \t %d \t %d \n',iEnd,nSymbolsA, nDiff, nBitsImage);
+% fclose(fid);
 
 %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

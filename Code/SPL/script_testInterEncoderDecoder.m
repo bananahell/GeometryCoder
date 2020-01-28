@@ -21,15 +21,16 @@
 
 %Files Used:
 %Change this to reflect your system
-% prevPly    = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0000.ply';
-% inputPly   = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0001.ply';
-% binaryFile = 'C:\eduardo\workspace\ICIP_Inter\andrew_frame0001.bin';
-% outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_andrew_frame0001.ply';
+% prevPly    = 'C:\eduardo\Sequences\PointClouds\longdress\Ply\longdress_vox10_1051.ply';
+% inputPly   = 'C:\eduardo\Sequences\PointClouds\longdress\Ply\longdress_vox10_1052.ply';
+% binaryFile = 'C:\eduardo\workspace\ICIP_Inter\longdress_vox10_1052.bin';
+% outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_longdress_vox10_1052.ply';
 
-prevPly    = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply';
-inputPly   = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0001.ply';
-binaryFile = 'C:\eduardo\workspace\ICIP_Inter\ricardo_frame0001.bin';
-outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
+
+prevPly    = 'C:\eduardo\Sequences\PointClouds\sarah9\ply\frame0000.ply';
+inputPly   = 'C:\eduardo\Sequences\PointClouds\sarah9\ply\frame0001.ply';
+binaryFile = 'C:\eduardo\workspace\ICIP_Inter\sarah_frame0001.bin';
+outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_sarah_frame0001.ply';
 
 % prevPly    = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0536.ply';
 % inputPly   = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0537.ply';
@@ -37,7 +38,7 @@ outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
 % outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_soldier_0537.ply';
 
 %Runs the Encoder
-enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
+enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',0);
 
 %Runs the Decoder
 %dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
@@ -45,11 +46,11 @@ enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile);
 %Checks the two Ply
 %checkPly  = comparePlys(inputPly, outputPly);
 
-disp(' ')
-disp('==============================================')
-if (checkPly == 1)
-    disp('The encoder and decoder Ply Geometry are equal.')
-else
-    disp('The encoder and decoder Ply Geometry are NOT equal.')
-end
-disp('==============================================')%
+% disp(' ')
+% disp('==============================================')
+% if (checkPly == 1)
+%     disp('The encoder and decoder Ply Geometry are equal.')
+% else
+%     disp('The encoder and decoder Ply Geometry are NOT equal.')
+% end
+% disp('==============================================')%

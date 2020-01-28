@@ -14,7 +14,13 @@
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 % 29/10/2019
-function enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
+function enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile, varargin)
+
+if (nargin == 3)
+    defaultParameters = 1;
+else
+    defaultParameters = 0;
+end
 
 disp('Running Point Cloud Inter Geometry Coder based on Dyadic Decomposition')
 disp('Author: Eduardo Peixoto')
@@ -31,6 +37,14 @@ else
     end
 end
 
+if (isempty(predictionFile))
+    error('Empty prediction File.');
+else
+    if (~ischar(predictionFile))
+        error('The prediction file must be a string');
+    end
+end
+
 if (isempty(outputFile))
     error('Empty output File.');
 else
@@ -40,20 +54,6 @@ else
 end
 %----------------------------------------------
 
-%----------------------------------------------
-%These are the settings for the ICIP Results.
-numberOfContextsIndependent = 3;
-numberOfContextsMasked      = 3;
-windowSizeFor3DContexts     = 1;
-numberOf3DContexts          = 9;
-windowSizeFor4DContexts     = 0;
-numberOf4DContexts          = 1;
-numberOfContextsParams      = 4;
-
-
-testMode       = [1 1];
-verbose        = 0;
-%----------------------------------------------
 
 %----------------------------------------------
 %Parses the input
@@ -82,26 +82,17 @@ end
 %----------------------------------------------
 
 %-----------------------------------------------
-params = getEncoderParams();
-params.sequence        = '';
+if (defaultParameters == 1)
+    params = initParams();
+else
+    params = initParams(varargin);
+end
+
 params.workspaceFolder = workspaceFolder;
 params.dataFolder      = dataFolder;
 params.pointCloudFile  = pointCloudFile;
 params.predictionFile  = predictionFile;
 params.bitstreamFile   = bitstreamFile;
-params.outputPlyFile   = '';
-params.matlabFile      = '';
-params.testMode        = testMode;
-params.verbose         = verbose;
-params.JBIGFolder      = '';
-params.BACParams.numberOfContextsIndependent = numberOfContextsIndependent;
-params.BACParams.numberOfContextsMasked      = numberOfContextsMasked;
-params.BACParams.windowSizeFor3DContexts     = windowSizeFor3DContexts;
-params.BACParams.numberOf3DContexts          = numberOf3DContexts;
-params.BACParams.windowSizeFor4DContexts     = windowSizeFor4DContexts;
-params.BACParams.numberOf4DContexts          = numberOf4DContexts;
-params.BACParams.numberOfContextsParams      = numberOfContextsParams;
-
 %-----------------------------------------------
 
 %-----------------------------------------------

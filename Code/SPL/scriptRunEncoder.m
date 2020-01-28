@@ -28,100 +28,100 @@
 
 %Change this to reflect your system
 %The output folders must exist before the script is executed.
-datasetFolder_UpperBodies = 'C:\eduardo\Sequences\PointClouds\UpperBodies\';
-datasetFolder_FullBodies  = 'C:\eduardo\Sequences\PointClouds\FullBodies\';
-outputFolder_UpperBodies  = 'C:\eduardo\workspace\results\UpperBodies\';
-outputFolder_FullBodies   = 'C:\eduardo\workspace\results\FullBodies\';
+%datasetFolder_UpperBodies = 'C:\eduardo\Sequences\PointClouds\UpperBodies\';
+datasetFolder_FullBodies  = 'C:\eduardo\Sequences\PointClouds\';
+%outputFolder_UpperBodies  = 'C:\eduardo\workspace\results\UpperBodies\';
+outputFolder_FullBodies   = 'C:\eduardo\workspace\ICIP_Inter\Test1\';
 
 k = 0;
 
-k = k + 1;
-%Andrew
-sequence{k}        = 'andrew';
-name{k}            = 'frame';
-parentFolder{k}    = outputFolder_UpperBodies;
-newFolder{k}       = 'andrew9';
-dataFolder{k}      = [datasetFolder_UpperBodies 'andrew9\'];
-workspaceFolder{k} = [outputFolder_UpperBodies 'andrew9\'];
-frameStart{k}      = 0;
-frameEnd{k}        = 317;
+% k = k + 1;
+% %Andrew
+% sequence{k}        = 'andrew';
+% name{k}            = 'frame';
+% parentFolder{k}    = outputFolder_UpperBodies;
+% newFolder{k}       = 'andrew9';
+% dataFolder{k}      = [datasetFolder_UpperBodies 'andrew9\'];
+% workspaceFolder{k} = [outputFolder_UpperBodies 'andrew9\'];
+% frameStart{k}      = 0;
+% frameEnd{k}        = 317;
+% 
+% k = k + 1;
+% %David
+% sequence{k}        = 'david';
+% name{k}            = 'frame';
+% parentFolder{k}    = outputFolder_UpperBodies;
+% newFolder{k}       = 'david9';
+% dataFolder{k}      = [datasetFolder_UpperBodies 'david9\'];
+% workspaceFolder{k} = [outputFolder_UpperBodies 'david9\'];
+% frameStart{k}      = 0;
+% frameEnd{k}        = 215;
+% 
+% k = k + 1;
+% %Phil
+% sequence{k}        = 'phil';
+% name{k}            = 'frame';
+% parentFolder{k}    = outputFolder_UpperBodies;
+% newFolder{k}       = 'phil9';
+% dataFolder{k}      = [datasetFolder_UpperBodies 'phil9\'];
+% workspaceFolder{k} = [outputFolder_UpperBodies 'phil9\'];
+% frameStart{k}      = 0;
+% frameEnd{k}        = 244;
+% 
+% k = k + 1;
+% %Ricardo
+% sequence{k}        = 'ricardo';
+% name{k}            = 'frame';
+% parentFolder{k}    = outputFolder_UpperBodies;
+% newFolder{k}       = 'ricardo9';
+% dataFolder{k}      = [datasetFolder_UpperBodies 'ricardo9\'];
+% workspaceFolder{k} = [outputFolder_UpperBodies 'ricardo9\'];
+% frameStart{k}      = 0;
+% frameEnd{k}        = 215;
+% 
+% k = k + 1;
+% %Sarah
+% sequence{k}        = 'sarah';
+% name{k}            = 'frame';
+% parentFolder{k}    = outputFolder_UpperBodies;
+% newFolder{k}       = 'sarah9';
+% dataFolder{k}      = [datasetFolder_UpperBodies 'sarah9\'];
+% workspaceFolder{k} = [outputFolder_UpperBodies 'sarah9\'];
+% frameStart{k}      = 0;
+% frameEnd{k}        = 206;
 
-k = k + 1;
-%David
-sequence{k}        = 'david';
-name{k}            = 'frame';
-parentFolder{k}    = outputFolder_UpperBodies;
-newFolder{k}       = 'david9';
-dataFolder{k}      = [datasetFolder_UpperBodies 'david9\'];
-workspaceFolder{k} = [outputFolder_UpperBodies 'david9\'];
-frameStart{k}      = 0;
-frameEnd{k}        = 215;
-
-k = k + 1;
-%Phil
-sequence{k}        = 'phil';
-name{k}            = 'frame';
-parentFolder{k}    = outputFolder_UpperBodies;
-newFolder{k}       = 'phil9';
-dataFolder{k}      = [datasetFolder_UpperBodies 'phil9\'];
-workspaceFolder{k} = [outputFolder_UpperBodies 'phil9\'];
-frameStart{k}      = 0;
-frameEnd{k}        = 244;
-
-k = k + 1;
-%Ricardo
-sequence{k}        = 'ricardo';
-name{k}            = 'frame';
-parentFolder{k}    = outputFolder_UpperBodies;
-newFolder{k}       = 'ricardo9';
-dataFolder{k}      = [datasetFolder_UpperBodies 'ricardo9\'];
-workspaceFolder{k} = [outputFolder_UpperBodies 'ricardo9\'];
-frameStart{k}      = 0;
-frameEnd{k}        = 215;
-
-k = k + 1;
-%Sarah
-sequence{k}        = 'sarah';
-name{k}            = 'frame';
-parentFolder{k}    = outputFolder_UpperBodies;
-newFolder{k}       = 'sarah9';
-dataFolder{k}      = [datasetFolder_UpperBodies 'sarah9\'];
-workspaceFolder{k} = [outputFolder_UpperBodies 'sarah9\'];
-frameStart{k}      = 0;
-frameEnd{k}        = 206;
-
-k = k + 1;
-%Longdress
-sequence{k}        = 'longdress';
-name{k}            = 'longdress_vox10_';
-parentFolder{k}    = outputFolder_FullBodies;
-newFolder{k}       = 'longdress';
-dataFolder{k}      = [datasetFolder_FullBodies 'longdress\'];
-workspaceFolder{k} = [outputFolder_FullBodies 'longdress\'];
-frameStart{k}      = 1051;
-frameEnd{k}        = 1350;
-
-k = k + 1;
-%Loot
-sequence{k}        = 'loot';
-name{k}            = 'loot_vox10_';
-parentFolder{k}    = outputFolder_FullBodies;
-newFolder{k}       = 'loot';
-dataFolder{k}      = [datasetFolder_FullBodies 'loot\'];
-workspaceFolder{k} = [outputFolder_FullBodies 'loot\'];
-frameStart{k}      = 1000;
-frameEnd{k}        = 1299;
+% k = k + 1;
+% Longdress
+% sequence{k}        = 'longdress';
+% name{k}            = 'longdress_vox10_';
+% parentFolder{k}    = outputFolder_FullBodies;
+% newFolder{k}       = 'longdress';
+% dataFolder{k}      = [datasetFolder_FullBodies 'longdress\'];
+% workspaceFolder{k} = [outputFolder_FullBodies 'longdress\'];
+% frameStart{k}      = 1052;
+% frameEnd{k}        = 1060;
+% 
+% k = k + 1;
+% Loot
+% sequence{k}        = 'loot';
+% name{k}            = 'loot_vox10_';
+% parentFolder{k}    = outputFolder_FullBodies;
+% newFolder{k}       = 'loot';
+% dataFolder{k}      = [datasetFolder_FullBodies 'loot\'];
+% workspaceFolder{k} = [outputFolder_FullBodies 'loot\'];
+% frameStart{k}      = 1001;
+% frameEnd{k}        = 1010;
 
 k = k + 1;
 %RedAndBlack
 sequence{k}        = 'redandblack';
 name{k}            = 'redandblack_vox10_';
 parentFolder{k}    = outputFolder_FullBodies;
-newFolder{k}       = 'redandlack';
-dataFolder{k}      = [datasetFolder_FullBodies 'redandblack\'];
+newFolder{k}       = 'redandblack';
+dataFolder{k}      = [datasetFolder_FullBodies 'redandblack\Ply\'];
 workspaceFolder{k} = [outputFolder_FullBodies 'redandblack\'];
-frameStart{k}      = 1450;
-frameEnd{k}        = 1749;
+frameStart{k}      = 1451;
+frameEnd{k}        = 1460;
 
 k = k + 1;
 %Soldier
@@ -129,10 +129,10 @@ sequence{k}        = 'soldier';
 name{k}            = 'soldier_vox10_';
 parentFolder{k}    = outputFolder_FullBodies;
 newFolder{k}       = 'soldier';
-dataFolder{k}      = [datasetFolder_FullBodies 'soldier\'];
+dataFolder{k}      = [datasetFolder_FullBodies 'soldier\Ply\'];
 workspaceFolder{k} = [outputFolder_FullBodies 'soldier\'];
-frameStart{k}      = 0536;
-frameEnd{k}        = 0835;
+frameStart{k}      = 0537;
+frameEnd{k}        = 0546;
 
 N = k;
 for k = 1:1:N
@@ -141,7 +141,12 @@ for k = 1:1:N
         leadingZeros = char(zeros(1,4 - length(strNum)) + 48);
         filename = [name{k} '' leadingZeros '' strNum ''];
         
+        strNum = num2str(i-1);
+        leadingZeros = char(zeros(1,4 - length(strNum)) + 48);
+        prevfilename = [name{k} '' leadingZeros '' strNum ''];
+        
         inputFile   = [dataFolder{k} filename '.ply'];
+        prevFile    = [dataFolder{k} prevfilename '.ply'];
         binaryFile  = [workspaceFolder{k} filename '.bin'];
         
         %Checks if the output folder exists.
@@ -151,10 +156,11 @@ for k = 1:1:N
         end
         
         %Encodes the file
-        enc = encodePointCloudGeometry(inputFile, binaryFile);      
+        %enc = encodePointCloudGeometry(inputFile, binaryFile);      
+        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile);
         
         %Writes the results
-        filename = [workspaceFolder{k} sequence{k} '_results_dyadicDecomposition.txt'];
+        filename = [workspaceFolder{k} sequence{k} '_results_inter.txt'];
         fid = fopen(filename,'a');
         fprintf(fid,'%2.4f\n',enc.rate_bpov);
         fclose(fid);

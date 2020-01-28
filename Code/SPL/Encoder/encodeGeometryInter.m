@@ -24,7 +24,8 @@ end
 
 %Iterate to find the best axis
 for k = 1:1:3
-%for k = 1:1:1
+%for (k = 1:1:1)
+%    warning('TESTING ONE AXIS ONLY')
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,7 +39,7 @@ for k = 1:1:3
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Initializes the cabac.
     cabac = getCABAC();
-    cabac = initCABAC(cabac, enc.params.BACParams, 1);
+    cabac = initCABAC(cabac, enc.params.BACParams, 1, enc.params.test3DOnlyContextsForInter, enc.params.use4DContextsOnSingle);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
@@ -76,6 +77,7 @@ for k = 1:1:3
         bestAxis      = currAxis;
         bestRate      = totalRate;
         bestGeoCube   = [];
+        bestStat      = cabac.StatInter;
         bestBitstream = bitstream;
     end
     
@@ -90,11 +92,13 @@ for k = 1:1:3
 end
 
 %Writes the encoder out.
-enc.rate            = bestRate;
-enc.rate_bpov       = bestRate / enc.numberOfOccupiedVoxels;
-enc.bitstream       = bestBitstream;
-enc.dimensionSliced = bestAxis;
-enc.geometryCube    = bestGeoCube;
+enc.rate               = bestRate;
+enc.rate_bpov          = bestRate / enc.numberOfOccupiedVoxels;
+enc.bitstream          = bestBitstream;
+enc.dimensionSliced    = bestAxis;
+enc.geometryCube       = bestGeoCube;
+enc.rate_bpov_per_axis = rateBPOVPerAxis;
+enc.stat               = bestStat;
 
 %Writes the bitstream.
 bitstreamFile     = [enc.params.workspaceFolder enc.params.bitstreamFile];
