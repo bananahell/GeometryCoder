@@ -19,7 +19,6 @@ maskLast = zeros(sy,sx,'logical');
 %Iterates through all the slices
 for i = iStart:1:(iEnd-1)
     %Gets the current slice to be encoded.
-    %A = geoCube(:,:,i);
     A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     
     %Testing the motion estimation.
@@ -28,12 +27,6 @@ for i = iStart:1:(iEnd-1)
     else
         pA = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, i, i, sparseM);
     end
-    
-    %if(not(isequal(A,AA)))
-    %    display('Slices are not equal...')
-    %    display(['Axis: ' currAxis]);
-    %    display(['Slice index: ' i]);
-    %end
     
     nSymbolsA = sum(A(:));
     
@@ -56,34 +49,22 @@ for i = iStart:1:(iEnd-1)
         if (i == 1)
             Yleft = zeros(sy,sx,'logical');
         else
-            %Yleft = geoCube(:,:,i-1);
             Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i-1, i-1, sparseM);
         end
         
         if (enc.params.test3DOnlyContextsForInter == 1)
-            testMode4D_3D = [1 1];
-            
-            %Check if the fast choice will be applied.
             if ( enc.params.fastChoice3Dvs4D == 1)
-                bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
-                testMode4D_3D(bestChoice + 1) = 0;
+                cabac = encodeImageBAC_withMask_3DContexts_Inter_Fast(A,idx_i, idx_j,Yleft,pA,cabac);
+            else
+                cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, 1);
             end
-            
-            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D, 1);
         else
-            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, [1 0], 0);
+            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, 0);
         end
         
     end
     
-%     nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
-%     
-%     fid = fopen('inter_single.txt','a');
-%     diff = xor(and(Y,pA),and(Y,A));           
-%     nDiff = sum(diff(:));
-%     fprintf(fid,'%d \t %d \t %d \t %d \n',i,nSymbolsA, nDiff, nBitsImage);
-%     fclose(fid);
-    
+    %nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;    
     %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,7 +73,6 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Encodes the last image.
-%A = geoCube(:,:,iEnd);
 A  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd, iEnd, sparseM);
 
 %Testing the motion estimation.
@@ -124,32 +104,21 @@ if (nSymbolsA ~= 0)
     if (iEnd == 1)
         Yleft = zeros(sy,sx,'logical');
     else
-        %Yleft = geoCube(:,:,iEnd-1);
         Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, iEnd-1, iEnd-1, sparseM);
     end
     
     if (enc.params.test3DOnlyContextsForInter == 1)
-        testMode4D_3D = [1 1];
-        
-        %Check if the fast choice will be applied.        
         if ( enc.params.fastChoice3Dvs4D == 1)
-            bestChoice = estimateBestContext_ImageWithMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac);
-            testMode4D_3D(bestChoice + 1) = 0;
-        end
-        
-        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, testMode4D_3D, 1);
+            cabac = encodeImageBAC_withMask_3DContexts_Inter_Fast(A,idx_i, idx_j,Yleft,pA,cabac);
+        else
+            cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, 1);
+        end        
     else
-        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, [1 0], 0);
+        cabac = encodeImageBAC_withMask_3DContexts_Inter(A,idx_i, idx_j,Yleft,pA,cabac, 0);
     end
     
 end
 % nBitsImage = cabac.BACEngine.bitstream.size() - nBits + 1;
-% 
-% fid = fopen('inter_single.txt','a');
-% diff = xor(and(Y,pA),and(Y,A));           
-% nDiff = sum(diff(:));
-% fprintf(fid,'%d \t %d \t %d \t %d \n',iEnd,nSymbolsA, nDiff, nBitsImage);
-% fclose(fid);
 
 %disp(['  Single (' num2str(i) ') - Rate = ' num2str(nBitsImage) ''])    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

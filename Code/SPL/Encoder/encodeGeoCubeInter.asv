@@ -60,6 +60,19 @@ if (testDyadicDecomposition)
     
     pYleft  = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, lStart, lEnd, sparseM);
     pYright = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, rStart, rEnd, sparseM);
+    %[pYleft, d1, d2, d3]  = findBestPredictionMatch(Yleft , enc, currAxis, lStart, lEnd);
+    %[pYright, d1, d2, d3] = findBestPredictionMatch(Yright, enc, currAxis, rStart, rEnd);
+    
+    
+    %if(not(isequal(Yleft, YYleft)))
+    %    display('Yleft silhouttes not equal...');
+    %    display([lStart lEnd]);
+    %end
+    %if(not(isequal(Yright, YYright)))
+    %    display('Yright silhouttes not equal...');
+    %    display([rStart rEnd]);
+    %end
+    
     
     %Encode the left using Y as mask.
     %left image represents the interval [lStart,lEnd]
@@ -110,6 +123,7 @@ if (testDyadicDecomposition)
                     cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, 0);                    
                 end                
             else
+                %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
                 
                 if (enc.params.test3DOnlyContextsForInter == 1)
@@ -124,9 +138,18 @@ if (testDyadicDecomposition)
             end
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
+            
+%             fid = fopen('inter.txt','a');
+%             diff = xor(and(mask_Yleft,pYleft),and(mask_Yleft,Yleft));           
+%             nDiff = sum(diff(:));
+%             fprintf(fid,'%d \t %d \t %d \t %d \n',lEnd - lStart + 1,nSymbolsLeft, nDiff, nBitsLeft);
+%             fclose(fid);
         end
         %disp(['Rate Yleft(' num2str(lStart) ',' num2str(lEnd) ') = ' num2str(nBitsLeft) '.'])        
         nBitsDyadic = nBitsDyadic + nBitsLeft;
+        
+        
+        
         
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
@@ -147,6 +170,12 @@ if (testDyadicDecomposition)
             end
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
+            
+%             fid = fopen('inter.txt','a');
+%             diff = xor(and(mask_Yright,pYright),and(mask_Yright,Yright));           
+%             nDiff = sum(diff(:));
+%             fprintf(fid,'%d \t %d \t %d \t %d \n',rEnd - rStart + 1,nSymbolsRight, nDiff, nBitsRight);
+%             fclose(fid);
         end
         %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
         %keyboard;
@@ -204,7 +233,10 @@ if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= 16))
     %used.
     cabacSingle = encodeParam(true,cabacSingle);
     
+    % TODO!
+    % Remove geoCube from the next line!
     cabacSingle = encodeSliceAsSingles_Inter(geoCube, enc, currAxis, cabacSingle,iStart,iEnd,Y, sparseM);
+    
     
     nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size() - nBitsSingleAC;
     nBitsSingleParam = cabacSingle.ParamBitstream.size() - nBitsSingleParam;

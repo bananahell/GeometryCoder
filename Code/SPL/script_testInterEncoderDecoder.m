@@ -27,10 +27,15 @@
 % outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_longdress_vox10_1052.ply';
 
 
-prevPly    = 'C:\eduardo\Sequences\PointClouds\phil9\ply\frame0000.ply';
-inputPly   = 'C:\eduardo\Sequences\PointClouds\phil9\ply\frame0001.ply';
-binaryFile = 'C:\eduardo\workspace\ICIP_Inter\phil_frame0001.bin';
-outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_phil_frame0001.ply';
+prevPly    = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply';
+inputPly   = 'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0001.ply';
+binaryFile = 'C:\eduardo\workspace\ICIP_Inter\ricardo_frame0001.bin';
+outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
+
+% prevPly    = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0000.ply';
+% inputPly   = 'C:\eduardo\Sequences\PointClouds\andrew9\ply\frame0001.ply';
+% binaryFile = 'C:\eduardo\workspace\ICIP_Inter\andrew_frame0001.bin';
+% outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_andrew_frame0001.ply';
 
 % prevPly    = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0536.ply';
 % inputPly   = 'C:\eduardo\Sequences\PointClouds\soldier\Ply\soldier_vox10_0537.ply';
@@ -45,7 +50,7 @@ dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);
 
 %Checks the two Ply
 tCheck = tic;
-checkPly  = comparePlys(inputPly, outputPly);
+checkPly  = comparePlys2(inputPly, outputPly);
 elapsedTimeCheck = toc(tCheck);
 
 disp(' ')
