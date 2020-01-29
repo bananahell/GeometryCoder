@@ -43,7 +43,7 @@ outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_ricardo_frame0001.ply';
 % outputPly  = 'C:\eduardo\workspace\ICIP_Inter\dec_soldier_0537.ply';
 
 %Runs the Encoder
-enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',1);
+enc = encodePointCloudGeometry_Inter(inputPly, prevPly, binaryFile,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',0,'numberOf4DContexts',9,'numberOf3DContexts',1,'numberOfContextsMasked',5,'numberOfContexts3DOnly',5);
 
 %Runs the Decoder
 dec = decodePointCloudGeometry_Inter(binaryFile, prevPly, outputPly);

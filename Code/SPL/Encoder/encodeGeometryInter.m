@@ -23,9 +23,9 @@ if (sum(enc.params.testMode) == 0)
 end
 
 %Iterate to find the best axis
-%for k = 1:1:3
- for (k = 1:1:1)
-     warning('TESTING ONE AXIS ONLY')
+for k = 1:1:3
+% for (k = 1:1:1)
+%     warning('TESTING ONE AXIS ONLY')
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

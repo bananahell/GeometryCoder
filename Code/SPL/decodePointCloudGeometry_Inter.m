@@ -14,7 +14,7 @@
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 % 29/10/2019
-function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
+function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile, varargin)
 
 if (nargin == 3)
     defaultParameters = 1;
