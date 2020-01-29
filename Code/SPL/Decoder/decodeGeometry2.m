@@ -36,7 +36,7 @@ dec.dimensionSliced = axis;
 dec.params.nBits    = log2(limit + 1);
 
 %Initializes the decoded cube
-dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
+% dec.geometryCube = zeros(limit+1,limit+1,limit+1,'logical');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Initializes decoder structure to store received Y's from the encoder
 %Necessary for lossy compression
@@ -45,12 +45,12 @@ depth = dec.params.nBits - log2(nSlices);
 % disp(['nbits = ' num2str(dec.params.nBits) ', ' num2str(depth+1)]);
 dec_Y = cell(depth+1,2^depth);
 
-lossy_params = dec.params.lossyParams;
-lossy_params.dec_Y = dec_Y;
+dec.params.lossyParams.dec_Y = dec_Y;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[dec.geometryCube , cabac, ~] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1, lossy_params);
+% [dec.geometryCube , cabac, ~] = decodeGeoCube(dec.geometryCube , cabac, 1,limit + 1, lossy_params);
+[dec.pointCloud, dec.geometryCube, cabac, ~] = decodeGeoCube(dec.geometryCube, dec, [], cabac, 1, limit + 1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Decodes the location.
@@ -64,7 +64,8 @@ if (isempty(dec.params.outputPlyFile) == 0)
     disp(['Writing output Ply to ' file ' .'])
     %pcwrite(pc,file);
     %pc.export(file, 'PrecCoord', 0);
-    plyWrite(locPoints, file);
+%     plyWrite(locPoints, file);
+    plyWrite(dec.pointCloud, file);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

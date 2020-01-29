@@ -4,11 +4,14 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y, lossy_params)
+function [locations,geoCube,cabac] = decodeSliceAsSingles(geoCube, dec, locations, cabac, iStart,iEnd, Y)
 
 %Parameters for lossy compression
-nUpsample = lossy_params.nDownsample;
-step = lossy_params.step;
+nUpsample = dec.params.lossyParams.nDownsample;
+step = dec.params.lossyParams.step;
+N = iEnd - iStart + 1;
+row = log2(dec.pcLimit + 1) - log2(N) + 1;
+column = ((iStart-N-1)/N)+1;
 %Structure to improve morphologically the upsampled image 
 if(nUpsample < 2)
     se = strel('disk',3);
@@ -44,13 +47,28 @@ for i = iStart:step:(iEnd)
             Yleft_downsampled = zeros(sy,sx,'logical');
 %             Yleft = imresize(Yleft_downsampled, nUpsample);
         else
-            Yleft = geoCube(:,:,i-step);
+%             Yleft = geoCube(:,:,i-step);
+            Yleft = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i-step, i-step, false);
             %Downsample from lossy compression
             Yleft_downsampled = imresize(logical(Yleft), 1/nUpsample, 'Method', 'nearest', ...
     'Antialiasing', false);
             if (((i ~= iStart) && nUpsample ~= 1))
-                geoCube(:,:,i-step) = imclose(geoCube(:,:,i-step), se);
-                geoCube(:,:,i-step) = and(geoCube(:,:,i-step), logical(Y));
+                lastSlice = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i-step, i-step, false);
+                lastSlice = imclose(lastSlice, se);
+                lastSlice = and(lastSlice, logical(Y));
+                locations = expandPointCloud(lastSlice, locations, dec.dimensionSliced, i-step);
+%                 geoCube(:,:,i-step) = imclose(geoCube(:,:,i-step), se);
+%                 geoCube(:,:,i-step) = and(geoCube(:,:,i-step), logical(Y));
+            else
+                if (((i == iStart) && nUpsample ~= 1) && (iStart ~= 1))
+                    lastSlice = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i-step, i-step, false);
+                    lastSlice = imclose(lastSlice, se);
+                    lastSlice = and(lastSlice, logical(dec.params.lossyParams.dec_Y{row, column}));
+                    locations = expandPointCloud(lastSlice, locations, dec.dimensionSliced, i-step);
+%                     geoCube(:,:,i-step) = imclose(geoCube(:,:,i-step), se);
+%                     geoCube(:,:,i-step) = and(geoCube(:,:,i-step), ...
+%                         logical(dec.params.lossyParams.dec_Y{row, column}));
+                end
             end
 %             Yleft_downsampled = downsample(logical(Yleft), nUpsample);
         end   
@@ -68,16 +86,24 @@ for i = iStart:step:(iEnd)
 %         A_upsampled = upsample(logical(A), nUpsample);
         %Puts it in the geoCube.
 %         geoCube(:,:,i) = (A_upsampled & Y);
-        geoCube(:,:,i) = (A_upsampled);
+%         geoCube(:,:,i) = (A_upsampled);
+        locations = expandPointCloud(A_upsampled, locations, dec.dimensionSliced, i);
         
         if((i ~= 1) && (step > 1))
 %             inter_slices = morph_binary(geoCube(:,:,i), ...
 %                 geoCube(:,:,i-step),step-1);
 %             geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
-            
-            inter_slices = improved_morph_binary(geoCube(:,:,i), ...
-                geoCube(:,:,i-step),step-1,logical(Y));
-            geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
+            lastSlice = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i-step, i-step, false);
+            currSlice = silhouetteFromCloud(locations, dec.pcLimit+1, dec.dimensionSliced, i, i, false);
+            inter_slices = improved_morph_binary(currSlice, ...
+                lastSlice,step-1,logical(Y));
+            for j = 2:step
+                locations = expandPointCloud(inter_slices(:,:,j), locations, dec.dimensionSliced, (i-(step - j)-1));
+            end
+%             geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
+%             inter_slices = improved_morph_binary(geoCube(:,:,i), ...
+%                 geoCube(:,:,i-step),step-1,logical(Y));
+%             geoCube(:,:,(i-step+1):i-1) = inter_slices(:,:,2:step);
         end
         %Prepares for the last mask!        
         maskLast = or(A,maskLast);    

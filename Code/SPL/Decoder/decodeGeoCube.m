@@ -5,11 +5,16 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube,cabac, iStart,iEnd, lossy_params,Y)
+function [locations, geoCube, cabac, dec_Y] = decodeGeoCube(geoCube, dec, locations, cabac, iStart,iEnd, Y)
+% function [geoCube,cabac,dec_Y] = decodeGeoCube(geoCube, dec, locations,, iStart,iEnd,Y)
+% lossy_params = dec.params.lossyParams.dec_Y;
 
-[sy,sx,sz] = size(geoCube);
+% [sy,sx,sz] = size(geoCube);
+sx = dec.pcLimit+1;
+sy = dec.pcLimit+1;
+sz = dec.pcLimit+1;
 
-if (nargin == 5)
+if (nargin == 6)
     %Initializes the tag.
     cabac.BACEngineDecoder = initBACDecoder(cabac.BACEngineDecoder);
     
@@ -24,7 +29,7 @@ end
 %lossy compression
 nBits = log2(sz);
 % disp(['values= ' num2str(size(dec_Y))]);
-lossy_params.dec_Y{(nBits-log2(iEnd - iStart + 1)+1), ((iStart-1)/(iEnd-iStart+1))+1} = Y;
+dec.params.lossyParams.dec_Y{(nBits-log2(iEnd - iStart + 1)+1), ((iStart-1)/(iEnd-iStart+1))+1} = Y;
 % lossy_params.dec_Y = dec_Y;
 
 %Decodes the correct image.
@@ -67,7 +72,7 @@ if (bit == 0)
                 %Getting Yleft_left from the structure of storage of Y's
                 %(for lossy compression)                
 %                 disp(['i = (' num2str(iStart) ',' num2str(iEnd) '): ' num2str(sum(Y(:)))]);
-                Yleft_left = lossy_params.dec_Y{(nBits-log2(N)+1), ((lStart-N-1)/N)+1};
+                Yleft_left = dec.params.lossyParams.dec_Y{(nBits-log2(N)+1), ((lStart-N-1)/N)+1};
 %                 disp(['Y left left ' num2str(sum(Yleft_left(:)))]);
 %                 disp(['values= ' num2str((nBits-log2(N)+1)) ' and ' ...
 %                      num2str(((lStart-N-1)/N)+1)]);
@@ -117,21 +122,23 @@ if (bit == 0)
     if (N == 1)
         %This means I have reached a leaf.
         %Write the decoded images in the geoCube.
-        geoCube(:,:,lStart) = Yleft;
-        geoCube(:,:,rStart) = Yright;
+%         geoCube(:,:,lStart) = Yleft;
+%         geoCube(:,:,rStart) = Yright;
+        locations = expandPointCloud(Yleft, locations, dec.dimensionSliced, lStart);
+        locations = expandPointCloud(Yright, locations, dec.dimensionSliced, rStart);
     else
         %Then I have to call this function recursively
         if (encodeYleft && (lEnd > lStart))            
-            [geoCube,cabac,lossy_params.dec_Y] = decodeGeoCube(geoCube,cabac, lStart,lEnd, lossy_params, Yleft);
+            [locations,geoCube,cabac,dec.params.lossyParams.dec_Y] = decodeGeoCube(geoCube,dec, locations, cabac, lStart,lEnd, Yleft);
         end
         
         if (encodeYright && (rEnd > rStart))
-            [geoCube,cabac,lossy_params.dec_Y] = decodeGeoCube(geoCube,cabac, rStart,rEnd, lossy_params, Yright);
+            [locations,geoCube,cabac,dec.params.lossyParams.dec_Y] = decodeGeoCube(geoCube,dec, locations, cabac, rStart,rEnd, Yright);
         end
     end
         
 else
     %Decode this range using the single mode encoding.
-    [geoCube,cabac] = decodeSliceAsSingles(geoCube,cabac, iStart,iEnd, Y, lossy_params);
+    [locations,geoCube,cabac] = decodeSliceAsSingles(geoCube,dec, locations, cabac, iStart,iEnd, Y);
 end
-dec_Y = lossy_params.dec_Y;
+dec_Y = dec.params.lossyParams.dec_Y;

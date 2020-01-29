@@ -32,7 +32,7 @@ maskLast = zeros(sy,sx,'logical');
 
 % nones = sum(Y_downsampled(:));
 % disp(['Single encoding: (' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nones) ' .'])
-
+% kernel = ones(3);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Iterates through all the slices
 for i = iStart:step:(iEnd)
@@ -45,6 +45,18 @@ for i = iStart:step:(iEnd)
     'Antialiasing', false);
 %     A_downsampled = downsample(logical(A), nDownsample);
     
+%     countImage = conv2(A, kernel, 'full');
+%     countImage = countImage(2:(end-1), 2:(end-1)); 
+%     
+%     for conv_idx = 1:size(A_downsampled,1)
+%         for j = 1:size(A_downsampled,2)
+%             if(A_downsampled(conv_idx,j) == 0)
+%                 if(countImage(floor(conv_idx*nDownsample), floor(j*nDownsample)) >= 5)
+%                     A_downsampled(conv_idx,j) = 1;
+%                 end
+%             end
+%         end
+%     end
     %if(not(isequal(A,AA)))
     %    display('Slices are not equal...')
     %    display(['Axis: ' currAxis]);
@@ -77,6 +89,18 @@ for i = iStart:step:(iEnd)
             Yleft = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, i-step, i-step, sparseM);
             Yleft_downsampled = imresize(logical(Yleft), 1/nDownsample, 'Method', 'nearest', ...
     'Antialiasing', false);
+%             countImage = conv2(Yleft, kernel, 'full');
+%             countImage = countImage(2:(end-1), 2:(end-1)); 
+% 
+%             for conv_idx = 1:size(Yleft_downsampled,1)
+%                 for j = 1:size(Yleft_downsampled,2)
+%                     if(Yleft_downsampled(conv_idx,j) == 0)
+%                         if(countImage(floor(conv_idx*nDownsample), floor(j*nDownsample)) >= 5)
+%                             Yleft_downsampled(conv_idx,j) = 1;
+%                         end
+%                     end
+%                 end
+%             end
 %             if (i ~= iStart && nDownsample ~= 1)
 %                 Yleft_downsampled = imresize(Yleft_downsampled, nDownsample, 'Method', 'nearest', ...
 %         'Antialiasing', false);
