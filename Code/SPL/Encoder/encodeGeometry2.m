@@ -63,7 +63,7 @@ for k = 1:1:3
     bitstreamParam = encodeBitstreamParam(cabac.ParamBitstream.data(1:cabac.ParamBitstream.p),enc.params);
     
     %Gets the bitstream header.
-    bitstream = createBitstreamHeader(enc.pcLimit, currAxis, length_bitstreamParam);
+    bitstream = createBitstreamHeader(enc.pcLimit, currAxis, length_bitstreamParam, enc.params.lossyParams);
     
     %Merges all bitstreams.
     bitstream = bitstream.merge(bitstreamParam);

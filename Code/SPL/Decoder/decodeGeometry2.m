@@ -14,7 +14,7 @@ bitstream = Bitstream(0);
 bitstream = bitstream.loadBitstream(bitstreamFile);
 
 %Parse the bitstream header
-[limit, axis, length_header, length_BitstreamParam, bitstream] = parseBitstreamHeader(bitstream);
+[limit, axis, length_header, length_BitstreamParam, lossyParams, bitstream] = parseBitstreamHeader(bitstream);
 
 %Reads the bitstream parameters.
 [bitstreamParam, bitstream] = decodeBitstreamParam(bitstream, length_BitstreamParam, dec.params);
@@ -46,6 +46,8 @@ depth = dec.params.nBits - log2(nSlices);
 dec_Y = cell(depth+1,2^depth);
 
 dec.params.lossyParams.dec_Y = dec_Y;
+dec.params.lossyParams.step = lossyParams.step;
+dec.params.lossyParams.nDownsample = lossyParams.nDownsample;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

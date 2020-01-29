@@ -7,7 +7,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function bitstream_header = createBitstreamHeader(limit, axis, length_BitstreamParam)
+function bitstream_header = createBitstreamHeader(limit, axis, length_BitstreamParam, lossyParams)
 
 nBits = uint8(log2(limit+1));
 
@@ -25,6 +25,14 @@ end
 
 %Gets the param length (using 16 bits)
 vBitstreamParam = (bitand(uint16(length_BitstreamParam),uint16([32768 16384 8192 4096 2048 1024 512 256 128 64 32 16 8 4 2 1])) ~= 0);
+
+% Gets idx for downsample and step value
+step_idx = find([1 2 4] == lossyParams.step) - 1;
+downsample_idx = find([1 (1/0.75) 1.6 2 3.2 4] == lossyParams.nDownsample) - 1;
+% Decimal to binary conversion (using 3 bits for downsample and  2 for
+% step)
+vStep = (bitand(step_idx,uint8([2 1])) ~= 0);
+vDownsample = (bitand(downsample_idx,uint8([4 2 1])) ~= 0);
 
 bitstream_header = Bitstream(20 + length_BitstreamParam + 1);
 bitstream_header = bitstream_header.putBit(vSize(1));
@@ -53,3 +61,10 @@ bitstream_header = bitstream_header.putBit(vBitstreamParam(13));
 bitstream_header = bitstream_header.putBit(vBitstreamParam(14));
 bitstream_header = bitstream_header.putBit(vBitstreamParam(15));
 bitstream_header = bitstream_header.putBit(vBitstreamParam(16));
+
+bitstream_header = bitstream_header.putBit(vStep(1));
+bitstream_header = bitstream_header.putBit(vStep(2));
+
+bitstream_header = bitstream_header.putBit(vDownsample(1));
+bitstream_header = bitstream_header.putBit(vDownsample(2));
+bitstream_header = bitstream_header.putBit(vDownsample(3));
