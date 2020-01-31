@@ -62,85 +62,110 @@ for k = 1:1:N
         inputFile   = [dataFolder{k} filename '.ply'];
         prevFile    = [dataFolder{k} prevfilename '.ply'];
         
+        currWorkspaceFolder4D = [workspaceFolder{k} '4D\'];
+        binaryFile4D          = [currWorkspaceFolder4D filename '.bin'];
+        outputFile4D          = [currWorkspaceFolder4D 'dec_' filename '.ply'];
+        filename4D           = [workspaceFolder{k} sequence{k} '_results_inter_4D.txt'];
+        
+        currWorkspaceFolder4D_3D = [workspaceFolder{k} '4D_3D\'];
+        binaryFile4D_3D          = [currWorkspaceFolder4D_3D filename '.bin'];
+        outputFile4D_3D          = [currWorkspaceFolder4D_3D 'dec_' filename '.ply'];
+        filename4D_3D            = [workspaceFolder{k} sequence{k} '_results_inter_4D_3D.txt'];
+        
+        currWorkspaceFolder4D_3D_Fast = [workspaceFolder{k} '4D_3D_Fast\'];
+        binaryFile4D_3D_Fast          = [currWorkspaceFolder4D_3D_Fast filename '.bin'];
+        outputFile4D_3D_Fast          = [currWorkspaceFolder4D_3D_Fast 'dec_' filename '.ply'];
+        filename4D_3D_Fast            = [workspaceFolder{k} sequence{k} '_results_inter_4D_3D_Fast.txt'];
+        
+        disp('4D Files')
+        disp(['InputFile  = ' inputFile ''])
+        disp(['prevFile   = ' prevFile ''])
+        disp(['binaryFile = ' binaryFile4D ''])
+        disp(['outputFile = ' outputFile4D ''])
+        disp(['filename   = ' filename4D ''])
+        disp('')
+        
+        disp('4D_3D Files')
+        disp(['InputFile  = ' inputFile ''])
+        disp(['prevFile   = ' prevFile ''])
+        disp(['binaryFile = ' binaryFile4D_3D ''])
+        disp(['outputFile = ' outputFile4D_3D ''])
+        disp(['filename   = ' filename4D_3D ''])
+        disp('')
+        
+        disp('4D_3D_Fast Files')
+        disp(['InputFile  = ' inputFile ''])
+        disp(['prevFile   = ' prevFile ''])
+        disp(['binaryFile = ' binaryFile4D_3D_Fast ''])
+        disp(['outputFile = ' outputFile4D_3D_Fast ''])
+        disp(['filename   = ' filename4D_3D_Fast ''])
+        disp('')
+        
         %------------------------------------------------------------------
         %Run 4D.
-        currWorkspaceFolder = [workspaceFolder{k} '4D\'];
-        
-        binaryFile  = [currWorkspaceFolder filename '.bin'];
-        outputFile  = [currWorkspaceFolder 'dec_' filename '.ply'];
-        
         %Encodes the file
         encStartTime = tic;
-        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile,'test3DOnlyContextsForInter',0,'fastChoice3Dvs4D',0);        
+        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile4D,'test3DOnlyContextsForInter',0,'fastChoice3Dvs4D',0);        
         encTime = toc(encStartTime);
         
         decStartTime = tic;
-        dec = decodePointCloudGeometry_Inter(binaryFile, prevFile, outputFile);
+        dec = decodePointCloudGeometry_Inter(binaryFile4D, prevFile, outputFile4D);
         decTime = toc(decStartTime);
 
         %Checks the two Ply
-        checkPly  = comparePlys2(inputFile, outputFile);
+        checkPly  = comparePlys2(inputFile, outputFile4D);
         
         bestAxis = find('xyz' == enc.dimensionSliced);
         
         %Writes the results
-        filename = [workspaceFolder{k} sequence{k} '_results_inter_4D.txt'];
-        fid = fopen(filename,'a');
+        fid = fopen(filename4D,'a');
         fprintf(fid,'%s\t%s\t%d\t%d\t%2.2f\t%2.2f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\n',strNumFile, strNumPrev, bestAxis, checkPly,encTime, decTime, enc.rate_bpov_per_axis(1), enc.rate_bpov_per_axis(2), enc.rate_bpov_per_axis(3), enc.rate_bpov);
         fclose(fid);
+        clear enc dec
         
         %------------------------------------------------------------------
-        %Run 4D_3D.
-        currWorkspaceFolder = [workspaceFolder{k} '4D_3D\'];
-        
-        binaryFile  = [currWorkspaceFolder filename '.bin'];
-        outputFile  = [currWorkspaceFolder 'dec_' filename '.ply'];
-        
+        %Run 4D_3D.        
         %Encodes the file
-        encStartTime = tic;
-        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',0);        
+        encStartTime = tic;        
+        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile4D_3D,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',0);        
         encTime = toc(encStartTime);
         
         decStartTime = tic;
-        dec = decodePointCloudGeometry_Inter(binaryFile, prevFile, outputFile);
+        dec = decodePointCloudGeometry_Inter(binaryFile4D_3D, prevFile, outputFile4D_3D);
         decTime = toc(decStartTime);
 
         %Checks the two Ply
-        checkPly  = comparePlys2(inputFile, outputFile);
+        checkPly  = comparePlys2(inputFile, outputFile4D_3D);
         
         bestAxis = find('xyz' == enc.dimensionSliced);
         
         %Writes the results
-        filename = [workspaceFolder{k} sequence{k} '_results_inter_4D_3D.txt'];
-        fid = fopen(filename,'a');
+        
+        fid = fopen(filename4D_3D,'a');
         fprintf(fid,'%s\t%s\t%d\t%d\t%2.2f\t%2.2f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\n',strNumFile, strNumPrev, bestAxis, checkPly,encTime, decTime, enc.rate_bpov_per_axis(1), enc.rate_bpov_per_axis(2), enc.rate_bpov_per_axis(3), enc.rate_bpov);
         fclose(fid);
+        clear enc dec
         
         %------------------------------------------------------------------
         %Run 4D_3D_Fast.
-        currWorkspaceFolder = [workspaceFolder{k} '4D_3D_Fast\'];
-        
-        binaryFile  = [currWorkspaceFolder filename '.bin'];
-        outputFile  = [currWorkspaceFolder 'dec_' filename '.ply'];
-        
         %Encodes the file
         encStartTime = tic;
-        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',1);        
+        enc = encodePointCloudGeometry_Inter(inputFile, prevFile, binaryFile4D_3D_Fast,'test3DOnlyContextsForInter',1,'fastChoice3Dvs4D',1);        
         encTime = toc(encStartTime);
         
         decStartTime = tic;
-        dec = decodePointCloudGeometry_Inter(binaryFile, prevFile, outputFile);
+        dec = decodePointCloudGeometry_Inter(binaryFile4D_3D_Fast, prevFile, outputFile4D_3D_Fast);
         decTime = toc(decStartTime);
 
         %Checks the two Ply
-        checkPly  = comparePlys2(inputFile, outputFile);
+        checkPly  = comparePlys2(inputFile, outputFile4D_3D_Fast);
         
         bestAxis = find('xyz' == enc.dimensionSliced);
         
-        %Writes the results
-        filename = [workspaceFolder{k} sequence{k} '_results_inter_4D_3D_Fast.txt'];
-        fid = fopen(filename,'a');
+        %Writes the results       
+        fid = fopen(filename4D_3D_Fast,'a');
         fprintf(fid,'%s\t%s\t%d\t%d\t%2.2f\t%2.2f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\n',strNumFile, strNumPrev, bestAxis, checkPly,encTime, decTime, enc.rate_bpov_per_axis(1), enc.rate_bpov_per_axis(2), enc.rate_bpov_per_axis(3), enc.rate_bpov);
         fclose(fid);
+        clear enc dec
     end
 end
