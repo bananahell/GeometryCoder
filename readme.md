@@ -1,6 +1,6 @@
 # Point Cloud Geometry Coder
 
-The following Matlab code implements an lossless inter frame encoder for Point Cloud Geometry based on Dyadic Decomposition. 
+The following Matlab code implements a lossless inter frame encoder for Point Cloud Geometry based on Dyadic Decomposition. 
 
 Detailed discussion and performance results are presented on the paper. 
 If you find this code useful in your own research, please consider citing:
@@ -22,33 +22,39 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Usage
-
 To execute the code, you need first to run the script `startup`, which adds the project to your Matlab Path.
 
 Afterwards, there are 2 functions and 3 scripts that can be used:
  - The function
-    `enc = encodePointCloudGeometry(inputFile, outputFile)`
-	takes two inputs, the input Ply file with the Point Cloud data to be encoded, and the output Binary file.
+    `enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)`
+	takes two inputs:
+
+    1. `inputFile` = PLY file for the current frame;
+    2. `predictionFile` = PLY file for the previous frame;
+    3. `outputFile` = path to the binary encoded file;
+
 	It compress the input data to the output file, and returns an encoder object.
 
- - The function
-    `dec = decodePointCloudGeometry(inputFile, outputFile)`
+   - The function
+    `dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)`
 	takes two inputs, the binary input file and the output Ply file.
 	It decodes the data, writing the ply file to the outputFile, and returns a decoder object.
 
- - The script `script_testEncoderDecoder` runs both the encoder and the decoder, and then it checks if the decoder
-   was able to succesffuly decode the data (the compression is lossless). Note that the input of the script should be changed to reflect your system (i.e., the location of the files in your system).
+   - Optional parameters can be set to control the codec algorithm:
 
- - The script `scriptRunDecoder` decodes all files in the dataset provided (i.e., all sequences in the Microsoft
-   Upper Bodies Dataset and the 8i Full Bodies Dataset). Note that the input of the script should be changed to reflect your system (i.e., the location of the files in your system).
+  `testMode`
+  `verbose`
+  `numberOfSlicesToTestSingleMode`
+  `test3DOnlyContextsForInter`
+  `fastChoice3Dvs4D`
+  `useMEforPrevImageSingle`
+  `numberOfContextsIndependent`
+  `numberOfContextsMasked`
+  `numberOf3DContexts`
+  `numberOf4DContexts`
+  `numberOfContexts3DOnly`
+  `numberOfContextsParams`
 
- - The script `scriptRunEncoder` encodes all files in the dataset. The JPEG Pleno dataset can be downloaded at:
-     https://jpeg.org/plenodb/ . Note that the input of the script should be changed to reflect your system (i.e., the location of the files in your system).
 
 # Contact Person
-
 [Eduardo Peixoto](mailto:eduardopeixoto@ieee.org)
-
-# Credits
-
-[Philipp Gira](https://scholar.google.at/citations?user=ANBHN2AAAAAJ): [Point cloud tools for Matlab](https://www.geo.tuwien.ac.at/downloads/pg/pctools/pctools.html).
