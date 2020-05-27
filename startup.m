@@ -1,7 +1,7 @@
 %Putting the source folder in the matlab path.
 clc
 
-version = 'SPL';
+version = 'src';
 disp(['Initializing Point Cloud Geometry coder version ' version ''])
 
 % Check if this is a Window$ or a Unix machine because paths
@@ -50,5 +50,3 @@ addpath(src);
 clear home;
 clear src;
 
-% Move workspace to where code is.
-cd(version);
