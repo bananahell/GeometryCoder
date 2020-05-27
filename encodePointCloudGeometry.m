@@ -1,8 +1,8 @@
 % function enc = encodePointCloudGeometry
 %  - Input Parameters: 
-%     - inputFile  - The complete path for the point cloud to be encoded.
-%     - outputFile - The complete path for the output binary file.
-%
+%     - inputFile    - The complete path for the point cloud to be encoded.
+%     - outputFile   - The complete path for the output binary file.
+%     - lossy_params - 
 %  - Output Parameters
 %     - enc        - the Encoder Data structure.
 %
