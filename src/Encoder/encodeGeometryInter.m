@@ -24,15 +24,12 @@ end
 
 %Iterate to find the best axis
 for k = 1:1:3
-% for (k = 1:1:1)
-%     warning('TESTING ONE AXIS ONLY')
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Splices the geoCube
     currAxis = axisArray(k);
     disp(['Encoding ' currAxis ' axis...'])
-    %geoCube = ptcld2Slices(enc.pointCloud.Location,currAxis,enc.pcLimit);
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     

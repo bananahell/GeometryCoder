@@ -15,6 +15,9 @@ end
 
 % Build folder to add to path.
 home = pwd;
+disp(['Adding ' home ' to the Matlab Path'])
+addpath(home);
+
 src = [home bar version];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);

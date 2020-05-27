@@ -5,7 +5,7 @@ if (nargin == 0)
 elseif (nargin == 1)
     defaultParameters = 0;
     if (mod(length(cellargin),2) == 1)
-        error('Wrong foramatting for the input parameters');
+        error('Wrong formatting for the input parameters');
     end
 end
 
@@ -26,8 +26,8 @@ params.verbose         = 0;
 params.JBIGFolder      = '';
 
 params.numberOfSlicesToTestSingleMode = 16;
-params.test3DOnlyContextsForInter     = 0;
-params.fastChoice3Dvs4D               = 0;
+params.test3DOnlyContextsForInter     = 1;
+params.fastChoice3Dvs4D               = 1;
 params.useMEforPrevImageSingle        = 0;
 
 params.BACParams.numberOfContextsIndependent = 3;
@@ -44,71 +44,35 @@ if (defaultParameters == 0)
     for (k = 1:2:length(cellargin))
         value = cellargin{k+1};
         switch(cellargin{k})
-            case 'testMode'
-                checkSizeAndValue('testMode',value,[1 2],[0 1]);
-                params.testMode = value;
-                if (sum(value) < 1)
-                    error('Error parsing parameter testMode. At least one mode should be tested.')
-                end
-                
-            case 'verbose'
-                checkSizeAndValue('verbose',value,[1 1],[0 1]);
-                params.verbose = value;
-                
             case 'numberOfSlicesToTestSingleMode'
                 checkSizeAndValue('numberOfSlicesToTestSingleMode',value,[1 1],[0 1 2 4 8 16 32 64 128 256 512 1024]);
                 params.numberOfSlicesToTestSingleMode = value;
                 
-            case 'test3DOnlyContextsForInter'
-                checkSizeAndValue('test3DOnlyContextsForInter',value,[1 1],[0 1]);
-                params.test3DOnlyContextsForInter = value;
-                
-            case 'fastChoice3Dvs4D'
-                checkSizeAndValue('fastChoice3Dvs4D',value,[1 1],[0 1]);
-                params.fastChoice3Dvs4D = value;
-                
-            case 'useMEforPrevImageSingle'
-                checkSizeAndValue('useMEforPrevImageSingle',value,[1 1],[0 1]);
-                params.useMEforPrevImageSingle = value;
-                
-            case 'numberOfContextsIndependent'
-                checkSizeAndValue('numberOfContextsIndependent',value,[1 1],[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16]);
-                params.BACParams.numberOfContextsIndependent = value;
-                
-            case 'numberOfContextsMasked'
-                checkSizeAndValue('numberOfContextsMasked',value,[1 1],[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16]);
-                params.BACParams.numberOfContextsMasked = value;
-                
-            case 'numberOf3DContexts'
-                checkSizeAndValue('numberOf3DContexts',value,[1 1],[1 9]);
-                params.BACParams.numberOf3DContexts = value;
-                if (value == 1)
-                    params.BACParams.windowSizeFor3DContexts     = 0;
-                else
-                    params.BACParams.windowSizeFor3DContexts     = 1;
+            case 'mode'
+                checkSizeAndValue('mode',value,[1 1],[0 1 2]);
+                switch (value)
+                    case 0
+                        disp('Mode: S4D (default)')
+                        params.test3DOnlyContextsForInter     = 1;
+                        params.fastChoice3Dvs4D               = 1;
+                        
+                    case 1
+                        disp('Mode: S4D Multi-Mode (slow)')
+                        params.test3DOnlyContextsForInter     = 1;
+                        params.fastChoice3Dvs4D               = 0;
+                        
+                    case 2
+                        disp('Mode: S4D Inter-Only')
+                        params.test3DOnlyContextsForInter     = 0;
+                        params.fastChoice3Dvs4D               = 0;
                 end
-                
-            case 'numberOf4DContexts'
-                checkSizeAndValue('numberOf4DContexts',value,[1 1],[1 2 9]);
-                params.BACParams.numberOf4DContexts = value;
-                if (value == 1)
-                    params.BACParams.windowSizeFor4DContexts     = 0;
-                else
-                    params.BACParams.windowSizeFor4DContexts     = 1;
-                end
-                
-            case 'numberOfContexts3DOnly'
-                checkSizeAndValue('numberOfContexts3DOnly',value,[1 1],[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16]);
-                params.BACParams.numberOfContexts3DOnly = value;
-                
-            case 'numberOfContextsParams'
-                checkSizeAndValue('numberOfContextsParams',value,[1 1],[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16]);
-                params.BACParams.numberOfContextsParams = value;
                 
         end
     end
-    
+else
+    disp('Mode: S4D (default)')    
 end
+disp(' ')
 
 end
 

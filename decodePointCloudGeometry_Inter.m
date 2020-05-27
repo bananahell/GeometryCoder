@@ -1,6 +1,7 @@
-% function dec = decodePointCloudGeometry
+% function dec = decodePointCloudGeometry_Inter
 %  - Input Parameters: 
 %     - inputFile  - The complete path for the input binary file.
+%     - predictionFile  - The complete path for the reference point cloud.
 %     - outputFile - The complete path for the output Ply
 %
 %  - Output Parameters
@@ -9,23 +10,21 @@
 % Ex: dec =
 % decodePointCloudGeometry(
 %    'C:\workspace\ricardo_frame0000.bin' ,
+%    'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply' ,
 %    'C:\workspace\dec_ricardo_frame0000.ply' );
 %   
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-% 29/10/2019
-function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile, varargin)
+% 27/05/2020
+function dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)
 
-if (nargin == 3)
-    defaultParameters = 1;
-else
-    defaultParameters = 0;
-end
-
-disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
-disp('Author: Eduardo Peixoto')
-disp('E-mail: eduardopeixoto@ieee.org')
+disp('Running Point Cloud Inter Geometry Coder based on Dyadic Decomposition')
+disp('Author: Eduardo Peixoto  - eduardopeixoto@ieee.org')
+disp('Author: Edil Medeiros    - j.edil@ene.unb.br ')
+disp('Author: Evaristo Ramalho - evaristora28@gmail.com')
 disp('Universidade de Brasilia')
+disp('Electrical Engineering Department')
+disp(' ')
 
 %----------------------------------------------
 %Performs a basic parameter check.
@@ -65,18 +64,28 @@ outputFile(outputFile == '\') = '/';
 %----------------------------------------------
 
 %-----------------------------------------------
-if (defaultParameters == 1)
-    params = initParams();
-else
-    params = initParams(varargin);
-end
-
+%Defines the decoder parameters.
+params = getEncoderParams();
+params.sequence        = '';
 params.workspaceFolder = workspaceFolder;
 params.dataFolder      = '';
 params.pointCloudFile  = '';
-params.outputPlyFile   = outputFile;
 params.predictionFile  = predictionFile;
 params.bitstreamFile   = bitstreamFile;
+params.outputPlyFile   = outputFile;
+params.matlabFile      = '';
+params.testMode        = [1 1];
+params.verbose         = 0;
+params.JBIGFolder      = '';
+
+params.BACParams.numberOfContextsIndependent = 3;
+params.BACParams.numberOfContextsMasked      = 3;
+params.BACParams.windowSizeFor3DContexts     = 1;
+params.BACParams.numberOf3DContexts          = 9;
+params.BACParams.windowSizeFor4DContexts     = 0;
+params.BACParams.numberOf4DContexts          = 1;
+params.BACParams.numberOfContexts3DOnly      = 5;
+params.BACParams.numberOfContextsParams      = 4;
 %-----------------------------------------------
 
 %Decodes the PointCloud
