@@ -21,6 +21,11 @@ Afterwards, there are 2 functions that can be used:
     1. `inputFile` = the input PLY file with the point cloud to be encoded;
     2. `outputFile` = binary file where to save the encoded frame;
     3. `lossy_params` = step and downsampling values for lossy geometry compression.
+        * `lossy_params` can be defined as:
+          + `lossy_params = getLossyParams();`
+          + `lossy_params.nDownsample = downsample_value;`
+          + `lossy_params.step = step_value;`
+        * Where downsample_value can be [1, (1/0.75), 2, 3.2] and step_value can be [1, 2, 4]
   
  - The function 
     `dec = decodePointCloudGeometry(inputFile, outputFile)` 
