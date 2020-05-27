@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 To execute the code, you need first to run the script `startup`, which adds the project to your Matlab Path.
 
 Afterwards, there are 2 functions and 3 scripts that can be used:
- - The function
+- The function
     `enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)`
 	takes two inputs:
 
@@ -35,12 +35,12 @@ Afterwards, there are 2 functions and 3 scripts that can be used:
 
 	It compress the input data to the output file, and returns an encoder object.
 
-   - The function
+- The function
     `dec = decodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile)`
 	takes two inputs, the binary input file and the output Ply file.
 	It decodes the data, writing the ply file to the outputFile, and returns a decoder object.
 
-   - Optional parameters can be set to control the codec algorithm:
+- Optional parameters can be set to control the codec algorithm:
 
   `testMode`
   `verbose`
