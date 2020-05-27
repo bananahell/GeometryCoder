@@ -1,6 +1,14 @@
 # Point Cloud Geometry Coder
 The following Matlab code implements a lossy intra frame encoder for Point Cloud Geometry based on Dyadic Decomposition. 
-It was used to get the results presented on the paper `LOSSY POINT CLOUD GEOMETRY COMPRESSION VIA DYADIC DECOMPOSITION`, whose authors are Davi R. Freitas, Eduardo Peixoto, Ricardo L. de Queiroz and Edil Medeiros, accepted for presentation on the [IEEE ICIP 2020](http://2020.ieeeicip.org) conference.
+
+Detailed discussion and performance results are presented on the paper. If you find this code useful in your own research, please consider citing:
+
+@inproceedings{peixoto2020,
+    Author = {Davi R. Freitas and Eduardo Peixoto and Ricardo L. de Queiroz and Edil Medeiros},
+    Title = {Lossy Point Cloud Geometry Compression Via Dyadic Decomposition (Preprint)},
+    Booktitle  = {IEEE International Conference on Image Processing (ICIP 2020)},
+    Year = {2020}
+}
 
 # Usage
 The script `Code/startup` should configure yout Matlab path to this project.
