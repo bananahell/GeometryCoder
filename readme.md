@@ -1,6 +1,25 @@
 # Point Cloud Geometry Coder
 
-The following Matlab code implements an intra frame encoder for Point Cloud Geometry based on Dyadic Decomposition.
+The following Matlab code implements an lossless inter frame encoder for Point Cloud Geometry based on Dyadic Decomposition. 
+
+Detailed discussion and performance results are presented on the paper. 
+If you find this code useful in your own research, please consider citing:
+
+    @inproceedings{peixoto2020,
+	    Author = {Eduardo Peixoto and Edil Medeiros and Evaristo Ramalho},
+	    Title = {Silhouette 4D: An Inter-Frame Lossless Geometry Coder of Dynamic Voxelized Point Clouds (Preprint)},
+	    Booktitle  = {IEEE International Conference on Image Processing (ICIP 2020)},
+	    Year = {2020}
+    }
+
+# LICENSE
+Copyright 2020 Eduardo Peixoto
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 # Usage
 
