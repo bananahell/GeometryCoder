@@ -43,19 +43,23 @@ Afterwards, there are 2 functions and 3 scripts that can be used:
 - Optional parameters can be set to control the codec algorithm:
    Usage: enc = encodePointCloudGeometry_Inter(inputFile, predictionFile, outputFile,'param_key',param_value, ...)
 
-  `numberOfSlicesToTestSingleMode`
-     Possible Values: [0 1 2 4 8 16 32 64 128 256 512 1024]
-	 Default: 16
-	 This marks the point at which the single-mode encoding starts being considered in addition to the dyadic decomposition. 
+	1. `numberOfSlicesToTestSingleMode`: marks the point at which the single-mode encoding starts being considered in addition to the dyadic decomposition. 
+    	
+		Possible Values: [0 1 2 4 8 16 32 64 128 256 512 1024]
+	
+		Default: 16
 	 
-	 
-  `mode`
-     Possible Values: [0 1 2]
-	 Default: 0
-	 As explained in the paper, the codec has three modes:
-      0 - S4D             - This is the algorithm using the Multi-Mode decision (i.e., it considers both 3D and 4D contexts) and the proposed fast mode decision.
-	  1 - S4D-Multi-Mode  - This is the algorithm using the Multi-Mode decision (i.e., it considers both 3D and 4D contexts) but it tests both contexts and decides for the best. 
-	  2 - S4D-Inter       - This is the algorithm considering only 4D contexts. 
+	2. `mode`: As explained in the paper, the codec has three modes.
+
+		0 = S4D: This is the algorithm using the Multi-Mode decision (i.e., it considers both 3D and 4D contexts) and the proposed fast mode decision.
+		
+		1 = S4D-Multi-Mode: This is the algorithm using the Multi-Mode decision (i.e., it considers both 3D and 4D contexts) but it tests both contexts and decides for the best. 
+		
+		2 = S4D-Inter: This is the algorithm considering only 4D contexts. 
+    
+		Possible Values: [0 1 2]
+	
+		Default: 0
 
 # Contact Person
 [Eduardo Peixoto](mailto:eduardopeixoto@ieee.org)
