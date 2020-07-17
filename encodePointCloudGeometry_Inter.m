@@ -128,6 +128,9 @@ enc = loadPointCloud(enc);
 %Loads the prediction point cloud.
 enc.predictionPointCloud = loadPredictionPointCloud(enc.params.predictionFile);
 
+%Finds the context vector
+%cabac = createContextTableInter(enc, 'x',1,512);
+
 %Encodes the PointCloud
 [enc, ~] = encodeGeometryInter(enc);
 
