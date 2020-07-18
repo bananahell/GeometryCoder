@@ -30,7 +30,9 @@ params.test3DOnlyContextsForInter     = 1;
 params.fastChoice3Dvs4D               = 1;
 params.useMEforPrevImageSingle        = 0;
 
-cV = [1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 1 0 0 0 0];
+cV = ones(1,24);
+%cV = [1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 1 0 0 0 0];
+
 
 contextVector2D = cV(1:6);
 contextVector3D = cV(7:15);
@@ -46,7 +48,7 @@ params.BACParams.windowSizeFor3DContexts     = 1;
 params.BACParams.numberOf3DContexts          = numberOf3DContexts;
 params.BACParams.windowSizeFor4DContexts     = 1;
 params.BACParams.numberOf4DContexts          = numberOf4DContexts;
-params.BACParams.numberOfContexts3DOnly      = 5;
+params.BACParams.numberOfContexts3DOnly      = 6;
 params.BACParams.numberOfContextsParams      = 4;
 params.BACParams.contextVector2D             = contextVector2D; 
 params.BACParams.contextVector3D             = contextVector3D;

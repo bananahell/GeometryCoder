@@ -34,6 +34,10 @@ src = [home bar version bar 'Bitstream'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
+src = [home bar version bar 'ContextSelect'];
+disp(['Adding ' src ' to the Matlab Path'])
+addpath(src);
+
 src = [home bar version bar 'Encoder'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);

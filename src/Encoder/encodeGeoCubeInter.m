@@ -194,33 +194,33 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Testing the second option - encoding as singles.
-if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= 16))
-    cabacSingle = cabac_in;
-    
-    nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size();
-    nBitsSingleParam = cabacSingle.ParamBitstream.size();
-    
-    %Add a flag to the bitstream indicating that the single method will be
-    %used.
-    cabacSingle = encodeParam(true,cabacSingle);
-    
-    cabacSingle = encodeSliceAsSingles_Inter(geoCube, enc, currAxis, cabacSingle,iStart,iEnd,Y, sparseM);
-    
-    nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size() - nBitsSingleAC;
-    nBitsSingleParam = cabacSingle.ParamBitstream.size() - nBitsSingleParam;
-    
-    nBitsSingle = nBitsSingleAC + nBitsSingleParam;
-end
+% if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= 16))
+%     cabacSingle = cabac_in;
+%     
+%     nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size();
+%     nBitsSingleParam = cabacSingle.ParamBitstream.size();
+%     
+%     %Add a flag to the bitstream indicating that the single method will be
+%     %used.
+%     cabacSingle = encodeParam(true,cabacSingle);
+%     
+%     cabacSingle = encodeSliceAsSingles_Inter(geoCube, enc, currAxis, cabacSingle,iStart,iEnd,Y, sparseM);
+%     
+%     nBitsSingleAC    = cabacSingle.BACEngine.bitstream.size() - nBitsSingleAC;
+%     nBitsSingleParam = cabacSingle.ParamBitstream.size() - nBitsSingleParam;
+%     
+%     nBitsSingle = nBitsSingleAC + nBitsSingleParam;
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Deciding the best option.
-if (nBitsDyadic <= nBitsSingle)
+%if (nBitsDyadic <= nBitsSingle)
     cabac_out = cabacDyadic;
     %disp(['  For interval (' num2str(iStart) ',' num2str(iEnd) ') = OPTION 1 - DYADIC DECOMPOSITION ' num2str(nBitsDyadic) '.'])
-else
-    cabac_out = cabacSingle;
+%else
+%    cabac_out = cabacSingle;
     %disp(['  For interval (' num2str(iStart) ',' num2str(iEnd) ') = OPTION 2 - ENCODING AS SINGLE ' num2str(nBitsSingle) '.'])
-end
+%end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
