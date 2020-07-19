@@ -128,20 +128,19 @@ enc = loadPointCloud(enc);
 %Loads the prediction point cloud.
 enc.predictionPointCloud = loadPredictionPointCloud(enc.params.predictionFile);
 
-%Finds the context vector
-cabac = createContextTableInter(enc, 'x',1,512);
-encTime = toc(tStart)
+structTables = createContextTableInter(enc, 'x',1,512);
+contextVector = generateSingleContextVector(structTables.BACContexts_2D_Masked)
 
-%Encodes the PointCloud
-[enc, ~] = encodeGeometryInter(enc);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Writes the output.
-disp(' ')
-disp(' ')
-disp('==============================================')
-disp(['Encoding file ' pointCloudFile ''])
-disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
-disp(['Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.'])
-disp('==============================================')
+% %Encodes the PointCloud
+% [enc, ~] = encodeGeometryInter(enc);
+% encTime = toc(tStart);
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %Writes the output.
+% disp(' ')
+% disp(' ')
+% disp('==============================================')
+% disp(['Encoding file ' pointCloudFile ''])
+% disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
+% disp(['Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.'])
+% disp('==============================================')
