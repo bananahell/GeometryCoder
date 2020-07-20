@@ -8,7 +8,7 @@ for (j = 1:1:length(idx))
     candidate_ContextVector = currContextVector;
     candidate_ContextVector(idx(j)) = 1;
     
-    Curr_HByContext = calcHContextsBits3D(countContexts,candidate_ContextVector,pos_bin_ind);
+    Curr_HByContext = calcHContextsBits4D(countContexts,candidate_ContextVector,pos_bin_ind);
     
     if (Curr_HByContext < best_H)
         best_H = Curr_HByContext;

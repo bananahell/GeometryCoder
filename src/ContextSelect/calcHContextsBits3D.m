@@ -34,12 +34,12 @@ if (numberOfContexts3Dor4D == 0)
 else
     for w = 1:2^numberOfContexts3Dor4D
         parcialIndSel3D = posSel3Dor4D == (w-1);
-        parcial3d = sum(countContexts(parcialIndSel3D,:,:),1);
+        parcial3D = sum(countContexts(parcialIndSel3D,:,:),1);
         
         if(numberOfContexts2D == 0)
-            counts3Dor4D(w,:,:) = sum(parcial3d,2);
+            counts3Dor4D(w,:,:) = sum(parcial3D,2);
         else
-            parcial_count = reshape(parcial3d,[length(posSel2D) 2]);
+            parcial_count = reshape(parcial3D,[length(posSel2D) 2]);
             for k = 1:2^numberOfContexts2D
                 parcial_ind_sel = posSel2D == (k-1);
                 counts2D(k,:) = sum(parcial_count(parcial_ind_sel,:));

@@ -6,7 +6,7 @@ function contextVector = generateSingleContextVector(countContexts)
 %currContextVector = [0 0 0 0 0 0];
 
 pos_bin_ind = dec2bin(0:2^15-1);
-currContextVector = zeros(1,15);
+currContextVector = zeros(1,24);
 
 ok = 1;
 best_H = Inf;
