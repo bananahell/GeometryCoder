@@ -7,30 +7,30 @@ currContextVector = zeros(1,sizeContextVector);
 if(length(size(countContexts)) == 2)
     val = 3;
 elseif(length(size(countContexts)) == 3)
-    val = 10;
+    val = 8;
 else
-    val = 18;
+    val = 12;
 end
 ok = 1;
 best_H = Inf;
 k = 0;
 
-while (ok)
-    %while (k< val)
-    if k ~= 0
-        old_H = best_H;
-    end
+while (k<val)
+    %while (ok)
+%     if k ~= 0
+%         old_H = best_H;
+%     end
     %
     %Makes the loop to select the best context to this iteration
     
     [currContextVector, best_H] = selectOneBitContext(currContextVector,countContexts,posBinInd,best_H);
     
     %Verify the two conditions to stop
-    if k ~= 0
-        [ok, curr_dif] = verifyStopConditions(best_H,old_H,curr_dif);
-    else
-        curr_dif = Inf;
-    end
+%     if k ~= 0
+%         [ok, curr_dif] = verifyStopConditions(best_H,old_H,curr_dif);
+%     else
+%         curr_dif = Inf;
+%     end
     
     k = k + 1;
     

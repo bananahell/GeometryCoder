@@ -19,7 +19,7 @@ idx = find(contextVector == 1);
 
 c2 =c(idx);
 
-p = fliplr([1 2 4 8 16 32 64 128 256]);
+p = [1 2 4 8 16 32 64 128 256];
 
 p2 = p(1:numberOfContexts);
 

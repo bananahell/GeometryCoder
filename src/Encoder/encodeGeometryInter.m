@@ -40,7 +40,7 @@ for k = 1:1:3
     tStart_Vector = tic;
     structVector = generateAllContextVector(structTables);
     tEnd_Vector = toc(tStart_Vector)
-    enc          = addContextVectors(enc,structVector);
+    enc         = addContextVectors(enc,structVector);
     
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
