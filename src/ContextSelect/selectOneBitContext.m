@@ -7,8 +7,15 @@ currBestContext = 0;
 for (j = 1:1:length(idx))
     candidate_ContextVector = currContextVector;
     candidate_ContextVector(idx(j)) = 1;
+    sizeContextVector = length(currContextVector);
     
-    Curr_HByContext = calcHContextsBits4D(countContexts,candidate_ContextVector,pos_bin_ind);
+    if (sizeContextVector == 24)
+        Curr_HByContext = calcHContextsBits4D(countContexts,candidate_ContextVector,pos_bin_ind);
+    elseif (sizeContextVector == 15)
+        Curr_HByContext = calcHContextsBits3D(countContexts,candidate_ContextVector,pos_bin_ind);
+    else
+        Curr_HByContext = calcHContextsBits(countContexts,candidate_ContextVector,pos_bin_ind);
+    end
     
     if (Curr_HByContext < best_H)
         best_H = Curr_HByContext;

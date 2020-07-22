@@ -24,12 +24,24 @@ end
 
 %Iterate to find the best axis
 for k = 1:1:3
+    
+
+
     tStart_Axis = tic;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Splices the geoCube
     currAxis = axisArray(k);
     disp(['Encoding ' currAxis ' axis...'])
+    
+    tStart_Tables = tic;
+    structTables = createContextTableInter(enc,currAxis,1,512);
+    tEnd_Tables = toc(tStart_Tables)
+    tStart_Vector = tic;
+    structVector = generateAllContextVector(structTables);
+    tEnd_Vector = toc(tStart_Vector)
+    enc          = addContextVectors(enc,structVector);
+    
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
@@ -37,8 +49,7 @@ for k = 1:1:3
     %Initializes the cabac.
     cabac = getCABAC();
     cabac = initCABAC(cabac, enc.params.BACParams, 1, enc.params.test3DOnlyContextsForInter);
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Encodes the Geometry Cube.

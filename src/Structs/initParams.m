@@ -33,7 +33,7 @@ params.useMEforPrevImageSingle        = 0;
 cV = ones(1,24);
 %cV = [1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 1 0 0 0 0];
 
-
+%SÓ PRESTA PARA ENTROPIA
 contextVector2D = cV(1:6);
 contextVector3D = cV(7:15);
 contextVector4D = cV(16:24);

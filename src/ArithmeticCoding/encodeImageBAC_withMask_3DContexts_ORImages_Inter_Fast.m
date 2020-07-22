@@ -5,22 +5,25 @@ function cabac = encodeImageBAC_withMask_3DContexts_ORImages_Inter_Fast(A,mask,Y
 %This function uses the contexts in:
 % cabac.BACContexts_3DT
 
-nC4D            = cabac.BACParams.numberOf4DContexts;
+nC4D            = cabac.BACParams.numberOfContexts4DTORImages;
 w4D             = cabac.BACParams.windowSizeFor4DContexts;
-contextVector4D = cabac.BACParams.contextVector4D;
+contextVector4D = cabac.BACParams.contextVector4DTORImages;
 padpA           = padarray(pA, [w4D w4D]);
 
-nC3D            = cabac.BACParams.numberOf3DContexts;
-contextVector3D = cabac.BACParams.contextVector3D;
-w               = cabac.BACParams.windowSizeFor3DContexts;
+w                     = cabac.BACParams.windowSizeFor3DContexts;
+nC3D                  = cabac.BACParams.numberOfContexts3DTORImages;
+contextVector3D       = cabac.BACParams.contextVector3DTORImages;
+nC3DOnly              = cabac.BACParams.numberOfContexts3DORImages;
+contextVector3D3DOnly = cabac.BACParams.contextVector3DORImages;
 
 A = double(A);
 padYleft  = padarray(Yleft,[w w]);
 padA      = padarray(A,[3 3]);
 
-numberOfContexts       = cabac.BACParams.numberOfContextsMasked;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
-contextVector2D        = cabac.BACParams.contextVector2D;
+numberOfContexts       = cabac.BACParams.numberOfContexts2DTORImages;
+numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DORImages;
+contextVector2D        = cabac.BACParams.contextVector2DTORImages;
+contextVector2D3DOnly  = cabac.BACParams.contextVector2DORImages;
 
 maxValueContext = cabac.BACParams.maxValueContext;
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
@@ -40,8 +43,9 @@ for k = 1:1:NPoints
     contextNumber2D          = get2DContext_v2(padA, [y x],contextVector2D, numberOfContexts);
     contextNumberLeft        = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
     contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D ,nC4D);
-    contextNumber2D_3DOnly   = get2DContext_v2(padA, [y x],[1 1 1 1 1 0] ,numberOfContexts3DOnly);
-    
+    contextNumber2D_3DOnly   = get2DContext_v2(padA, [y x],contextVector2D3DOnly ,numberOfContexts3DOnly);
+    contextNumberLeft_3DOnly = getContextLeft_v2(padYleft,[y x], w,contextVector3D3DOnly,nC3DOnly);
+
 %     contextNumber2D          = get2DContext(padA, [y x], numberOfContexts);
 %     contextNumberLeft        = getContextLeft(padYleft,[y x], w);
 %     contextNumber4D          = getContextFromImage(padpA, [y x], w4D,nC4D);
@@ -54,8 +58,8 @@ for k = 1:1:NPoints
         
     %Gets the current count for this context.
     currCount3D = [0 0];
-    currCount3D(1) = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1);
-    currCount3D(2) = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2);
+    currCount3D(1) = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 1);
+    currCount3D(2) = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 2);
     
     %Gets the probabilities.
     Prob_3D4D(k,1) = currCount3D(2) / (sum(currCount3D));
@@ -65,10 +69,10 @@ for k = 1:1:NPoints
     %Updates the context.
     if (currSymbol == false)
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) + 1;
-        cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1) + 1;
+        cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 1)     = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 1) + 1;
     else
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) + 1;
-        cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2) + 1;
+        cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 2)     = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 2) + 1;
     end
     
 end

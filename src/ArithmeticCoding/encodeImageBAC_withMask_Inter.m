@@ -5,11 +5,10 @@ function cabac_out = encodeImageBAC_withMask_Inter(A,mask,pA,cabac, consider3DOn
 %This function uses the contexts in:
 % cabac.BACContexts_2DT_Masked
 
-nC4D                    = cabac.BACParams.numberOf4DContexts;
+nC4D                    = cabac.BACParams.numberOfContexts4DTMasked;
 w4D                     = cabac.BACParams.windowSizeFor4DContexts;
-contextVector4D         = cabac.BACParams.contextVector4D;
+contextVector4D         = cabac.BACParams.contextVector4DTMasked;
 padpA                   = padarray(pA, [w4D w4D]);
-
 
 A    = double(A);
 padA = padarray(A,[3 3]);
@@ -18,9 +17,11 @@ maxValueContext = cabac.BACParams.maxValueContext;
 
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
-numberOfContexts       = cabac.BACParams.numberOfContextsMasked;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
-contextVector2D        = cabac.BACParams.contextVector2D;
+numberOfContexts       = cabac.BACParams.numberOfContexts2DTMasked;
+contextVector2D        = cabac.BACParams.contextVector2DTMasked;
+numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DMasked;
+contextVector3DOnly    = cabac.BACParams.contextVector2DMasked;
+
 
 if (consider3DOnlyContexts == 1)
     nBitsStart = cabac.BACEngine.bitstream.size();
@@ -42,7 +43,7 @@ if (consider3DOnlyContexts == 1)
         currSymbol             = A(y,x);
         contextNumber          = get2DContext_v2(padA, [y x], contextVector2D,numberOfContexts);
         contextNumber4D        = getContextFromImage_v2(padpA, [y x],contextVector4D ,w4D, nC4D);
-        contextNumber2D_3DOnly = get2DContext_v2(padA, [y x],[1 1 1 1 1 0] ,numberOfContexts3DOnly);
+        contextNumber2D_3DOnly = get2DContext_v2(padA, [y x],contextVector3DOnly ,numberOfContexts3DOnly);
 %         
 %         contextNumber          = get2DContext(padA, [y x], numberOfContexts);
 %         contextNumber4D        = getContextFromImage(padpA, [y x],w4D, nC4D);

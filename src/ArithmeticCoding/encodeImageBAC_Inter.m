@@ -4,19 +4,20 @@ function cabac = encodeImageBAC_Inter(A, pA, cabac)
 
 %This function uses the contexts in:
 % cabac.BACContexts_2DT_Independent
-nC4D            = cabac.BACParams.numberOf4DContexts;
+nC4D            = cabac.BACParams.numberOfContexts4DTIndependent;
 w4D             = cabac.BACParams.windowSizeFor4DContexts;
-contextVector4D = cabac.BACParams.contextVector4D;
+contextVector4D = cabac.BACParams.contextVector4DTIndependent;
 padpA           = padarray(pA, [w4D w4D]);
 
 A = double(A);
+[sy, sx] = size(A);
 padA = padarray(A,[3 3]);
+
 maxValueContext = cabac.BACParams.maxValueContext;
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
-numberOfContexts = cabac.BACParams.numberOfContextsIndependent;
-[sy, sx] = size(A);
 
-contextVector2D = cabac.BACParams.contextVector2D; 
+numberOfContexts = cabac.BACParams.numberOfContexts2DTIndependent;
+contextVector2D = cabac.BACParams.contextVector2DTIndependent; 
 
 
 for y = 1:1:sy
