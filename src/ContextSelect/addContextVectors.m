@@ -25,12 +25,33 @@ enc.params.BACParams.contextVector2DMasked = structVector.context2DMasked;
 
 enc.params.BACParams.numberOfContexts2DMasked = sum(enc.params.BACParams.contextVector2DMasked);
 
+%% BACContexts_3D
+enc.params.BACParams.contextVector3DSingle = structVector.context3DORImages(7:15);
+enc.params.BACParams.contextVector2DSingle = structVector.context3DORImages(1:6);
+
+enc.params.BACParams.numberOfContexts3D = sum(enc.params.BACParams.contextVector3DSingle);
+enc.params.BACParams.numberOfContexts2D = sum(enc.params.BACParams.contextVector2DSingle);
+
 %% BACContexts_3D_ORImages
 enc.params.BACParams.contextVector3DORImages = structVector.context3DORImages(7:15);
 enc.params.BACParams.contextVector2DORImages = structVector.context3DORImages(1:6);
 
 enc.params.BACParams.numberOfContexts3DORImages = sum(enc.params.BACParams.contextVector3DORImages);
 enc.params.BACParams.numberOfContexts2DORImages = sum(enc.params.BACParams.contextVector2DORImages);
+
+
+%% BACContexts_3DT
+enc.params.BACParams.contextVector4DT = structVector.contexts3DTORImages(16:24);
+enc.params.BACParams.contextVector3DT = structVector.contexts3DTORImages(7:15);
+enc.params.BACParams.contextVector2DT = structVector.contexts3DTORImages(1:6);
+% enc.params.BACParams.contextVector4DTORImages = [0 0 0 0 1 0 0 0 0];
+% enc.params.BACParams.contextVector3DTORImages = ones(1,9);
+% enc.params.BACParams.contextVector2DTORImages = [1 1 1 0 0 0];
+
+enc.params.BACParams.numberOfContexts4DT = sum(enc.params.BACParams.contextVector4DT);
+enc.params.BACParams.numberOfContexts3DT = sum(enc.params.BACParams.contextVector3DT);
+enc.params.BACParams.numberOfContexts2DT = sum(enc.params.BACParams.contextVector2DT);
+
 
 %% BACContexts_3DT_ORImages
 enc.params.BACParams.contextVector4DTORImages = structVector.contexts3DTORImages(16:24);
