@@ -12,6 +12,7 @@ maxNumberOfContexts3D = 2^length(contextVector3D);
 
 contextVector4D = contextVector(1:9);
 numberOfContexts4D = sum(contextVector4D);
+maxNumberOfContexts4D = 2^length(contextVector4D);
 
 idx2D = logical(contextVector2D);
 posBinInd2D = pos_bin_ind(1:2^size(contextVector2D,2),end-size(contextVector2D,2)+1:end);

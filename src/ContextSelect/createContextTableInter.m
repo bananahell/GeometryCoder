@@ -3,8 +3,6 @@ function cabac_out = createContextTableInter(enc, currAxis,iStart,iEnd,Y,entropy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
 testDyadicDecomposition = 1;
-testEncodeAsSingles     = 1;
-nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -32,7 +30,6 @@ end
 if (testDyadicDecomposition)
     %Starts a new cabac option.
     cabacDyadic = entropyTables;
-    nBitsDyadic = 0;
     
     %2 - Gets the two images.
     %Tests option 1: dyadic decomposition.

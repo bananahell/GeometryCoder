@@ -35,7 +35,6 @@ if (numberOfContexts3Dor4D == 0)
             end
             counts3Dor4D(u,:,:) = counts2D;
         end
-        counts3Dor4D(u,:,:) = counts2D;
     end
     countFinal = reshape(sum(counts3Dor4D,1),[2^numberOfContexts2D 2]);
 else
@@ -54,8 +53,8 @@ else
                     parcial_ind_sel = posSel2D == (k-1);
                     counts2D(k,:) = sum(parcial_count(parcial_ind_sel,:));
                 end
+                counts3Dor4D(w,:,:) = counts2D;
             end
-            counts3Dor4D(w,:,:) = counts2D;
         end
     end
     countFinal = counts3Dor4D;
