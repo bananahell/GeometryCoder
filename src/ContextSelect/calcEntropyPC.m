@@ -96,6 +96,5 @@ for h = 1:24
 end
 
 H = H5 + H1 + H3 + H4 + H2;
-keyboard;
 %enc         = addContextVectors(enc,structVector);
 
