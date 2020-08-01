@@ -42,7 +42,7 @@ if (consider3DOnlyContexts == 1)
         
         currSymbol             = A(y,x);
         contextNumber          = get2DContext_v2(padA, [y x], contextVector2D,numberOfContexts);
-        contextNumber4D        = getContextFromImage_v2(padpA, [y x],contextVector4D ,w4D, nC4D);
+        contextNumber4D        = getContextFromImage_v2(padpA, [y x],w4D,contextVector4D, nC4D);
         contextNumber2D_3DOnly = get2DContext_v2(padA, [y x],contextVector3DOnly ,numberOfContexts3DOnly);
 %         
 %         contextNumber          = get2DContext(padA, [y x], numberOfContexts);

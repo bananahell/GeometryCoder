@@ -18,6 +18,7 @@ bitstream = bitstream.loadBitstream(bitstreamFile);
 
 %Reads the bitstream parameters.
 [bitstreamParam, bitstream] = decodeBitstreamParam(bitstream, length_BitstreamParam, dec.params);
+dec = addContextVectorsDecoder(dec);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Initializes the cabac.

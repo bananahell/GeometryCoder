@@ -5,23 +5,25 @@ function [A,cabac] = decodeImageBAC_Inter(A, pA, cabac)
 %This function uses the contexts in:
 % cabac.BACContexts_2DT_Independent
 
-w4D   = cabac.BACParams.windowSizeFor4DContexts;
-padpA = padarray(pA, [w4D w4D]);
+nC4D            = cabac.BACParams.numberOfContexts4DTIndependent;
+w4D             = cabac.BACParams.windowSizeFor4DContexts;
+contextVector4D = cabac.BACParams.contextVector4DTIndependent;
+padpA           = padarray(pA, [w4D w4D]);
 
+A = double(A);
+[sy, sx] = size(A);
 padA = padarray(A,[3 3]);
 
 maxValueContext = cabac.BACParams.maxValueContext;
-
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
-numberOfContexts = cabac.BACParams.numberOfContextsIndependent;
-
-[sy, sx] = size(A);
+numberOfContexts = cabac.BACParams.numberOfContexts2DTIndependent;
+contextVector2D = cabac.BACParams.contextVector2DTIndependent; 
 
 for y = 1:1:sy
     for x = 1:1:sx
-        contextNumber   = get2DContext(padA, [y x], numberOfContexts);
-        contextNumber4D = getContextLeft(padpA, [y x], w4D);
+        contextNumber   = get2DContext_v2(padA, [y x], contextVector2D, numberOfContexts);
+        contextNumber4D = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D,nC4D);
         
         %Gets the current count for this context.
         currCount = cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,:);   

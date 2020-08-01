@@ -26,6 +26,9 @@ contextVector2D = cabac.BACParams.contextVector2DT;
 contextVector2D3DOnly = cabac.BACParams.contextVector2DSingle;
 numberOfContexts2D3DOnly = cabac.BACParams.numberOfContexts2D;
 
+maxValueContext = cabac.BACParams.maxValueContext;
+currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
+
 if (consider3DOnlyContexts == 1)
     nBitsStart = cabac.BACEngine.bitstream.size();
     %nBits4D    = Inf;
