@@ -7,7 +7,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function bitstream_header = createBitstreamHeader(limit, axis, length_BitstreamParam)
+function bitstream_header = createBitstreamHeader(limit, axis, fullContextVector,length_BitstreamParam)
 
 nBits = uint8(log2(limit+1));
 
@@ -36,6 +36,10 @@ bitstream_header = bitstream_header.putBit(vSize(6));
 
 bitstream_header = bitstream_header.putBit(vAxis(1));
 bitstream_header = bitstream_header.putBit(vAxis(2));
+
+for k = 1:1:length(fullContextVector)
+    bitstream_header = bitstream_header.putBit(fullContextVector(k));
+end
 
 bitstream_header = bitstream_header.putBit(vBitstreamParam(1));
 bitstream_header = bitstream_header.putBit(vBitstreamParam(2));

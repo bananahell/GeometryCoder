@@ -92,8 +92,8 @@ else
         
         %Gets the current count for this context.
         currCount = [0 0];
-        currCount(1) = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1);
-        currCount(2) = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2);
+        currCount(1) = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 1);
+        currCount(2) = cabac.BACContexts_3D_ORImages(contextNumberLeft_3DOnly, contextNumber2D_3DOnly + 1, 2);
         
         %Gets the current BAC context for this context
         p1s = currCount(2) / (sum(currCount));

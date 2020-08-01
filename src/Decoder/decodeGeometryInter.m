@@ -14,11 +14,11 @@ bitstream = Bitstream(0);
 bitstream = bitstream.loadBitstream(bitstreamFile);
 
 %Parse the bitstream header
-[limit, axis, length_header, length_BitstreamParam, bitstream] = parseBitstreamHeader(bitstream);
+[limit, axis, fullContextVector, length_header, length_BitstreamParam, bitstream] = parseBitstreamHeader(bitstream);
 
 %Reads the bitstream parameters.
 [bitstreamParam, bitstream] = decodeBitstreamParam(bitstream, length_BitstreamParam, dec.params);
-dec = addContextVectorsDecoder(dec);
+dec = addContextVectorsDecoder(dec,fullContextVector);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Initializes the cabac.
