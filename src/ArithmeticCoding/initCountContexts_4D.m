@@ -7,7 +7,7 @@ nContexts3D = 2^numberOfContexts3D;
 nContexts4D = 2^numberOfContexts4D;
 
 %Start each context with an initial count.
-countContexts = zeros(nContexts4D, nContexts3D, nContexts2D, 2, 'uint32');
+countContexts = zeros(nContexts4D, nContexts3D, nContexts2D, 2, 'double');
 
 for i = 1:1:nContexts4D
     binWord  = dec2bin(i-1,numberOfContexts4D);

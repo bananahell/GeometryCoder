@@ -23,7 +23,7 @@ if (sum(enc.params.testMode) == 0)
 end
 
 %Iterate to find the best axis
-for k = 1:1:3
+for k = 2:1:2
     
 
     tStart_Axis = tic;
@@ -34,12 +34,14 @@ for k = 1:1:3
     disp(['Encoding ' currAxis ' axis...'])
     
 %     tStart_Tables = tic;
-    structTables = createContextTableInter(enc,currAxis,1,512);
+%    structTables = createContextTableInter(enc,currAxis,1,512);
 %     tEnd_Tables = toc(tStart_Tables)
 %     tStart_Vector = tic;
-    structVector = generateAllContextVector(structTables);
+%    structVector = generateAllContextVector(structTables);
 %    tEnd_Vector = toc(tStart_Vector)
-    enc         = addContextVectors(enc,structVector);
+%    enc         = addContextVectors(enc,structVector);
+    enc         = addContextVectors(enc);
+
     
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
