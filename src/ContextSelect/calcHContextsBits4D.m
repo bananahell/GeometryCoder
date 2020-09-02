@@ -17,25 +17,29 @@ maxNumberOfContexts4D = 2^length(contextVector4D);
 idx2D = logical(contextVector2D);
 posBinInd2D = pos_bin_ind(1:2^size(contextVector2D,2),end-size(contextVector2D,2)+1:end);
 posSel2D = bin2dec(posBinInd2D(:,idx2D));
+numOfValues2D = length(unique(posSel2D));
 
 idx3D = logical(contextVector3D);
 posBinInd3D = pos_bin_ind(1:2^size(contextVector3D,2),end-size(contextVector3D,2)+1:end);
 posSel3D = bin2dec(posBinInd3D(:,idx3D));
+numOfValues3D = length(unique(posSel3D));
 
 idx4D = logical(contextVector4D);
 posBinInd4D = pos_bin_ind(1:2^size(contextVector4D,2),end-size(contextVector4D,2)+1:end);
 posSel4D = bin2dec(posBinInd4D(:,idx4D));
+numOfValues4D = length(unique(posSel4D));
 
 counts2D = zeros(2^numberOfContexts2D,2);
 counts3D = zeros(2^numberOfContexts3D,2^numberOfContexts2D,2);
 counts4D = zeros(2^numberOfContexts4D,2^numberOfContexts3D,2^numberOfContexts2D,2);
 
-
-if (numberOfContexts3D == 0 && numberOfContexts4D == 0)
+if (numOfValues2D == maxNumberOfContexts2D && numOfValues3D == maxNumberOfContexts3D && numOfValues4D == maxNumberOfContexts4D)
+    countFinal = countContexts;
+elseif (numberOfContexts3D == 0 && numberOfContexts4D == 0)
     for w = 1:maxNumberOfContexts4D
         for u = 1:maxNumberOfContexts3D
             parcialCount2D = reshape(countContexts(w,u,:,:),[maxNumberOfContexts2D 2]);
-            if (length(unique(posSel2D)) == maxNumberOfContexts2D)
+            if (numOfValues2D == maxNumberOfContexts2D)
                     counts3D(u,:,:) = parcialCount2D;
             else
                 for k = 1:2^numberOfContexts2D
@@ -61,7 +65,7 @@ elseif (numberOfContexts4D == 0 && numberOfContexts3D ~= 0)
                 counts3D(u,:,:) = sum(parcial3D,2);
             else
                 parcialCount2D = reshape(parcial3D,[maxNumberOfContexts2D 2]);
-                if (length(unique(posSel2D)) == maxNumberOfContexts2D)
+                if (numOfValues2D == maxNumberOfContexts2D)
                     counts3D(u,:,:) = parcialCount2D;
                 else
                     for k = 1:2^numberOfContexts2D
@@ -75,7 +79,7 @@ elseif (numberOfContexts4D == 0 && numberOfContexts3D ~= 0)
         counts4D(w,:,:,:) = counts3D;
     end
     countFinal = reshape(sum(counts4D,1),[2^numberOfContexts3D 2^numberOfContexts2D 2]);
-else
+else    
     for w = 1:2^numberOfContexts4D
         parcialIndSel4D = posSel4D == (w-1);
         parcial4D = sum(countContexts(parcialIndSel4D,:,:,:),1);
@@ -84,7 +88,7 @@ else
             counts4D(w,:,:,:) = sum(sum(parcial4D,2),3);
         elseif (numberOfContexts2D ~= 0 && numberOfContexts3D == 0)
             parcialCount2D = reshape(sum(parcial4D,2),[maxNumberOfContexts2D 2]);
-            if (length(unique(posSel2D)) == maxNumberOfContexts2D)
+            if (numOfValues2D == maxNumberOfContexts2D)
                 counts4D(w,1,:,:) = parcialCount2D;
             else
                 for k = 1:2^numberOfContexts2D
@@ -105,7 +109,7 @@ else
             for u = 1:2^numberOfContexts3D
                 parcialIndSel3D = posSel3D == (u-1);
                 parcialCount2D = reshape(sum(parcialCount3D(parcialIndSel3D,:,:),1),[maxNumberOfContexts2D 2]);
-                if (length(unique(posSel2D)) == maxNumberOfContexts2D)
+                if (numOfValues2D == maxNumberOfContexts2D)
                     counts3D(u,:,:) = parcialCount2D;
                 else
                     for k = 1:2^numberOfContexts2D

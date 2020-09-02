@@ -45,11 +45,6 @@ for k = 1:1:NPoints
     contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D ,nC4D);
     contextNumber2D_3DOnly   = get2DContext_v2(padA, [y x],contextVector2D3DOnly ,numberOfContexts3DOnly);
     contextNumberLeft_3DOnly = getContextLeft_v2(padYleft,[y x], w,contextVector3D3DOnly,nC3DOnly);
-
-%     contextNumber2D          = get2DContext(padA, [y x], numberOfContexts);
-%     contextNumberLeft        = getContextLeft(padYleft,[y x], w);
-%     contextNumber4D          = getContextFromImage(padpA, [y x], w4D,nC4D);
-%     contextNumber2D_3DOnly   = get2DContext(padA, [y x],numberOfContexts3DOnly);
     
     %Gets the current count for this context.
     currCount4D = [0 0];

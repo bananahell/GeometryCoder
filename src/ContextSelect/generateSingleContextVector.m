@@ -11,12 +11,14 @@ elseif(length(size(countContexts)) == 3)
 else
     val = 12;
 end
-ok = 1;
+% ok = 1;
 best_H = Inf;
 k = 0;
 
+% H_vect = zeros(1,val);
+
 while (k<val)
-    %while (ok)
+% while (ok)
 %     if k ~= 0
 %         old_H = best_H;
 %     end
@@ -31,10 +33,13 @@ while (k<val)
 %     else
 %         curr_dif = Inf;
 %     end
-    
+%     
     k = k + 1;
+%     H_vect(k) = best_H;
+
     
 end
 
 %Return the final vector
 contextVector = currContextVector;
+% plot(H_vect);

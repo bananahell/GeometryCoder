@@ -20,12 +20,11 @@ nC_Independent4D = BACParams.numberOfContexts4DTIndependent;
 nC_Masked4DT = BACParams.numberOfContexts4DTMasked;
 nC_Masked2DT = BACParams.numberOfContexts2DTMasked;
 
-
 nC_3DOr = BACParams.numberOfContexts3DORImages;
 nC_2DOr = BACParams.numberOfContexts2DORImages;
 
-nC_3D   = BACParams.numberOfContexts3DORImages;
-nC_2D   = BACParams.numberOfContexts2DORImages;
+nC_3D   = BACParams.numberOfContexts3D;
+nC_2D   = BACParams.numberOfContexts2D;
 
 nC_4DTOr = BACParams.numberOfContexts4DTORImages;
 nC_3DTOr = BACParams.numberOfContexts3DTORImages;
@@ -36,7 +35,6 @@ nC_3DT = BACParams.numberOfContexts3DT;
 nC_2DT = BACParams.numberOfContexts2DT;
 
 nC_2DM = BACParams.numberOfContexts2DMasked;
-
 
 if (interCoding == 0)
     %Initializes the 2D contexts.

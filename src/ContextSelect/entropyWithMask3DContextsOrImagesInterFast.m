@@ -28,10 +28,10 @@ for k = 1:1:NPoints
     x = idx_i(k);        %It only encodes it IF the mask says so.
     
     currSymbol               = A(y,x);
-    contextNumber2D          = get2DContext_v2(padA, [y x],contextVector2D, numberOfContexts);
+    contextNumber2D          = get2DContext(padA, [y x]);
     contextNumberLeft        = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
-    contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D ,nC4D);
-    contextNumber2D_3DOnly   = get2DContext_v2(padA, [y x],contextVector2D ,numberOfContexts);
+    contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D,nC4D);
+    contextNumber2D_3DOnly   = get2DContext(padA, [y x]);
         
     %Updates the context.
     if (currSymbol == false)

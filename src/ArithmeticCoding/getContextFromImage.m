@@ -2,6 +2,9 @@
 % E-mail: eduardopeixoto@ieee.org
 function contextNumber = getContextFromImage(A,pixel, w, numberOfContexts)
 
+if (nargin == 3)
+    numberOfContexts = 9;
+end
 
 if (numberOfContexts == 9)
     %This is because image A has been padded with 1 pixel of border.

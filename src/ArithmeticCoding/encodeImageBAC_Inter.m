@@ -20,8 +20,6 @@ currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 numberOfContexts = cabac.BACParams.numberOfContexts2DTIndependent;
 contextVector2D = cabac.BACParams.contextVector2DTIndependent;
 
-auxTable = reshape(sum(cabac.BACContexts_3DT_ORImages,2),[2^nC4D 2^numberOfContexts 2]);
-
 for y = 1:1:sy
     for x = 1:1:sx
         currSymbol    = A(y,x);
@@ -29,7 +27,7 @@ for y = 1:1:sy
         contextNumber4D = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D,nC4D);
                 
         %Gets the current count for this context.
-        currCount = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumber + 1,:);        
+        currCount = cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,:);        
         
         %Gets the current BAC context for this context
         p1s = currCount(2) / (sum(currCount));
@@ -47,16 +45,16 @@ for y = 1:1:sy
         
         %Updates the context.
         if (currSymbol == false)
-            auxTable(contextNumber4D, contextNumber + 1,1) = auxTable(contextNumber4D, contextNumber + 1,1) + 1;
+            cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,1) = cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,1) + 1;
         else
-            auxTable(contextNumber4D, contextNumber + 1,2) = auxTable(contextNumber4D, contextNumber + 1,2) + 1;
+            cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,2) = cabac.BACContexts_2DT_Independent(contextNumber4D, contextNumber + 1,2) + 1;
         end
         
     end
 end
-sumBits = auxTable - reshape(sum(cabac.BACContexts_3DT_ORImages,2),[2^nC4D 2^numberOfContexts 2]);
-
-cabac.BACContexts_3DT_ORImages = addingContextTable(cabac.BACContexts_3DT_ORImages,[contextVector2D zeros(1,9) contextVector4D],sumBits,2);
+% sumBits = auxTable - reshape(sum(cabac.BACContexts_3DT_ORImages,2),[2^nC4D 2^numberOfContexts 2]);
+% 
+% cabac.BACContexts_3DT_ORImages = addingContextTable(cabac.BACContexts_3DT_ORImages,[contextVector2D zeros(1,9) contextVector4D],sumBits,2);
 
 
 

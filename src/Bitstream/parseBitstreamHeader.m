@@ -17,7 +17,7 @@ for k = 1:1:2
     vAxis(k) = bit;
 end
 
-for k = 1:1:75
+for k = 1:1:114
     [bitstream, bit] = bitstream.read1Bit();
     contextVector(k) = bit;
 end

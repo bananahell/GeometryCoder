@@ -2,10 +2,10 @@
 
 function [ok, curr_dif] = verifyStopConditions(best_H,old_H,curr_dif)
 
-    previous_dif = curr_dif;
-    curr_dif = abs(best_H-old_H)/old_H;
+%     previous_dif = curr_dif;
+%     curr_dif = abs(best_H-old_H)/old_H;
     %Need to be adjusted
-    if (previous_dif < curr_dif || abs(best_H-old_H)<0.005)
+    if (abs(best_H-old_H)<0.01)
         ok = 0;
     else
         ok = 1;

@@ -1,6 +1,5 @@
 function enc = addContextVectors(enc,structVector)
 
-
 if (nargin == 2)
     %% Contexts2DTIndependent
     enc.params.BACParams.contextVector4DTIndependent = structVector.contexts2DTIndependent(7:15);
@@ -15,17 +14,17 @@ if (nargin == 2)
     enc.params.BACParams.contextVector2DMasked = structVector.context2DMasked;
     
     %% BACContexts_3D
-    enc.params.BACParams.contextVector3DSingle = structVector.context3DORImages(7:15);
-    enc.params.BACParams.contextVector2DSingle = structVector.context3DORImages(1:6);
+    enc.params.BACParams.contextVector3DSingle = structVector.contexts3D(7:15);
+    enc.params.BACParams.contextVector2DSingle = structVector.contexts3D(1:6);
     
     %% BACContexts_3D_ORImages
     enc.params.BACParams.contextVector3DORImages = structVector.context3DORImages(7:15);
     enc.params.BACParams.contextVector2DORImages = structVector.context3DORImages(1:6);
     
     %% BACContexts_3DT
-    enc.params.BACParams.contextVector4DT = structVector.contexts3DTORImages(16:24);
-    enc.params.BACParams.contextVector3DT = structVector.contexts3DTORImages(7:15);
-    enc.params.BACParams.contextVector2DT = structVector.contexts3DTORImages(1:6);
+    enc.params.BACParams.contextVector4DT = structVector.contexts3DT(16:24);
+    enc.params.BACParams.contextVector3DT = structVector.contexts3DT(7:15);
+    enc.params.BACParams.contextVector2DT = structVector.contexts3DT(1:6);
     
     %% BACContexts_3DT_ORImages
     enc.params.BACParams.contextVector4DTORImages = structVector.contexts3DTORImages(16:24);

@@ -7,6 +7,9 @@
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 function contextNumber = get2DContext(A, pixel, numberOfContexts)
+if (nargin == 2)
+    numberOfContexts = 6;
+end
 
 % Initialize constants across repeated calls.
 contX = [-1 0 +1 -1 -2 0 -2 +2 -1 +1 -2 +2 -3 0 -3 +3];

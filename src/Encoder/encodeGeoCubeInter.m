@@ -12,7 +12,7 @@ function cabac_out = encodeGeoCubeInter(geoCube, enc,cabac_in, currAxis, iStart,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
 testDyadicDecomposition = 1;
-testEncodeAsSingles     = 0;
+testEncodeAsSingles     = 1;
 nBitsDyadic             = Inf;
 nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.

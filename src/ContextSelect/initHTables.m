@@ -33,9 +33,11 @@ else
 %     
     %4D Contexts tables
      entropyStruct.BACContexts_3DT_ORImages    = zeros(2^nC_4D, 2^nC_3D, 2^nC_2D,2);
+     entropyStruct.BACContexts_3DT = zeros(2^nC_4D, 2^nC_3D, 2^nC_2D,2);
     
     %These contexts are ONLY initialized IF they will be used
     if (test3DOnlyContextsForInter == 1)
+        entropyStruct.BACContexts_3D             = zeros(2^nC_3D , 2^nC2D_3DOnly,2);
         entropyStruct.BACContexts_3D_ORImages    = zeros(2^nC_3D , 2^nC2D_3DOnly,2);
         entropyStruct.BACContexts_2D_Masked      = zeros(2^nC2D_3DOnly,2);
     end

@@ -125,22 +125,12 @@ if (testDyadicDecomposition)
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Testing the second option - encoding as singles.
-% if ((testEncodeAsSingles == 1) && ((iEnd - iStart) <= 16))
-%     cabacSingle = cabac;
-%     
-%     %Add a flag to the bitstream indicating that the single method will be
-%     %used.    
-%     cabacSingle = entropySliceAsSinglesInter(enc, currAxis, cabacSingle,iStart,iEnd,Y, sparseM);
-% end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if ((iEnd - iStart) <= 16)       
+    %Add a flag to the bitstream indicating that the single method will be
+    %used.
+    
+    cabacDyadic = createContextTableInterSingle(enc, currAxis, cabacDyadic,iStart,iEnd,Y, sparseM);
+    
+end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Deciding the best option.
-% if (nBitsDyadic <= nBitsSingle)
-     cabac_out = cabacDyadic;
-% else
-%    cabac_out = cabacSingle;
-% end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+cabac_out = cabacDyadic;
