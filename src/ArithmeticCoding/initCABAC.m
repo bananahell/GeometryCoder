@@ -6,7 +6,7 @@ if (nargin == 2)
     interCoding                = 0;
     test3DOnlyContextsForInter = 0;
 end
-    
+
 %Gets the parameters.
 cabac.BACParams = BACParams;
 
@@ -20,12 +20,6 @@ nC_Independent4D = BACParams.numberOfContexts4DTIndependent;
 nC_Masked4DT = BACParams.numberOfContexts4DTMasked;
 nC_Masked2DT = BACParams.numberOfContexts2DTMasked;
 
-nC_3DOr = BACParams.numberOfContexts3DORImages;
-nC_2DOr = BACParams.numberOfContexts2DORImages;
-
-nC_3D   = BACParams.numberOfContexts3D;
-nC_2D   = BACParams.numberOfContexts2D;
-
 nC_4DTOr = BACParams.numberOfContexts4DTORImages;
 nC_3DTOr = BACParams.numberOfContexts3DTORImages;
 nC_2DTOr = BACParams.numberOfContexts2DTORImages;
@@ -34,10 +28,14 @@ nC_4DT = BACParams.numberOfContexts4DT;
 nC_3DT = BACParams.numberOfContexts3DT;
 nC_2DT = BACParams.numberOfContexts2DT;
 
-nC_2DM = BACParams.numberOfContexts2DMasked;
 
 if (interCoding == 0)
     %Initializes the 2D contexts.
+    nC_3DOr = BACParams.numberOfContexts3DORImages;
+    nC_2DOr = BACParams.numberOfContexts2DORImages;
+    
+    nC_3D   = BACParams.numberOfContexts3D;
+    nC_2D   = BACParams.numberOfContexts2D;
     cabac.BACContexts_2D_Independent = initCountContexts_2D(nC_Independent);
     cabac.BACContexts_2D_Masked      = initCountContexts_2D(nC_2DT);
     
@@ -59,6 +57,14 @@ else
     
     %These contexts are ONLY initialized IF they will be used
     if (test3DOnlyContextsForInter == 1)
+        
+        nC_3DOr = BACParams.numberOfContexts3DORImages;
+        nC_2DOr = BACParams.numberOfContexts2DORImages;
+        
+        nC_3D   = BACParams.numberOfContexts3D;
+        nC_2D   = BACParams.numberOfContexts2D;
+        nC_2DM  = BACParams.numberOfContexts2DMasked;
+        
         cabac.BACContexts_3D             = initCountContexts_3D(nC_3D, nC_2D);
         cabac.BACContexts_3D_ORImages    = initCountContexts_3D(nC_3DOr , nC_2DOr);
         cabac.BACContexts_2D_Masked      = initCountContexts_2D(nC_2DM);

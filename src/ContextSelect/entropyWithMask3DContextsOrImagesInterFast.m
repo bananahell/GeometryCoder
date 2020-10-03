@@ -36,10 +36,10 @@ for k = 1:1:NPoints
     %Updates the context.
     if (currSymbol == false)
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) + 1;
-        cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1) + 1;
+%         cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1) + 1;
     else
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) + 1;
-        cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2) + 1;
+%         cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2) + 1;
     end
     
 end

@@ -3,6 +3,7 @@ function cabac_out = createContextTableInter(enc, currAxis,iStart,iEnd,Y,entropy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
 testDyadicDecomposition = 1;
+useSingleMode = 1;
 sparseM                 = false; % Use sparse matrices for images.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -20,7 +21,7 @@ if (nargin == 4)
     pY = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iStart, iEnd, sparseM);
     
     %Encodes the image Y.
-    entropyTables = entropyFirstSilhouette(Y,pY,entropyTables);    
+    entropyTables = entropyFirstSilhouette(Y,pY,entropyTables);
     
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +58,7 @@ if (testDyadicDecomposition)
     %Encode the right using Y and Yleft as mask
     mask_Yright      = and(Y,Yleft);
     nSymbolsRight    = sum(mask_Yright(:));
-     
+    
     encodeYleft  = (sum(Yleft(:))  ~= 0);
     encodeYright = (sum(Yright(:)) ~= 0);
     
@@ -67,49 +68,24 @@ if (testDyadicDecomposition)
     if (encodeThisLevel)
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsLeft > 0)            
+        if (nSymbolsLeft > 0)
             %Test with new amazing 3D context
             if (lStart == 1)
-                if (enc.params.test3DOnlyContextsForInter == 1)
-                    if ( enc.params.fastChoice3Dvs4D == 1)
-                        cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic); 
-                    else
-                        cabacDyadic = entropyWithMaskInter(Yleft,mask_Yleft,pYleft,cabacDyadic, 1);
-                    end
-                else
-                    cabacDyadic = entropyWithMaskInter(Yleft,mask_Yleft,pYleft,cabacDyadic, 0);                    
-                end                
+                cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic);
             else
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
-                
-                if (enc.params.test3DOnlyContextsForInter == 1)
-                    if ( enc.params.fastChoice3Dvs4D == 1)
-                        cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
-                    else
-                        cabacDyadic = entropyWithMask3DContextsOrImagesInter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, 1);
-                    end
-                else
-                    cabacDyadic = entropyWithMask3DContextsOrImagesInter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, 0);
-                end
+                cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
             end
-                        
+            
         end
         
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsRight > 0)            
+        if (nSymbolsRight > 0)
             %Test with new amazing 3D context
             Yright_left = Yleft;
+            cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
             
-            if (enc.params.test3DOnlyContextsForInter == 1)
-                if ( enc.params.fastChoice3Dvs4D == 1)
-                    cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
-                else
-                    cabacDyadic = entropyWithMask3DContextsOrImagesInter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, 1);
-                end
-            else
-                cabacDyadic = entropyWithMask3DContextsOrImagesInter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, 0);
-            end            
         end
     end
     
@@ -117,20 +93,17 @@ if (testDyadicDecomposition)
     %This can be inferred at the decoder, no need to signal this in the
     %bitstream.
     if (encodeYleft && (lEnd > lStart))
-        cabacDyadic = createContextTableInter(enc, currAxis, lStart,lEnd, Yleft,cabacDyadic);    
+        cabacDyadic = createContextTableInter(enc, currAxis, lStart,lEnd, Yleft,cabacDyadic);
     end
-    if (encodeYright && (rEnd > rStart))                
-        cabacDyadic = createContextTableInter(enc,currAxis, rStart,rEnd, Yright,cabacDyadic);  
-    end    
+    if (encodeYright && (rEnd > rStart))
+        cabacDyadic = createContextTableInter(enc,currAxis, rStart,rEnd, Yright,cabacDyadic);
+    end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if ((iEnd - iStart) <= 16)       
-    %Add a flag to the bitstream indicating that the single method will be
-    %used.
-    
+if ((useSingleMode==1) && (iEnd - iStart) <= 16)
     cabacDyadic = createContextTableInterSingle(enc, currAxis, cabacDyadic,iStart,iEnd,Y, sparseM);
-    
 end
 
 cabac_out = cabacDyadic;
+    

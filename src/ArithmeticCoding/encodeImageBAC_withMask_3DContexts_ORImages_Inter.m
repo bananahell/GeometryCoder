@@ -13,21 +13,23 @@ padpA           = padarray(pA, [w4D w4D]);
 w                     = cabac.BACParams.windowSizeFor3DContexts;
 nC3D                  = cabac.BACParams.numberOfContexts3DTORImages;
 contextVector3D       = cabac.BACParams.contextVector3DTORImages;
-nC3DOnly              = cabac.BACParams.numberOfContexts3DORImages;
-contextVector3D3DOnly = cabac.BACParams.contextVector3DORImages;
-
 A = double(A);
 padYleft  = padarray(Yleft,[w w]);
 padA      = padarray(A,[3 3]);
 
-numberOfContexts       = cabac.BACParams.numberOfContexts2DTORImages;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DORImages;
 contextVector2D        = cabac.BACParams.contextVector2DTORImages;
-contextVector2D3DOnly  = cabac.BACParams.contextVector2DORImages;
+numberOfContexts       = cabac.BACParams.numberOfContexts2DTORImages;
 
 maxValueContext = cabac.BACParams.maxValueContext;
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
+
 if (consider3DOnlyContexts == 1)
+    
+    numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DORImages;
+    nC3DOnly              = cabac.BACParams.numberOfContexts3DORImages;
+    contextVector3D3DOnly = cabac.BACParams.contextVector3DORImages;
+    contextVector2D3DOnly  = cabac.BACParams.contextVector2DORImages;
+    
     nBitsStart = cabac.BACEngine.bitstream.size();
     %nBits4D    = Inf;
     %nBits3D    = Inf;

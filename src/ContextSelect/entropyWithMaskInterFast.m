@@ -31,10 +31,10 @@ for k = 1:1:NPoints
     %Updates the context.
     if (currSymbol == false)
         cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,1) = cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,1) + 1;
-        cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,1) = cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,1) + 1;
+%         cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,1) = cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,1) + 1;
     else
         cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,2) = cabac.BACContexts_2DT_Masked(contextNumber4D, contextNumber + 1,2) + 1;
-        cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,2) = cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,2) + 1;
+%         cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,2) = cabac.BACContexts_2D_Masked(contextNumber2D_3DOnly + 1,2) + 1;
     end
     
 end

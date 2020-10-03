@@ -1,11 +1,11 @@
 %Verify if it´s ok to stop the entropy loop
 
-function [ok, curr_dif] = verifyStopConditions(best_H,old_H,curr_dif)
+function ok  = verifyStopConditions(actualH,oldH)
 
-%     previous_dif = curr_dif;
-%     curr_dif = abs(best_H-old_H)/old_H;
     %Need to be adjusted
-    if (abs(best_H-old_H)<0.01)
+    threshold = 0.03;
+    relDrop = (oldH - actualH)/oldH;
+    if (relDrop<threshold)
         ok = 0;
     else
         ok = 1;

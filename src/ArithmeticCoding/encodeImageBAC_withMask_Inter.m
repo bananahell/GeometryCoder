@@ -19,11 +19,12 @@ currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
 numberOfContexts       = cabac.BACParams.numberOfContexts2DTMasked;
 contextVector2D        = cabac.BACParams.contextVector2DTMasked;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DMasked;
-contextVector3DOnly    = cabac.BACParams.contextVector2DMasked;
+
 
 
 if (consider3DOnlyContexts == 1)
+    numberOfContexts3DOnly = cabac.BACParams.numberOfContexts2DMasked;
+    contextVector3DOnly    = cabac.BACParams.contextVector2DMasked;
     nBitsStart = cabac.BACEngine.bitstream.size();
     %nBits4D = Inf;
     %nBits3D = Inf;

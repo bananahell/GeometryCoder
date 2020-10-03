@@ -26,8 +26,8 @@ params.verbose         = 0;
 params.JBIGFolder      = '';
 
 params.numberOfSlicesToTestSingleMode = 16;
-params.test3DOnlyContextsForInter     = 1;
-params.fastChoice3Dvs4D               = 1;
+params.test3DOnlyContextsForInter     = 0;
+params.fastChoice3Dvs4D               = 0;
 params.useMEforPrevImageSingle        = 0;
 
 cV = ones(1,24);

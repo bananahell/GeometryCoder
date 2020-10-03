@@ -11,15 +11,15 @@ if (nargin == 2)
     
     
     %% Contexts2DMasked
-    enc.params.BACParams.contextVector2DMasked = structVector.context2DMasked;
+%     enc.params.BACParams.contextVector2DMasked = structVector.context2DMasked;
     
     %% BACContexts_3D
-    enc.params.BACParams.contextVector3DSingle = structVector.contexts3D(7:15);
-    enc.params.BACParams.contextVector2DSingle = structVector.contexts3D(1:6);
+%     enc.params.BACParams.contextVector3DSingle = structVector.contexts3D(7:15);
+%     enc.params.BACParams.contextVector2DSingle = structVector.contexts3D(1:6);
     
     %% BACContexts_3D_ORImages
-    enc.params.BACParams.contextVector3DORImages = structVector.context3DORImages(7:15);
-    enc.params.BACParams.contextVector2DORImages = structVector.context3DORImages(1:6);
+%     enc.params.BACParams.contextVector3DORImages = structVector.context3DORImages(7:15);
+%     enc.params.BACParams.contextVector2DORImages = structVector.context3DORImages(1:6);
     
     %% BACContexts_3DT
     enc.params.BACParams.contextVector4DT = structVector.contexts3DT(16:24);
@@ -41,16 +41,16 @@ else
     enc.params.BACParams.contextVector2DTMasked = [1 1 1 0 0 0];
     
     %% Contexts2DMasked
-    enc.params.BACParams.contextVector2DMasked = [1 1 1 1 1 0];
+%     enc.params.BACParams.contextVector2DMasked = [1 1 1 1 1 0];
     
     %% BACContexts_3D
-    enc.params.BACParams.contextVector3DSingle = ones(1,9);
-    enc.params.BACParams.contextVector2DSingle = [1 1 1 1 1 0];
+%     enc.params.BACParams.contextVector3DSingle = ones(1,9);
+%     enc.params.BACParams.contextVector2DSingle = [1 1 1 1 1 0];
     
     
     %% BACContexts_3D_ORImages
-    enc.params.BACParams.contextVector3DORImages = ones(1,9);
-    enc.params.BACParams.contextVector2DORImages = [1 1 1 1 1 0];
+%     enc.params.BACParams.contextVector3DORImages = ones(1,9);
+%     enc.params.BACParams.contextVector2DORImages = [1 1 1 1 1 0];
     
     
     %% BACContexts_3DT
@@ -72,13 +72,13 @@ enc.params.BACParams.numberOfContexts2DTIndependent = sum(enc.params.BACParams.c
 enc.params.BACParams.numberOfContexts4DTMasked = sum(enc.params.BACParams.contextVector4DTMasked);
 enc.params.BACParams.numberOfContexts2DTMasked = sum(enc.params.BACParams.contextVector2DTMasked);
 
-enc.params.BACParams.numberOfContexts2DMasked = sum(enc.params.BACParams.contextVector2DMasked);
+% enc.params.BACParams.numberOfContexts2DMasked = sum(enc.params.BACParams.contextVector2DMasked);
 
-enc.params.BACParams.numberOfContexts3D = sum(enc.params.BACParams.contextVector3DSingle);
-enc.params.BACParams.numberOfContexts2D = sum(enc.params.BACParams.contextVector2DSingle);
+% enc.params.BACParams.numberOfContexts3D = sum(enc.params.BACParams.contextVector3DSingle);
+% enc.params.BACParams.numberOfContexts2D = sum(enc.params.BACParams.contextVector2DSingle);
 
-enc.params.BACParams.numberOfContexts3DORImages = sum(enc.params.BACParams.contextVector3DORImages);
-enc.params.BACParams.numberOfContexts2DORImages = sum(enc.params.BACParams.contextVector2DORImages);
+% enc.params.BACParams.numberOfContexts3DORImages = sum(enc.params.BACParams.contextVector3DORImages);
+% enc.params.BACParams.numberOfContexts2DORImages = sum(enc.params.BACParams.contextVector2DORImages);
 
 enc.params.BACParams.numberOfContexts4DT = sum(enc.params.BACParams.contextVector4DT);
 enc.params.BACParams.numberOfContexts3DT = sum(enc.params.BACParams.contextVector3DT);

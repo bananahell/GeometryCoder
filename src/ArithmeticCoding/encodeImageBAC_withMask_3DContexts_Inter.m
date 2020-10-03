@@ -15,21 +15,25 @@ A = double(A);
 w               = cabac.BACParams.windowSizeFor3DContexts;
 nC3D            = cabac.BACParams.numberOfContexts3DT;
 contextVector3D = cabac.BACParams.contextVector3DT;
-contextVector3D3DOnly = cabac.BACParams.contextVector3DSingle;
-numberOfContexts3D3DOnly = cabac.BACParams.numberOfContexts3D;
 
 padYleft  = padarray(Yleft,[w w]);
 padA      = padarray(A,[3 3]);
 
 numberOfContexts = cabac.BACParams.numberOfContexts2DT;
 contextVector2D = cabac.BACParams.contextVector2DT;
-contextVector2D3DOnly = cabac.BACParams.contextVector2DSingle;
-numberOfContexts2D3DOnly = cabac.BACParams.numberOfContexts2D;
+
 
 maxValueContext = cabac.BACParams.maxValueContext;
 currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
 if (consider3DOnlyContexts == 1)
+    
+    contextVector3D3DOnly = cabac.BACParams.contextVector3DSingle;
+    numberOfContexts3D3DOnly = cabac.BACParams.numberOfContexts3D;
+    
+    contextVector2D3DOnly = cabac.BACParams.contextVector2DSingle;
+    numberOfContexts2D3DOnly = cabac.BACParams.numberOfContexts2D;
+    
     nBitsStart = cabac.BACEngine.bitstream.size();
     %nBits4D    = Inf;
     %nBits3D    = Inf;

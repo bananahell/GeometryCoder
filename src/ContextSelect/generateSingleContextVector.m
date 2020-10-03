@@ -1,45 +1,48 @@
-function contextVector = generateSingleContextVector(countContexts,sizeContextVector,posBinInd)
+function contextVector = generateSingleContextVector(countContexts,posBinInd)
 
-%Binarize the image if is a colored one or have multiples tons of grey
+nDimensions = length(size(countContexts));
 
-currContextVector = zeros(1,sizeContextVector);
-
-if(length(size(countContexts)) == 2)
-    val = 3;
-elseif(length(size(countContexts)) == 3)
-    val = 8;
+if nDimensions == 3
+    currContextVector = zeros(1,15);
+elseif nDimensions == 4
+    currContextVector = zeros(1,24);
 else
-    val = 12;
+    error('Wrong number of dimensions')
 end
-% ok = 1;
-best_H = Inf;
+
+ok = 1;
+bestH = Inf;
 k = 0;
 
-% H_vect = zeros(1,val);
-
-while (k<val)
-% while (ok)
-%     if k ~= 0
-%         old_H = best_H;
-%     end
-    %
+while (ok)    
+    oldH = bestH;
+    
     %Makes the loop to select the best context to this iteration
+    oldVector = currContextVector;
+    [currContextVector, bestH] = selectOneBitContext(currContextVector,countContexts,posBinInd,bestH);
     
-    [currContextVector, best_H] = selectOneBitContext(currContextVector,countContexts,posBinInd,best_H);
-    
-    %Verify the two conditions to stop
-%     if k ~= 0
-%         [ok, curr_dif] = verifyStopConditions(best_H,old_H,curr_dif);
-%     else
-%         curr_dif = Inf;
-%     end
-%     
     k = k + 1;
-%     H_vect(k) = best_H;
-
     
+    if oldVector == currContextVector
+        break
+    end
+    
+    % If the algorithm were being used to select contexts for
+    % 2DTIndependent or 2DTMasked, this condition will apply
+    if nDimensions == 3 && k == 7
+        ok = 0;
+    end
+    
+    %Verify the condition to stop
+    if nDimensions == 4 && k > 6
+        ok = verifyStopConditions(bestH,oldH);
+    end
+    
+    % if condition achieves, the new context selected will be prejudicial
+    if ok == 0
+        currContextVector = oldVector;
+    end
 end
 
 %Return the final vector
 contextVector = currContextVector;
-% plot(H_vect);
