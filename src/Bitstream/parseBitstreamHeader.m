@@ -4,7 +4,7 @@ function [limit, axis, contextVector, length_header, length_BitstreamParam, bits
 
 vSize           = zeros(1,6,'logical');
 vAxis           = zeros(1,2,'logical');
-contextVector   = zeros(1,75,'logical');
+contextVector   = zeros(1,78,'logical');
 vBitstreamParam = zeros(1,16,'logical');
 
 for k = 1:1:6
@@ -17,7 +17,7 @@ for k = 1:1:2
     vAxis(k) = bit;
 end
 
-for k = 1:1:114
+for k = 1:1:78
     [bitstream, bit] = bitstream.read1Bit();
     contextVector(k) = bit;
 end
