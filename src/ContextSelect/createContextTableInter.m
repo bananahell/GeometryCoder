@@ -1,4 +1,4 @@
-function cabac_out = createContextTableInter(enc, currAxis,iStart,iEnd,Y,entropyTables)
+function [cabac_out,numBitsIndependent,numBitsMasked,numBits4DT] = createContextTableInter(enc, currAxis,iStart,iEnd,Y,entropyTables,numBitsMasked,numBits4DT,numBitsIndependent)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
@@ -22,7 +22,9 @@ if (nargin == 4)
     
     %Encodes the image Y.
     entropyTables = entropyFirstSilhouette(Y,pY,entropyTables);
-    
+    numBitsIndependent = (enc.pcLimit+1).^2;
+    numBitsMasked = 0;
+    numBits4DT = 0;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -72,9 +74,11 @@ if (testDyadicDecomposition)
             %Test with new amazing 3D context
             if (lStart == 1)
                 cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                numBitsMasked = numBitsMasked+nSymbolsLeft;
             else
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
                 cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                numBits4DT = numBits4DT+nSymbolsLeft;
             end
             
         end
@@ -85,6 +89,7 @@ if (testDyadicDecomposition)
             %Test with new amazing 3D context
             Yright_left = Yleft;
             cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+            numBits4DT = numBits4DT+nSymbolsRight;
             
         end
     end
@@ -93,10 +98,10 @@ if (testDyadicDecomposition)
     %This can be inferred at the decoder, no need to signal this in the
     %bitstream.
     if (encodeYleft && (lEnd > lStart))
-        cabacDyadic = createContextTableInter(enc, currAxis, lStart,lEnd, Yleft,cabacDyadic);
+        [cabacDyadic,numBitsIndependent,numBitsMasked,numBits4DT] = createContextTableInter(enc, currAxis, lStart,lEnd, Yleft,cabacDyadic,numBitsMasked,numBits4DT,numBitsIndependent);
     end
     if (encodeYright && (rEnd > rStart))
-        cabacDyadic = createContextTableInter(enc,currAxis, rStart,rEnd, Yright,cabacDyadic);
+        [cabacDyadic,numBitsIndependent,numBitsMasked,numBits4DT] = createContextTableInter(enc,currAxis, rStart,rEnd, Yright,cabacDyadic,numBitsMasked,numBits4DT,numBitsIndependent);
     end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

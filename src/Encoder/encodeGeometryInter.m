@@ -32,11 +32,10 @@ for k = 1:1:3
     %Splices the geoCube
     currAxis = axisArray(k);
     disp(['Encoding ' currAxis ' axis...'])
-    
     structTables = createContextTableInter(enc,currAxis,1,enc.pcLimit+1);
     structVector = generateAllContextVector(structTables);
     enc          = addContextVectors(enc,structVector);
-%     enc         = addContextVectors(enc);
+    %enc         = addContextVectors(enc);
 
     
     geoCube = [];

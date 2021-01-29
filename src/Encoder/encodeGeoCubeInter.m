@@ -27,12 +27,9 @@ if (nargin == 6)
     
     pY = silhouetteFromCloud(enc.predictionPointCloud.Location, enc.pcLimit+1, currAxis, iStart, iEnd, sparseM);
     
-    %nBitsY   = 0;
     %Encodes the image Y.
     cabac_in = encodeImageBAC_Inter(Y,pY,cabac_in);    
-    
-    %nBitsY   = cabac_in.BACEngine.bitstream.size();
-    %disp(['Rate Y(' num2str(iStart) ',' num2str(iEnd) ') = ' num2str(nBitsY) '.'])  
+   
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

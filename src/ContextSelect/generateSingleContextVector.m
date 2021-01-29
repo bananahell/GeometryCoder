@@ -4,8 +4,10 @@ nDimensions = length(size(countContexts));
 
 if nDimensions == 3
     currContextVector = zeros(1,15);
+    nContexts = 8;
 elseif nDimensions == 4
     currContextVector = zeros(1,24);
+    nContexts = 12;
 else
     error('Wrong number of dimensions')
 end
@@ -29,19 +31,22 @@ while (ok)
     
     % If the algorithm were being used to select contexts for
     % 2DTIndependent or 2DTMasked, this condition will apply
-    if nDimensions == 3 && k == 7
+%     if nDimensions == 3 && k == 7
+%         ok = 0;
+%     end
+    
+    % Verify the condition to stop
+%     if nDimensions == 4 && k > 6
+%         ok = verifyStopConditions(bestH,oldH);
+%     end
+    if k == nContexts
         ok = 0;
     end
     
-    %Verify the condition to stop
-    if nDimensions == 4 && k > 6
-        ok = verifyStopConditions(bestH,oldH);
-    end
-    
     % if condition achieves, the new context selected will be prejudicial
-    if ok == 0
-        currContextVector = oldVector;
-    end
+%     if ok == 0
+%         currContextVector = oldVector;
+%     end
 end
 
 %Return the final vector
