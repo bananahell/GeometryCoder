@@ -7,7 +7,7 @@ if nDimensions == 3
     nContexts = 8;
 elseif nDimensions == 4
     currContextVector = zeros(1,24);
-    nContexts = 12;
+    nContexts = 10;
 else
     error('Wrong number of dimensions')
 end

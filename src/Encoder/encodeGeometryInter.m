@@ -22,6 +22,9 @@ if (sum(enc.params.testMode) == 0)
     error('At least one mode should be tested -> params.testMode');
 end
 
+%Define if single mode will be used to find the contexts
+useSingleModeContSel = 1;
+
 %Iterate to find the best axis
 for k = 1:1:3
     
@@ -32,11 +35,11 @@ for k = 1:1:3
     %Splices the geoCube
     currAxis = axisArray(k);
     disp(['Encoding ' currAxis ' axis...'])
-    structTables = createContextTableInter(enc,currAxis,1,enc.pcLimit+1);
-    structVector = generateAllContextVector(structTables);
-    enc          = addContextVectors(enc,structVector);
+    [structTables,HData] = createContextTableInter(enc,currAxis,1,enc.pcLimit+1,useSingleModeContSel);
+    [structVector,FinalH] = generateAllContextVector(structTables,useSingleModeContSel,enc.numberOfOccupiedVoxels,HData);
+    enc          = addContextVectors(enc,useSingleModeContSel,structVector);
     %enc         = addContextVectors(enc);
-
+    %disp(FinalH)
     
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -96,6 +99,8 @@ for k = 1:1:3
     elseif (k == 3)
         disp(['Axis Z - Rate = ' num2str(rateBPOVPerAxis(3),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
     end
+    vectorsSelectedMsg(enc);
+    
 end
 
 %Writes the encoder out.

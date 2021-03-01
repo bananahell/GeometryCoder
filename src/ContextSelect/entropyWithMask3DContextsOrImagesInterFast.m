@@ -15,10 +15,6 @@ A = double(A);
 padYleft  = padarray(Yleft,[w w]);
 padA      = padarray(A,[3 3]);
 
-numberOfContexts       = cabac.BACParams.numberOfContextsMasked;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
-contextVector2D        = cabac.BACParams.contextVector2D;
-
 [idx_i, idx_j] = find(mask');
 
 NPoints = length(idx_i);
@@ -31,15 +27,12 @@ for k = 1:1:NPoints
     contextNumber2D          = get2DContext(padA, [y x]);
     contextNumberLeft        = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
     contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D,contextVector4D,nC4D);
-    contextNumber2D_3DOnly   = get2DContext(padA, [y x]);
         
     %Updates the context.
     if (currSymbol == false)
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 1) + 1;
-%         cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 1) + 1;
     else
         cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) = cabac.BACContexts_3DT_ORImages(contextNumber4D, contextNumberLeft, contextNumber2D + 1, 2) + 1;
-%         cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2)            = cabac.BACContexts_3D_ORImages(contextNumberLeft, contextNumber2D_3DOnly + 1, 2) + 1;
     end
     
 end
