@@ -1,13 +1,21 @@
-function contextVector = generateSingleContextVector(countContexts,posBinInd)
+function contextVector = generateSingleContextVector(countContexts,posBinInd,PCSize)
 
 nDimensions = length(size(countContexts));
+
+if nargin == 2
+    PCSize = 512;
+end
 
 if nDimensions == 3
     currContextVector = zeros(1,15);
     nContexts = 8;
 elseif nDimensions == 4
     currContextVector = zeros(1,24);
-    nContexts = 10;
+    if PCSize <= 512
+        nContexts = 11;
+    elseif PCSize >= 1024
+        nContexts = 12;
+    end
 else
     error('Wrong number of dimensions')
 end

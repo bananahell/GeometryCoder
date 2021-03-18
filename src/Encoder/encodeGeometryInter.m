@@ -35,11 +35,14 @@ for k = 1:1:3
     %Splices the geoCube
     currAxis = axisArray(k);
     disp(['Encoding ' currAxis ' axis...'])
+    
+    %-----------------Starts the context selection algorithm----------
+    
     [structTables,HData] = createContextTableInter(enc,currAxis,1,enc.pcLimit+1,useSingleModeContSel);
-    [structVector,FinalH] = generateAllContextVector(structTables,useSingleModeContSel,enc.numberOfOccupiedVoxels,HData);
+    [structVector,FinalH] = generateAllContextVector(structTables,useSingleModeContSel,enc.numberOfOccupiedVoxels,enc.pcLimit+1,HData);
     enc          = addContextVectors(enc,useSingleModeContSel,structVector);
     %enc         = addContextVectors(enc);
-    %disp(FinalH)
+    %-----------------------------------------------------------------
     
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
