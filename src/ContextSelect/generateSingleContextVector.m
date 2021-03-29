@@ -14,7 +14,7 @@ elseif nDimensions == 4
     if PCSize <= 512
         nContexts = 13;
     elseif PCSize >= 1024
-        nContexts = 14;
+        nContexts = 15;
     end
 else
     error('Wrong number of dimensions')
