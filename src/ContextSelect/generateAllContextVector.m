@@ -7,7 +7,7 @@ structVector.contexts2DTMasked       = generateSingleContextVector(structTables.
 structVector.contexts3DTORImages     = generateSingleContextVector(structTables.BACContexts_3DT_ORImages,posBinInd,PCDimension);
 
 if(useSingleModeContSel)
-    structVector.contexts3DT             = generateSingleContextVector(structTables.BACContexts_3DT,posBinInd);
+    structVector.contexts3DT             = generateSingleContextVector(structTables.BACContexts_3DT,posBinInd,PCDimension);
 end
 
 if (nargin == 5)

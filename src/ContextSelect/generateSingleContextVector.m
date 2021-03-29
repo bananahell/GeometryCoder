@@ -12,9 +12,9 @@ if nDimensions == 3
 elseif nDimensions == 4
     currContextVector = zeros(1,24);
     if PCSize <= 512
-        nContexts = 11;
+        nContexts = 13;
     elseif PCSize >= 1024
-        nContexts = 12;
+        nContexts = 14;
     end
 else
     error('Wrong number of dimensions')
