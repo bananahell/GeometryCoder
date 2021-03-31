@@ -18,16 +18,20 @@ A = double(A);
 padYleft  = padarray(Yleft,[w w]);
 padA      = padarray(A,[3 3]);
 
+contextVector2D = [1 1 1 1 1 1];
+nC2D            = 6;
+
 for k = 1:1:length(idx_i)
     y = idx_j(k);
     x = idx_i(k);        %It only encodes it IF the mask says so.
     
     currSymbol               = A(y,x);
-    contextNumber2D          = get2DContext(padA, [y x]);
+    %contextNumber2D          = get2DContext(padA, [y x]);
+    contextNumber2D          = get2DContext_v2(padA, [y x], contextVector2D, nC2D);
     contextNumberLeft        = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
     contextNumber4D          = getContextFromImage_v2(padpA, [y x], w4D, contextVector4D,nC4D);
-    contextNumber2D_3DOnly   = get2DContext(padA, [y x]);
-    contextNumberLeft_3DOnly = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
+    %contextNumber2D_3DOnly   = get2DContext(padA, [y x]);
+    %contextNumberLeft_3DOnly = getContextLeft_v2(padYleft,[y x], w,contextVector3D,nC3D);
     
     %Updates the context.
     if (currSymbol == false)

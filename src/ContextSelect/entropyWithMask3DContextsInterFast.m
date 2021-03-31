@@ -22,13 +22,13 @@ numberOfContexts = cabac.BACParams.numberOfContextsMasked;
 numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
 contextVector2D = cabac.BACParams.contextVector2D;
 
-maxValueContext = cabac.BACParams.maxValueContext;
-currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
+%maxValueContext = cabac.BACParams.maxValueContext;
+%currBACContext = getBACContext(false,maxValueContext/2,maxValueContext);
 
-NPoints = length(idx_i);
+%NPoints = length(idx_i);
 
-targetX   = zeros(NPoints,1,'logical');
-Prob_3D4D = zeros(NPoints,2);
+%targetX   = zeros(NPoints,1,'logical');
+%Prob_3D4D = zeros(NPoints,2);
 
 for k = 1:1:length(idx_i)
     y = idx_j(k);

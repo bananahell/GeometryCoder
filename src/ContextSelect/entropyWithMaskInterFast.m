@@ -11,7 +11,7 @@ A    = double(A);
 padA = padarray(A,[3 3]);
 
 numberOfContexts       = cabac.BACParams.numberOfContextsMasked;
-numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
+%numberOfContexts3DOnly = cabac.BACParams.numberOfContexts3DOnly;
 contextVector2D        = cabac.BACParams.contextVector2D;
 
 [idx_i, idx_j] = find(mask');
@@ -26,7 +26,7 @@ for k = 1:1:NPoints
     currSymbol             = A(y,x);
     contextNumber          = get2DContext_v2(padA, [y x],contextVector2D ,numberOfContexts);
     contextNumber4D        = getContextFromImage_v2(padpA, [y x], w4D, contextVector4D,nC4D);
-    contextNumber2D_3DOnly = get2DContext_v2(padA, [y x],contextVector2D ,numberOfContexts);
+    %contextNumber2D_3DOnly = get2DContext_v2(padA, [y x],contextVector2D ,numberOfContexts);
     
     %Updates the context.
     if (currSymbol == false)

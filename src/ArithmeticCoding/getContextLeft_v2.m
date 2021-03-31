@@ -3,7 +3,7 @@ function contextNumber = getContextLeft_v2(A,pixel, w,contextVector,numberOfCont
 y = pixel(1) + w;
 x = pixel(2) + w;
 
-c = [0 0 0 0 0 0 0 0 0 0];
+c = [0 0 0 0 0 0 0 0 0];
 
 c(1)  = A(y - 1, x - 1);
 c(2)  = A(y - 1, x    );
@@ -15,9 +15,8 @@ c(7)  = A(y + 1, x - 1);
 c(8)  = A(y + 1, x    );
 c(9)  = A(y + 1, x + 1);
 
-idx = find(contextVector == 1);
-
-c2 =c(idx);
+idx = contextVector == 1;
+c2 = c(idx);
 
 p = [1 2 4 8 16 32 64 128 256];
 
