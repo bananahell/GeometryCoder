@@ -1,16 +1,13 @@
 %Contexts
-%          14
-%    11  9  6 10 12
-% 15  7  4  2  3  8 16
-% 13  5  1  ?
-
+%       6 
+%    4  2  3
+% 5  1  ?
 function contextNumber = get2DContext_v2(A, pixel, contextVector, numberOfContexts)
 
 y = pixel(1) + 3;
 x = pixel(2) + 3;
 
 %Initialize all contexts as zeros.
-%c = zeros(1,16);
 c = [0 0 0 0 0 0];
 
 c(1)  = A(y     , x - 1);
@@ -20,14 +17,10 @@ c(4)  = A(y - 1, x - 1);
 c(5)  = A(y    , x - 2);
 c(6)  = A(y - 2, x    );
 
-idx = find(contextVector == 1);
+idx = contextVector == 1;
+c2 = c(idx);
 
-c2 =c(idx);
-
-
-
-
-p = [1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768];
+p = [1 2 4 8 16 32];
 p2 = p(1:numberOfContexts);
 
 p2c = p2 .* c2;
