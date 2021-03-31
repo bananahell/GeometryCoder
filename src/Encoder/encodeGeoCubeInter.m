@@ -97,32 +97,14 @@ if (testDyadicDecomposition)
             
             %Test with new amazing 3D context
             if (lStart == 1)
-                if (enc.params.test3DOnlyContextsForInter == 1)
-                    if ( enc.params.fastChoice3Dvs4D == 1)
-                        cabacDyadic = encodeImageBAC_withMask_Inter_Fast(Yleft,mask_Yleft,pYleft,cabacDyadic); 
-                    else
-                        cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, 1);
-                    end
-                else
-                    cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic, 0);                    
-                end                
+                cabacDyadic = encodeImageBAC_withMask_Inter(Yleft,mask_Yleft,pYleft,cabacDyadic);                    
             else
-                Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
-                
-                if (enc.params.test3DOnlyContextsForInter == 1)
-                    if ( enc.params.fastChoice3Dvs4D == 1)
-                        cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter_Fast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
-                    else
-                        cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, 1);
-                    end
-                else
-                    cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic, 0);
-                end
+                Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);               
+                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
             end
                         
             nBitsLeft = cabacDyadic.BACEngine.bitstream.size() - nBits;
         end
-        %disp(['Rate Yleft(' num2str(lStart) ',' num2str(lEnd) ') = ' num2str(nBitsLeft) '.'])        
         nBitsDyadic = nBitsDyadic + nBitsLeft;
         
         %This can be inferred at the decoder, no need to signal this in the
@@ -133,27 +115,13 @@ if (testDyadicDecomposition)
             %Test with new amazing 3D context
             Yright_left = Yleft;
             
-            if (enc.params.test3DOnlyContextsForInter == 1)
-                if ( enc.params.fastChoice3Dvs4D == 1)
-                    cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter_Fast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
-                else
-                    cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, 1);
-                end
-            else
-                cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic, 0);
-            end
+            cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages_Inter(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
             
             nBitsRight = cabacDyadic.BACEngine.bitstream.size() - nBits;
         end
-        %disp(['Rate Yright(' num2str(rStart) ',' num2str(rEnd) ') = ' num2str(nBitsRight) '.'])
-        %keyboard;
         nBitsDyadic = nBitsDyadic + nBitsRight;
     end
     
-    %disp(['i = (' num2str(iStart) ',' num2str(iEnd) ')'])
-    %disp(['l = (' num2str(lStart) ',' num2str(lEnd) ')'])
-    %disp(['r = (' num2str(rStart) ',' num2str(rEnd) ')'])
-    %keyboard;
     
     %Checks the left branch.
     %This can be inferred at the decoder, no need to signal this in the

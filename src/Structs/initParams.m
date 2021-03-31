@@ -26,14 +26,11 @@ params.verbose         = 0;
 params.JBIGFolder      = '';
 
 params.numberOfSlicesToTestSingleMode = 16;
-params.test3DOnlyContextsForInter     = 0;
-params.fastChoice3Dvs4D               = 0;
 params.useMEforPrevImageSingle        = 0;
 
 cV = ones(1,24);
-%cV = [1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 1 0 0 0 0];
 
-%SÓ PRESTA PARA ENTROPIA
+%Contexts used for entropy
 contextVector2D = cV(1:6);
 contextVector3D = cV(7:15);
 contextVector4D = cV(16:24);
@@ -62,25 +59,6 @@ if (defaultParameters == 0)
             case 'numberOfSlicesToTestSingleMode'
                 checkSizeAndValue('numberOfSlicesToTestSingleMode',value,[1 1],[0 1 2 4 8 16 32 64 128 256 512 1024]);
                 params.numberOfSlicesToTestSingleMode = value;
-                
-            case 'mode'
-                checkSizeAndValue('mode',value,[1 1],[0 1 2]);
-                switch (value)
-                    case 0
-                        disp('Mode: S4D (default)')
-                        params.test3DOnlyContextsForInter     = 1;
-                        params.fastChoice3Dvs4D               = 1;
-                        
-                    case 1
-                        disp('Mode: S4D Multi-Mode (slow)')
-                        params.test3DOnlyContextsForInter     = 1;
-                        params.fastChoice3Dvs4D               = 0;
-                        
-                    case 2
-                        disp('Mode: S4D Inter-Only')
-                        params.test3DOnlyContextsForInter     = 0;
-                        params.fastChoice3Dvs4D               = 0;
-                end
                 
         end
     end
