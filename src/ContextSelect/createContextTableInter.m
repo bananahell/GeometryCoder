@@ -1,4 +1,4 @@
-function [cabac_out,HData] = createContextTableInter(enc, currAxis,iStart,iEnd,useSingleMode,Y,entropyTables,HData)
+function [cabac_out,HData] = createContextTableInter(enc, currAxis,iStart,iEnd,useSingleMode,Y,entropyTables,HData,depth)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
@@ -25,14 +25,17 @@ if (nargin == 5)
     HData.numBitsIndependent = (enc.pcLimit+1).^2;
     HData.numBitsMasked = 0;
     HData.numBits4DT = 0;
+    depth = 1;
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Testing the dyadic decomposition.
+
+cabacDyadic = entropyTables;
+
 if (testDyadicDecomposition)
     %Starts a new cabac option.
-    cabacDyadic = entropyTables;
     
     %2 - Gets the two images.
     %Tests option 1: dyadic decomposition.
@@ -70,7 +73,7 @@ if (testDyadicDecomposition)
     if (encodeThisLevel)
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsLeft > 0)
+        if (nSymbolsLeft > 0 && depth<5)
             %Test with new amazing 3D context
             if (lStart == 1)
                 cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic);
@@ -85,7 +88,7 @@ if (testDyadicDecomposition)
         
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsRight > 0)
+        if (nSymbolsRight > 0 && depth<5)
             %Test with new amazing 3D context
             Yright_left = Yleft;
             cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
@@ -97,11 +100,12 @@ if (testDyadicDecomposition)
     %Checks the left branch.
     %This can be inferred at the decoder, no need to signal this in the
     %bitstream.
+    depth = depth + 1;
     if (encodeYleft && (lEnd > lStart))
-        [cabacDyadic,HData] = createContextTableInter(enc, currAxis, lStart,lEnd, useSingleMode ,Yleft,cabacDyadic,HData);
+        [cabacDyadic,HData] = createContextTableInter(enc, currAxis, lStart,lEnd, useSingleMode ,Yleft,cabacDyadic,HData,depth);
     end
     if (encodeYright && (rEnd > rStart))
-        [cabacDyadic,HData] = createContextTableInter(enc,currAxis, rStart,rEnd, useSingleMode ,Yright,cabacDyadic,HData);
+        [cabacDyadic,HData] = createContextTableInter(enc,currAxis, rStart,rEnd, useSingleMode ,Yright,cabacDyadic,HData,depth);
     end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
