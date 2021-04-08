@@ -73,14 +73,18 @@ if (testDyadicDecomposition)
     if (encodeThisLevel)
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsLeft > 0 && depth<5)
+        if (nSymbolsLeft > 0)
             %Test with new amazing 3D context
             if (lStart == 1)
-                cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                if(depth<5)
+                    cabacDyadic = entropyWithMaskInterFast(Yleft,mask_Yleft,pYleft,cabacDyadic);
+                end
                 HData.numBitsMasked = HData.numBitsMasked+nSymbolsLeft;
             else
-                Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
-                cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                if(depth<5)
+                    Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
+                    cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yleft,mask_Yleft,Yleft_left,pYleft,cabacDyadic);
+                end
                 HData.numBits4DT = HData.numBits4DT+nSymbolsLeft;
             end
             
@@ -88,10 +92,12 @@ if (testDyadicDecomposition)
         
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
-        if (nSymbolsRight > 0 && depth<5)
+        if (nSymbolsRight > 0 )
             %Test with new amazing 3D context
-            Yright_left = Yleft;
-            cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+            if (depth<5)
+                Yright_left = Yleft;
+                cabacDyadic = entropyWithMask3DContextsOrImagesInterFast(Yright,mask_Yright,Yright_left, pYright, cabacDyadic);
+            end
             HData.numBits4DT = HData.numBits4DT+nSymbolsRight;
             
         end
@@ -115,4 +121,3 @@ if ((useSingleMode==1) && (iEnd - iStart) <= 16)
 end
 
 cabac_out = cabacDyadic;
-    

@@ -16,6 +16,7 @@ bestStat       = [];
 bestBitstream  = [];
 
 rateBPOVPerAxis   = [0 0 0];
+entropyValue      = [0 0 0];
 
 %Checks if the testMode is correct
 if (sum(enc.params.testMode) == 0)
@@ -86,6 +87,7 @@ for k = 1:1:3
     totalRate = (ceil(bitstream.size() / 8) * 8) + 1;
     
     rateBPOVPerAxis(k) = totalRate / enc.numberOfOccupiedVoxels;
+    entropyValue(k) = FinalH;
     if (totalRate < bestRate)
         bestAxis      = currAxis;
         bestRate      = totalRate;
@@ -96,11 +98,14 @@ for k = 1:1:3
     
     tEnd_Axis = toc(tStart_Axis);
     if (k == 1)
-        disp(['Axis X - Rate = ' num2str(rateBPOVPerAxis(1),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis X - Rate    = ' num2str(rateBPOVPerAxis(1),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis X - Entropy = ' num2str(entropyValue(1),'%2.4f')])
     elseif (k == 2)
-        disp(['Axis Y - Rate = ' num2str(rateBPOVPerAxis(2),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis Y - Rate    = ' num2str(rateBPOVPerAxis(2),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis Y - Entropy = ' num2str(entropyValue(2),'%2.4f')])
     elseif (k == 3)
-        disp(['Axis Z - Rate = ' num2str(rateBPOVPerAxis(3),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis Z - Rate    = ' num2str(rateBPOVPerAxis(3),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['Axis Z - Entropy = ' num2str(entropyValue(3),'%2.4f')])
     end
     vectorsSelectedMsg(enc);
     
@@ -114,6 +119,7 @@ enc.dimensionSliced    = bestAxis;
 enc.geometryCube       = bestGeoCube;
 enc.rate_bpov_per_axis = rateBPOVPerAxis;
 enc.stat               = bestStat;
+enc.entropy_value      = entropyValue;
 
 %Writes the bitstream.
 bitstreamFile     = [enc.params.workspaceFolder enc.params.bitstreamFile];
