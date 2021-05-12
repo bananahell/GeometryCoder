@@ -24,31 +24,69 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-% 29/10/2019
+% Author: Evaristo Ramalho
+% E-mail: evaristora28@gmail.com
+% Author: Edil Medeiros
+% E-mail: j.edil@ene.unb.br
+% 11/05/2021
 
 %Change this to reflect your system
 %The output folders must exist before the script is executed.
-%datasetFolder  = 'C:\eduardo\Sequences\PointClouds\';
-%outputFolder   = 'C:\eduardo\workspace\ICIP_Inter\Results\';
-datasetFolder = 'C:\Users\evari\Documents\PC_Dataset\';
-outputFolder = 'C:\Users\evari\Documents\PC_Dataset\Results\';
+datasetFolder  = 'C:\eduardo\Sequences\PointClouds\';
+outputFolder   = 'C:\eduardo\workspace\ResultsSPLInter\SpeedTest\';
 k = 0;
 
 k = k + 1;
 %longdress
-sequence{k}        = 'ricardo9';
-name{k}            = 'frame';
+sequence{k}        = 'longdress';
+name{k}            = 'longdress_vox10_';
 parentFolder{k}    = outputFolder;
-newFolder{k}       = 'ricardo9';
-dataFolder{k}      = [datasetFolder 'ricardo9\ply\'];
-workspaceFolder{k} = [outputFolder 'ricardo9\'];
-frameStart{k}      = 0001;
-frameEnd{k}        = 0003;
+newFolder{k}       = 'longdress';
+dataFolder{k}      = [datasetFolder 'longdress\Ply\'];
+workspaceFolder{k} = [outputFolder 'longdress\'];
+frameStart{k}      = 1300;
+frameEnd{k}        = 1300;
 
+k = k + 1;
+%loot
+sequence{k}        = 'loot';
+name{k}            = 'loot_vox10_';
+parentFolder{k}    = outputFolder;
+newFolder{k}       = 'loot';
+dataFolder{k}      = [datasetFolder 'loot\Ply\'];
+workspaceFolder{k} = [outputFolder 'loot\'];
+frameStart{k}      = 1200;
+frameEnd{k}        = 1200;
 
+k = k + 1;
+%redandblack
+sequence{k}        = 'redandblack';
+name{k}            = 'redandblack_vox10_';
+parentFolder{k}    = outputFolder;
+newFolder{k}       = 'redandblack';
+dataFolder{k}      = [datasetFolder 'redandblack\Ply\'];
+workspaceFolder{k} = [outputFolder 'redandblack\'];
+frameStart{k}      = 1550;
+frameEnd{k}        = 1550;
+
+k = k + 1;
+%soldier
+sequence{k}        = 'soldier';
+name{k}            = 'soldier_vox10_';
+parentFolder{k}    = outputFolder;
+newFolder{k}       = 'soldier';
+dataFolder{k}      = [datasetFolder 'soldier\Ply\'];
+workspaceFolder{k} = [outputFolder 'soldier\'];
+frameStart{k}      = 0690;
+frameEnd{k}        = 0690;
 
 N = k;
 for k = 1:1:N
+    
+    if not(isfolder(workspaceFolder{k}))
+       mkdir(workspaceFolder{k})
+    end
+    
     for i = frameStart{k}:1:frameEnd{k}
         strNumFile = num2str(i);
         leadingZeros = char(zeros(1,4 - length(strNumFile)) + 48);
@@ -63,10 +101,14 @@ for k = 1:1:N
         inputFile   = [dataFolder{k} filename '.ply'];
         prevFile    = [dataFolder{k} prevfilename '.ply'];
         
-        currWorkspaceFolder4D = [workspaceFolder{k} '4D\'];
+        currWorkspaceFolder4D = [workspaceFolder{k} 'cs4D_Fast\'];
         binaryFile4D          = [currWorkspaceFolder4D filename '.bin'];
         outputFile4D          = [currWorkspaceFolder4D 'dec_' filename '.ply'];
-        filename4D           = [workspaceFolder{k} sequence{k} '_results_inter_4D.txt'];
+        filename4D           = [workspaceFolder{k} sequence{k} '_results_cs4D_Fast.txt'];
+        
+        if not(isfolder(currWorkspaceFolder4D))
+			mkdir(currWorkspaceFolder4D)
+		end
         
         disp('4D Files')
         disp(['InputFile  = ' inputFile ''])
@@ -75,8 +117,8 @@ for k = 1:1:N
         disp(['outputFile = ' outputFile4D ''])
         disp(['filename   = ' filename4D ''])
         disp('')
-                
-%         %------------------------------------------------------------------
+         
+        %------------------------------------------------------------------
         %Run 4D.
         %Encodes the file
         encStartTime = tic;
@@ -94,7 +136,7 @@ for k = 1:1:N
         
         %Writes the results
         fid = fopen(filename4D,'a');
-        fprintf(fid,'%s\t%s\t%d\t%d\t%2.2f\t%2.2f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\n',strNumFile, strNumPrev, bestAxis, checkPly,encTime, decTime, enc.rate_bpov_per_axis(1), enc.rate_bpov_per_axis(2), enc.rate_bpov_per_axis(3), enc.rate_bpov);
+        fprintf(fid,'%s\t%s\t%d\t%d\t%2.2f\t%2.2f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\t%2.4f\n',strNumFile, strNumPrev, bestAxis, checkPly,encTime, decTime, enc.entropy_value(1),enc.entropy_value(2),enc.entropy_value(3), enc.rate_bpov_per_axis(1), enc.rate_bpov_per_axis(2), enc.rate_bpov_per_axis(3), enc.rate_bpov);
         fclose(fid);
         clear enc dec
 
