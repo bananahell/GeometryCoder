@@ -87,9 +87,13 @@ if (bit == 0)
             Yright = Y;
             Yleft  = zeros(sy,sx,'logical');
         else
-            %This means that neither image had pixels, and thus this
-            %function should NOT have been called.
-            error('Bitstream parsing error.');
+            % Esse era o comportamento original.
+            % This means that neither image had pixels, and thus this
+            % function should NOT have been called.
+            % error('Bitstream parsing error.');
+            % O novo comportamento:
+            Yleft  = Y;
+            Yright = Y;
         end
     end
     

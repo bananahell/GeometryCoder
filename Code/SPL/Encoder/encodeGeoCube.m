@@ -12,11 +12,24 @@ function cabac_out = encodeGeoCube(geoCube, enc,cabac_in, currAxis, iStart,iEnd,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
 testDyadicDecomposition = 1;
-testEncodeAsSingles     = 1;
+testEncodeAsSingles     = 0;
 nBitsDyadic             = Inf;
 nBitsSingle             = Inf;
 sparseM                 = false; % Use sparse matrices for images.
+flagTriggerLossyProcessing = false;
+global toggleSlicesFlags;
+global currentIndex;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% flagLastLevel indica que eu estou no ultimo nivel.
+flagLastLevel = iEnd == (iStart + 1);
+% Aqui eu checo se eu vou fazer o processamento da slice ou nao
+if flagLastLevel == true
+    if toggleSlicesFlags(currentIndex) == 1
+        flagTriggerLossyProcessing = true;
+    end
+    currentIndex = currentIndex + 1;
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %The first time this function is called I have to encode the first OR image
@@ -64,8 +77,13 @@ if (testDyadicDecomposition)
     %Yleft  = silhouette(geoCube,lStart,lEnd);
     %Yright = silhouette(geoCube,rStart,rEnd);
     
-    Yleft  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart, lEnd, sparseM);
-    Yright = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, rStart, rEnd, sparseM);
+    if flagTriggerLossyProcessing
+        Yleft = Y;
+        Yright = Y;
+    else
+        Yleft  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart, lEnd, sparseM);
+        Yright = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, rStart, rEnd, sparseM);
+    end
     
     %if(not(isequal(Yleft, YYleft)))
     %    display('Yleft silhouttes not equal...');

@@ -21,7 +21,7 @@
 
 %Files Used:
 %Change this to reflect your system
-inputPly   = '/Users/edil/2-development/point_cloud/ricardo9/ply/frame0000.ply';
+inputPly   = '../frame0000.ply';
 binaryFile = '../ricardo_frame0000.bin';
 outputPly  = '../dec_ricardo_frame0000.ply';
 

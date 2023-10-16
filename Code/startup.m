@@ -1,5 +1,7 @@
 %Putting the source folder in the matlab path.
-clc
+close all;
+clear;
+clc;
 
 version = 'SPL';
 disp(['Initializing Point Cloud Geometry coder version ' version ''])
@@ -8,43 +10,43 @@ disp(['Initializing Point Cloud Geometry coder version ' version ''])
 % work diffferently
 comp = computer();
 if isequal(comp, 'PCWIN64')
-    bar = '\';
+    barChar = '\';
 else
-    bar = '/';
+    barChar = '/';
 end
 
 % Build folder to add to path.
 home = pwd;
-src = [home bar version];
+src = [home barChar version];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'ArithmeticCoding'];
+src = [home barChar version barChar 'ArithmeticCoding'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'Structs'];
+src = [home barChar version barChar 'Structs'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'Bitstream'];
+src = [home barChar version barChar 'Bitstream'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'Encoder'];
+src = [home barChar version barChar 'Encoder'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'Decoder'];
+src = [home barChar version barChar 'Decoder'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = [home bar version bar 'Utils'];
+src = [home barChar version barChar 'Utils'];
 disp(['Adding ' src ' to the Matlab Path'])
 addpath(src);
 
-src = genpath([home bar version bar 'PlyTools']);
-disp(['Adding ' home bar version bar 'PlyTools to the Matlab Path'])
+src = genpath([home barChar version barChar 'PlyTools']);
+disp(['Adding ' home barChar version barChar 'PlyTools to the Matlab Path'])
 addpath(src);
 
 clear home;
