@@ -24,12 +24,12 @@ global currentIndex;
 % flagLastLevel indica que eu estou no ultimo nivel.
 flagLastLevel = iEnd == (iStart + 1);
 % Aqui eu checo se eu vou fazer o processamento da slice ou nao
-if flagLastLevel == true
-    if toggleSlicesFlags(currentIndex) == 1
-        flagTriggerLossyProcessing = true;
-    end
-    currentIndex = currentIndex + 1;
-end
+% if flagLastLevel == true
+%     if toggleSlicesFlags(currentIndex) == 1
+%         flagTriggerLossyProcessing = true;
+%     end
+%     currentIndex = currentIndex + 1;
+% end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %The first time this function is called I have to encode the first OR image
@@ -77,6 +77,11 @@ if (testDyadicDecomposition)
     %Yleft  = silhouette(geoCube,lStart,lEnd);
     %Yright = silhouette(geoCube,rStart,rEnd);
     
+    %EDUARDO: Estou ligando o lossy processing para um par específico. 
+    if (flagLastLevel && (iStart == 65))
+        flagTriggerLossyProcessing = true;
+    end
+    
     if flagTriggerLossyProcessing
         Yleft = Y;
         Yright = Y;
@@ -106,6 +111,11 @@ if (testDyadicDecomposition)
     nSymbolsRight    = sum(mask_Yright(:));
     nBitsRight       = 0;
     
+    if (flagLastLevel)
+        disp(['Yleft(' num2str(lStart) ':' num2str(lEnd) ') = ' num2str(nSymbolsLeft) ' symbols.'])
+        disp(['Yright(' num2str(rStart) ':' num2str(rEnd) ') = ' num2str(nSymbolsRight) ' symbols.'])
+    end
+    
     %At this moment I know which images I need to encode.    
     %Add a flag to the bitstream indicating that a Dyadic decomposition
     %will be used.
@@ -118,6 +128,21 @@ if (testDyadicDecomposition)
     encodeYleft  = (sum(Yleft(:))  ~= 0);
     encodeYright = (sum(Yright(:)) ~= 0);
     
+    %EDUARDO: A flag flagTriggerLossyProcessing só deveria ser verdadeira
+    %se estivermos no LastLevel, mas eu coloquei o teste aqui para
+    %verificar. 
+    if (flagLastLevel && flagTriggerLossyProcessing)
+        %EDUARDO: Se o lossyprocessing for usado, eu não codifico os dois
+        %filhos, bypassando a codificação. Porém, como tem símbolos nas
+        %silhuetas, ele calcularia as flags encodeYleft e encodeYright como
+        %verdadeiras (veja as linhas 128 e 129). 
+        
+        %Eu estou forçando os dois para ser falsos.
+        encodeYleft = false;
+        encodeYright = false;        
+    end
+
+    
     %Add these flags to the bitstream.
     cabacDyadic = encodeParam(encodeYleft,cabacDyadic);
     cabacDyadic = encodeParam(encodeYright,cabacDyadic);
@@ -126,6 +151,7 @@ if (testDyadicDecomposition)
     %I only need to encode this level if I have pixels in BOTH images!
     encodeThisLevel = encodeYleft && encodeYright;
     
+        
     if (encodeThisLevel)
         %This can be inferred at the decoder, no need to signal this in the
         %bitstream.
