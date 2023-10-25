@@ -7,7 +7,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function cabac_out = encodeGeoCube(geoCube, enc,cabac_in, currAxis, iStart,iEnd, Y)
+function [enc, cabac_out] = encodeGeoCube(geoCube, enc,cabac_in, currAxis, iStart,iEnd, Y)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %These are the parameters.
@@ -78,13 +78,18 @@ if (testDyadicDecomposition)
     %Yright = silhouette(geoCube,rStart,rEnd);
     
     %EDUARDO: Estou ligando o lossy processing para um par específico. 
-    if (flagLastLevel && (iStart == 65))
+    if (flagLastLevel && ((iStart == 71) || (iStart == 111)))
         flagTriggerLossyProcessing = true;
     end
     
     if flagTriggerLossyProcessing
         Yleft = Y;
         Yright = Y;
+        
+        %Add these points to the point cloud.
+        enc.pointCloud.Location = expandPointCloud(Y, enc.pointCloud.Location, currAxis, iStart);
+        enc.pointCloud.Location = expandPointCloud(Y, enc.pointCloud.Location, currAxis, iEnd);
+        
     else
         Yleft  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart, lEnd, sparseM);
         Yright = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, rStart, rEnd, sparseM);
@@ -111,10 +116,10 @@ if (testDyadicDecomposition)
     nSymbolsRight    = sum(mask_Yright(:));
     nBitsRight       = 0;
     
-    if (flagLastLevel)
-        disp(['Yleft(' num2str(lStart) ':' num2str(lEnd) ') = ' num2str(nSymbolsLeft) ' symbols.'])
-        disp(['Yright(' num2str(rStart) ':' num2str(rEnd) ') = ' num2str(nSymbolsRight) ' symbols.'])
-    end
+    %if (flagLastLevel)
+    %    disp(['Yleft(' num2str(lStart) ':' num2str(lEnd) ') = ' num2str(nSymbolsLeft) ' symbols.'])
+    %    disp(['Yright(' num2str(rStart) ':' num2str(rEnd) ') = ' num2str(nSymbolsRight) ' symbols.'])
+    %end
     
     %At this moment I know which images I need to encode.    
     %Add a flag to the bitstream indicating that a Dyadic decomposition
@@ -164,6 +169,7 @@ if (testDyadicDecomposition)
             else
                 %Yleft_left = silhouette(geoCube,lStart - NLeft, lEnd - NLeft);
                 Yleft_left  = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit+1, currAxis, lStart - NLeft, lEnd - NLeft, sparseM);
+                
                 cabacDyadic = encodeImageBAC_withMask_3DContexts_ORImages2(Yleft,mask_Yleft,Yleft_left,cabacDyadic);
             end
                         
@@ -203,7 +209,7 @@ if (testDyadicDecomposition)
         nBits      = cabacDyadic.BACEngine.bitstream.size();
         nBitsParam = cabacDyadic.ParamBitstream.size();
         
-        cabacDyadic = encodeGeoCube(geoCube, enc,cabacDyadic, currAxis, lStart,lEnd, Yleft);    
+        [enc, cabacDyadic] = encodeGeoCube(geoCube, enc,cabacDyadic, currAxis, lStart,lEnd, Yleft);    
         
         nBitsLeftBranch      = cabacDyadic.BACEngine.bitstream.size() - nBits;
         nBitsLeftBranchParam = cabacDyadic.ParamBitstream.size() - nBitsParam;
@@ -219,7 +225,7 @@ if (testDyadicDecomposition)
         nBits      = cabacDyadic.BACEngine.bitstream.size();
         nBitsParam = cabacDyadic.ParamBitstream.size();
                 
-        cabacDyadic = encodeGeoCube(geoCube, enc,cabacDyadic, currAxis, rStart,rEnd, Yright);  
+        [enc, cabacDyadic] = encodeGeoCube(geoCube, enc,cabacDyadic, currAxis, rStart,rEnd, Yright);  
         
         nBitsRightBranch      = cabacDyadic.BACEngine.bitstream.size() - nBits;
         nBitsRightBranchParam = cabacDyadic.ParamBitstream.size() - nBitsParam;

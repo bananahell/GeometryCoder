@@ -37,6 +37,17 @@ checkCube = isequal(enc.geometryCube,dec.geometryCube);
 %Checks the two Ply
 checkPly  = comparePlys(inputPly, outputPly);
 
+%EDUARDO: Isso aqui funciona mas demora pra caceta. Mas é bom pra debugar.
+%List points that ARE in the outputPly but are NOT in the input ply
+[eq, diffPoints] = listPointsInPly1ThatAreNotInPly2(outputPly, inputPly);
+disp(['The following points are found in the outputPly but are NOT in the inputPly:'])
+disp(diffPoints)
+
+%List points that ARE in the inputPly but are NOT in the outputPly
+[eq, diffPoints2] = listPointsInPly1ThatAreNotInPly2(inputPly, outputPly);
+disp(['The following points are found in the inputPly but are NOT in the outputPly:'])
+disp(diffPoints2)
+
 disp(' ')
 disp('==============================================')
 if (checkCube == 1)

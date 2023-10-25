@@ -133,7 +133,7 @@ for k = 1:1:1
 %     end
 
     % Second pass, applying the decision vector and returning the cabac
-    cabac = encodeGeoCube(geoCube, enc, cabac, currAxis, iStart, iEnd);
+    [enc, cabac] = encodeGeoCube(geoCube, enc, cabac, currAxis, iStart, iEnd);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     
