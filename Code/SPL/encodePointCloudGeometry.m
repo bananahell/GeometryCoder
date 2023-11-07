@@ -16,10 +16,14 @@
 % 29/10/2019
 function enc = encodePointCloudGeometry(inputFile, outputFile)
 
-disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
-disp('Author: Eduardo Peixoto')
-disp('E-mail: eduardopeixoto@ieee.org')
-disp('Universidade de Brasilia')
+global encoderType;
+
+disp(' ');
+disp(['[RUN] Running encoder on ' inputFile ' with ' encoderType '.']);
+% disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
+% disp('Author: Eduardo Peixoto')
+% disp('E-mail: eduardopeixoto@ieee.org')
+% disp('Universidade de Brasilia')
 
 %----------------------------------------------
 %Performs a basic parameter check.
@@ -110,10 +114,11 @@ encTime = toc(tStart);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Writes the output.
-disp(' ')
-disp(' ')
-disp('==============================================')
-disp(['Encoding file ' pointCloudFile ''])
-disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
-disp(['Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.'])
-disp('==============================================')
+% disp(' ')
+% disp(' ')
+% disp('==============================================')
+% disp(['Encoding file ' pointCloudFile ''])
+% disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
+disp(['[TIME] Elapsed Time Encoding ' pointCloudFile ': ' num2str(encTime, '%2.1f') ' seconds.']);
+disp(['[FINAL RATE] Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.']);
+% disp('==============================================')

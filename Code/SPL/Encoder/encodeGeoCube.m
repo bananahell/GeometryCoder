@@ -19,17 +19,20 @@ sparseM                 = false; % Use sparse matrices for images.
 flagTriggerLossyProcessing = false;
 global toggleSlicesFlags;
 global currentIndex;
+global lossyProcesing;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % flagLastLevel indica que eu estou no ultimo nivel.
 flagLastLevel = iEnd == (iStart + 1);
-% Aqui eu checo se eu vou fazer o processamento da slice ou nao
-% if flagLastLevel == true
-%     if toggleSlicesFlags(currentIndex) == 1
-%         flagTriggerLossyProcessing = true;
-%     end
-%     currentIndex = currentIndex + 1;
-% end
+if lossyProcesing == true
+    % Aqui eu checo se eu vou fazer o processamento da slice ou nao
+    if flagLastLevel == true
+        if toggleSlicesFlags(currentIndex) == 1
+            flagTriggerLossyProcessing = true;
+        end
+        currentIndex = currentIndex + 1;
+    end
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %The first time this function is called I have to encode the first OR image
@@ -77,10 +80,10 @@ if (testDyadicDecomposition)
     %Yleft  = silhouette(geoCube,lStart,lEnd);
     %Yright = silhouette(geoCube,rStart,rEnd);
     
-    %EDUARDO: Estou ligando o lossy processing para um par específico. 
-    if (flagLastLevel && ((iStart == 71) || (iStart == 111)))
-        flagTriggerLossyProcessing = true;
-    end
+    %EDUARDO: Estou ligando o lossy processing para um par especï¿½fico. 
+    % if (flagLastLevel && ((iStart == 71) || (iStart == 111)))
+    %     flagTriggerLossyProcessing = true;
+    % end
     
     if flagTriggerLossyProcessing
         Yleft = Y;
@@ -133,16 +136,16 @@ if (testDyadicDecomposition)
     encodeYleft  = (sum(Yleft(:))  ~= 0);
     encodeYright = (sum(Yright(:)) ~= 0);
     
-    %EDUARDO: A flag flagTriggerLossyProcessing só deveria ser verdadeira
+    %EDUARDO: A flag flagTriggerLossyProcessing sï¿½ deveria ser verdadeira
     %se estivermos no LastLevel, mas eu coloquei o teste aqui para
     %verificar. 
     if (flagLastLevel && flagTriggerLossyProcessing)
-        %EDUARDO: Se o lossyprocessing for usado, eu não codifico os dois
-        %filhos, bypassando a codificação. Porém, como tem símbolos nas
+        %EDUARDO: Se o lossyprocessing for usado, eu nï¿½o codifico os dois
+        %filhos, bypassando a codificaï¿½ï¿½o. Porï¿½m, como tem sï¿½mbolos nas
         %silhuetas, ele calcularia as flags encodeYleft e encodeYright como
         %verdadeiras (veja as linhas 128 e 129). 
         
-        %Eu estou forçando os dois para ser falsos.
+        %Eu estou forï¿½ando os dois para ser falsos.
         encodeYleft = false;
         encodeYright = false;        
     end

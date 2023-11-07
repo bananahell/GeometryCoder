@@ -1,6 +1,6 @@
 function enc = loadPointCloud(enc)
 
-disp(['Loading file ' enc.params.pointCloudFile])
+disp(['[LOAD] Loading file ' enc.params.pointCloudFile]);
 filename = [enc.params.dataFolder enc.params.pointCloudFile];
 
 %Load the Point Cloud file.

@@ -16,10 +16,12 @@
 % 29/10/2019
 function dec = decodePointCloudGeometry(inputFile, outputFile)
 
-disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
-disp('Author: Eduardo Peixoto')
-disp('E-mail: eduardopeixoto@ieee.org')
-disp('Universidade de Brasilia')
+disp(' ');
+disp(['[RUN] Running decoder on ' inputFile]);
+% disp('Running Point Cloud Geometry Coder based on Dyadic Decomposition')
+% disp('Author: Eduardo Peixoto')
+% disp('E-mail: eduardopeixoto@ieee.org')
+% disp('Universidade de Brasilia')
 
 %----------------------------------------------
 %Performs a basic parameter check.
@@ -96,7 +98,7 @@ dec.params = params;
 dec = decodeGeometry2(dec);
 decTime = toc(tStart);
 
-disp(' ')
-disp('==============================================')
-disp(['Decoding time for ' bitstreamFile '  = ' num2str(decTime,'%2.1f') ' seconds.'])
-disp('==============================================')
+% disp(' ')
+% disp('==============================================')
+disp(['[TIME] Decoding time for ' bitstreamFile '  = ' num2str(decTime,'%2.1f') ' seconds.']);
+% disp('==============================================')

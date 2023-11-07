@@ -35,7 +35,6 @@ end
 for k = 1:1:1
 %for k = 1:1:3
 
-    toggleSlicesFlags = [];
     toggleSlicesFlagsIndexes = [];
     nBitsDyadicVector = [];
     psnrDyadicVector = [];
@@ -48,7 +47,7 @@ for k = 1:1:1
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Splices the geoCube
     currAxis = axisArray(k);
-    disp(['Encoding ' currAxis ' axis...'])
+    disp(['[AXIS] Encoding ' currAxis ' axis...']);
     %geoCube = ptcld2Slices(enc.pointCloud.Location,currAxis,enc.pcLimit);
     geoCube = [];
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -65,72 +64,72 @@ for k = 1:1:1
     iStart = 1;
     iEnd   = enc.pcLimit + 1;%size(geoCube,3);
         
-%     % Need the original silhouette slices' matrices to compare and get psnr
-%     origYSlices = cell(512,1);
-%     origYPointList = [];
-%     for i = 1:1:512
-%         auxSlice = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit + 1, currAxis, i, i, false);
-%         origYSlices{i} = auxSlice;
-%         origYPointList = expandPointCloud(auxSlice, origYPointList, currAxis, i);
-%     end
-% 
-%     % First pass, only getting the nBits and psnr information
-%     preEncodeGeoCube(geoCube, enc, cabac, currAxis, iStart, iEnd, origYSlices, origYPointList, enc.pointCloud);
-% 
-%     % Get psnr and turning Infs into something big (max + 5)
-%     psnrDyadicVectorMax = max(psnrDyadicVector(~isinf(psnrDyadicVector)));
-%     psnrDyadicVector(isinf(psnrDyadicVector)) = psnrDyadicVectorMax + 5;
-% 
-%     % Get min and max for both psnr and nBits vectors
-%     psnrDyadicVectorMax = max(psnrDyadicVector(~isinf(psnrDyadicVector)));
-%     psnrDyadicVectorMin = min(psnrDyadicVector) + 0.1;
-%     nBitsDyadicVectorMax = max(nBitsDyadicVector);
-%     nBitsDyadicVectorMin = min(nBitsDyadicVector) + 0.1;
-% 
-%     % Get diff of min and max of both vectors
-%     nBitsDyadicVectorMaxMinDiff = nBitsDyadicVectorMax - nBitsDyadicVectorMin;
-%     psnrDyadicVectorMaxMinDiff = psnrDyadicVectorMax - psnrDyadicVectorMin;
-% 
-%     % Normalize both vectors from min 0 to max 1 (normal = (vec - min)/diffMaxMin)
-%     % TODO
-%     % This is a place the project can get better
-%     % Normalized from 0 to 1, I'm giving the same importance weight to both psnr
-%     % and nBits. There should be a gradient x that makes psnr + x*nBits optimal!
-%     for i = 1:1:length(nBitsDyadicVector)
-%         nBitsDyadicVectorNormal(i) = nBitsDyadicVector(i) - nBitsDyadicVectorMin;
-%         nBitsDyadicVectorNormal(i) = nBitsDyadicVectorNormal(i) / nBitsDyadicVectorMaxMinDiff;
-%         psnrDyadicVectorNormal(i) = psnrDyadicVector(i) - psnrDyadicVectorMin;
-%         psnrDyadicVectorNormal(i) = psnrDyadicVectorNormal(i) / psnrDyadicVectorMaxMinDiff;
-%         psnrBitrate = psnrDyadicVectorNormal(i) * nBitsDyadicVectorNormal(i);
-%         toggleSlicesFlags = [toggleSlicesFlags psnrBitrate];
-%     end
-% 
-%     % Get the indexes of the slices sorted from what I most want to least want
-%     % to process, where the slices I most want to process are the ones with the
-%     % highest psnr and nBits (least error and most loss of bits)
-%     toggleSlicesFlagsIndexes = sort(toggleSlicesFlags, 'descend');
-%     for i = 1:1:length(toggleSlicesFlags)
-%         toggleSlicesFlagsIndexes(i) = find(toggleSlicesFlags == toggleSlicesFlagsIndexes(i));
-%     end
-% 
-%     % TODO
-%     % Here's the kick - right now I'm just selecting the best 10 slices I want
-%     % to process, but I can change this to continue in the loop until I get rid
-%     % of any ammount of pixels I want to get rid of. I can get the number of
-%     % pixels I get rid of by adding from the nBitsDyadicVector!
-%     for i = 1:1:10
-%         toggledOffIndexes = [toggledOffIndexes toggleSlicesFlagsIndexes(i)]; 
-%     end
-% 
-%     % In toggleSlicesFlags, I turn the values selected above in toggleOffIndexes
-%     % to 1, the rest to 0, which means that every slice marked as 1 in this
-%     % vector will get to be processed in the second pass
-%     for i = 1:1:length(toggleSlicesFlags)
-%         toggleSlicesFlags(i) = 0;
-%     end
-%     for i = 1:1:length(toggledOffIndexes)
-%         toggleSlicesFlags(toggledOffIndexes(i)) = 1;
-%     end
+%    % Need the original silhouette slices' matrices to compare and get psnr
+%    origYSlices = cell(512,1);
+%    origYPointList = [];
+%    for i = 1:1:512
+%        auxSlice = silhouetteFromCloud(enc.pointCloud.Location, enc.pcLimit + 1, currAxis, i, i, false);
+%        origYSlices{i} = auxSlice;
+%        origYPointList = expandPointCloud(auxSlice, origYPointList, currAxis, i);
+%    end
+%
+%    % First pass, only getting the nBits and psnr information
+%    preEncodeGeoCube(geoCube, enc, cabac, currAxis, iStart, iEnd, origYSlices, origYPointList, enc.pointCloud);
+%
+%    % Get psnr and turning Infs into something big (max + 5)
+%    psnrDyadicVectorMax = max(psnrDyadicVector(~isinf(psnrDyadicVector)));
+%    psnrDyadicVector(isinf(psnrDyadicVector)) = psnrDyadicVectorMax + 5;
+%
+%    % Get min and max for both psnr and nBits vectors
+%    psnrDyadicVectorMax = max(psnrDyadicVector(~isinf(psnrDyadicVector)));
+%    psnrDyadicVectorMin = min(psnrDyadicVector) + 0.1;
+%    nBitsDyadicVectorMax = max(nBitsDyadicVector);
+%    nBitsDyadicVectorMin = min(nBitsDyadicVector) + 0.1;
+%
+%    % Get diff of min and max of both vectors
+%    nBitsDyadicVectorMaxMinDiff = nBitsDyadicVectorMax - nBitsDyadicVectorMin;
+%    psnrDyadicVectorMaxMinDiff = psnrDyadicVectorMax - psnrDyadicVectorMin;
+%
+%    % Normalize both vectors from min 0 to max 1 (normal = (vec - min)/diffMaxMin)
+%    % TODO
+%    % This is a place the project can get better
+%    % Normalized from 0 to 1, I'm giving the same importance weight to both psnr
+%    % and nBits. There should be a gradient x that makes psnr + x*nBits optimal!
+%    for i = 1:1:length(nBitsDyadicVector)
+%        nBitsDyadicVectorNormal(i) = nBitsDyadicVector(i) - nBitsDyadicVectorMin;
+%        nBitsDyadicVectorNormal(i) = nBitsDyadicVectorNormal(i) / nBitsDyadicVectorMaxMinDiff;
+%        psnrDyadicVectorNormal(i) = psnrDyadicVector(i) - psnrDyadicVectorMin;
+%        psnrDyadicVectorNormal(i) = psnrDyadicVectorNormal(i) / psnrDyadicVectorMaxMinDiff;
+%        psnrBitrate = psnrDyadicVectorNormal(i) * nBitsDyadicVectorNormal(i);
+%        toggleSlicesFlags = [toggleSlicesFlags psnrBitrate];
+%    end
+%
+%    % Get the indexes of the slices sorted from what I most want to least want
+%    % to process, where the slices I most want to process are the ones with the
+%    % highest psnr and nBits (least error and most loss of bits)
+%    toggleSlicesFlagsIndexes = sort(toggleSlicesFlags, 'descend');
+%    for i = 1:1:length(toggleSlicesFlags)
+%        toggleSlicesFlagsIndexes(i) = find(toggleSlicesFlags == toggleSlicesFlagsIndexes(i));
+%    end
+%
+%    % TODO
+%    % Here's the kick - right now I'm just selecting the best 10 slices I want
+%    % to process, but I can change this to continue in the loop until I get rid
+%    % of any ammount of pixels I want to get rid of. I can get the number of
+%    % pixels I get rid of by adding from the nBitsDyadicVector!
+%    for i = 1:1:10
+%        toggledOffIndexes = [toggledOffIndexes toggleSlicesFlagsIndexes(i)]; 
+%    end
+%
+%    % In toggleSlicesFlags, I turn the values selected above in toggleOffIndexes
+%    % to 1, the rest to 0, which means that every slice marked as 1 in this
+%    % vector will get to be processed in the second pass
+%    for i = 1:1:length(toggleSlicesFlags)
+%        toggleSlicesFlags(i) = 0;
+%    end
+%    for i = 1:1:length(toggledOffIndexes)
+%        toggleSlicesFlags(toggledOffIndexes(i)) = 1;
+%    end
 
     % Second pass, applying the decision vector and returning the cabac
     [enc, cabac] = encodeGeoCube(geoCube, enc, cabac, currAxis, iStart, iEnd);
@@ -167,11 +166,11 @@ for k = 1:1:1
     
     tEnd_Axis = toc(tStart_Axis);
     if (k == 1)
-        disp(['Axis X - Rate = ' num2str(rateBPOVPerAxis(1),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['[AXIS DONE] Axis X - Rate = ' num2str(rateBPOVPerAxis(1),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.']);
     elseif (k == 2)
-        disp(['Axis Y - Rate = ' num2str(rateBPOVPerAxis(2),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['[AXIS DONE] Axis Y - Rate = ' num2str(rateBPOVPerAxis(2),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.']);
     elseif (k == 3)
-        disp(['Axis Z - Rate = ' num2str(rateBPOVPerAxis(3),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.'])
+        disp(['[AXIS DONE] Axis Z - Rate = ' num2str(rateBPOVPerAxis(3),'%2.4f') ' bpov - Encoding Time = ' num2str(tEnd_Axis,'%2.1f') ' seconds.']);
     end
 end
 
@@ -184,6 +183,6 @@ enc.geometryCube    = bestGeoCube;
 
 %Writes the bitstream.
 bitstreamFile     = [enc.params.workspaceFolder enc.params.bitstreamFile];
-disp(['Writing to file ' bitstreamFile ''])
+disp(['[WRITE] Writing to file ' bitstreamFile '']);
 bestBitstream.flushesToFile(bitstreamFile);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

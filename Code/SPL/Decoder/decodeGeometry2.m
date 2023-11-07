@@ -50,7 +50,7 @@ if (isempty(dec.params.outputPlyFile) == 0)
 
     %file      = [dec.params.workspaceFolder dec.params.outputPlyFile];
     file      = dec.params.outputPlyFile;
-    disp(['Writing output Ply to ' file ' .'])
+    disp(['[WRITE] Writing output Ply to ' file ' .']);
     %pcwrite(pc,file);
     %pc.export(file, 'PrecCoord', 0);
     plyWrite(locPoints, file);
