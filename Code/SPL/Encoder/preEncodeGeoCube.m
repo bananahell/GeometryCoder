@@ -7,7 +7,7 @@
 %
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
-function preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYSlices, origYPointList, origYpc, Y)
+function [enc, cabac_out] = preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYSlices, origYPointList, origYpc, Y)
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -18,7 +18,8 @@ function preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYS
     nBitsSingle             = Inf;
     sparseM                 = false; % Use sparse matrices for images.
     global nBitsDyadicVector;
-    global psnrDyadicVector;
+    global mseDyadicVector;
+    global totalNumberOfBits;
     flagTriggerAddTwice = false;
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -162,7 +163,7 @@ function preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYS
             nBits      = cabacDyadic.BACEngine.bitstream.size();
             nBitsParam = cabacDyadic.ParamBitstream.size();
 
-            preEncodeGeoCube(geoCube, enc, cabacDyadic, currAxis, lStart, lEnd, origYSlices, origYPointList, origYpc, Yleft);
+            [enc, cabacDyadic] = preEncodeGeoCube(geoCube, enc, cabacDyadic, currAxis, lStart, lEnd, origYSlices, origYPointList, origYpc, Yleft);
 
             nBitsLeftBranch      = cabacDyadic.BACEngine.bitstream.size() - nBits;
             nBitsLeftBranchParam = cabacDyadic.ParamBitstream.size() - nBitsParam;
@@ -178,7 +179,7 @@ function preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYS
             nBits      = cabacDyadic.BACEngine.bitstream.size();
             nBitsParam = cabacDyadic.ParamBitstream.size();
 
-            preEncodeGeoCube(geoCube, enc, cabacDyadic, currAxis, rStart, rEnd, origYSlices, origYPointList, origYpc, Yright);
+            [enc, cabacDyadic] = preEncodeGeoCube(geoCube, enc, cabacDyadic, currAxis, rStart, rEnd, origYSlices, origYPointList, origYpc, Yright);
 
             nBitsRightBranch      = cabacDyadic.BACEngine.bitstream.size() - nBits;
             nBitsRightBranchParam = cabacDyadic.ParamBitstream.size() - nBitsParam;
@@ -193,9 +194,9 @@ function preEncodeGeoCube(geoCube, enc, cabac_in, currAxis, iStart, iEnd, origYS
     if (flagLastLevel == true)
         nBitsDyadicVector = [nBitsDyadicVector nBitsDyadic];
         psnrAux = lossyModifierChecker(origYSlices, origYPointList, origYpc, currAxis, iStart, 'add_parent_twice');
-        mseAux = psnrAux.p2point_mse;
+        mseAux = psnrAux.p2point_mse(2);
         psnrAux = psnrAux.p2point_psnr;
-        psnrDyadicVector = [psnrDyadicVector psnrAux];
+        mseDyadicVector = [mseDyadicVector mseAux];
     end
     % mse
 

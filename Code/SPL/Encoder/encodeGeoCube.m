@@ -19,19 +19,16 @@ sparseM                 = false; % Use sparse matrices for images.
 flagTriggerLossyProcessing = false;
 global toggleSlicesFlags;
 global currentIndex;
-global lossyProcesing;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % flagLastLevel indica que eu estou no ultimo nivel.
 flagLastLevel = iEnd == (iStart + 1);
-if lossyProcesing == true
-    % Aqui eu checo se eu vou fazer o processamento da slice ou nao
-    if flagLastLevel == true
-        if toggleSlicesFlags(currentIndex) == 1
-            flagTriggerLossyProcessing = true;
-        end
-        currentIndex = currentIndex + 1;
-    end
+% Aqui eu checo se eu vou fazer o processamento da slice ou nao
+if flagLastLevel == true
+   if toggleSlicesFlags(currentIndex) == 1
+       flagTriggerLossyProcessing = true;
+   end
+   currentIndex = currentIndex + 1;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

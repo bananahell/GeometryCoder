@@ -1,5 +1,5 @@
 % function enc = encodePointCloudGeometry
-%  - Input Parameters: 
+%  - Input Parameters:
 %     - inputFile  - The complete path for the point cloud to be encoded.
 %     - outputFile - The complete path for the output binary file.
 %
@@ -10,12 +10,13 @@
 % encodePointCloudGeometry(
 %    'C:\eduardo\Sequences\PointClouds\ricardo9\ply\frame0000.ply' ,
 %    'C:\workspace\ricardo_frame0000.bin' );
-%   
+%
 % Author: Eduardo Peixoto
 % E-mail: eduardopeixoto@ieee.org
 % 29/10/2019
 function enc = encodePointCloudGeometry(inputFile, outputFile)
 
+global bpovResult;
 global encoderType;
 
 disp(' ');
@@ -58,25 +59,25 @@ verbose        = 0;
 
 %----------------------------------------------
 %Parses the input
-inputFile(inputFile == '\') = '/'; 
+inputFile(inputFile == '\') = '/';
 idx = find(inputFile == '/',1,'last');
 if (isempty(idx))
     dataFolder = '';
     pointCloudFile = inputFile;
 else
     dataFolder = inputFile(1:idx);
-    pointCloudFile = inputFile(idx+1:end);    
+    pointCloudFile = inputFile(idx+1:end);
 end
 
-outputFile(outputFile == '\') = '/'; 
+outputFile(outputFile == '\') = '/';
 idx = find(outputFile == '/',1,'last');
 if (isempty(idx))
     workspaceFolder = '';
     bitstreamFile = outputFile;
 else
     workspaceFolder = outputFile(1:idx);
-    bitstreamFile = outputFile(idx+1:end);    
-end 
+    bitstreamFile = outputFile(idx+1:end);
+end
 %----------------------------------------------
 
 %-----------------------------------------------
@@ -121,4 +122,5 @@ encTime = toc(tStart);
 % disp(['Elapsed Time Encoding: ' num2str(encTime, '%2.1f') ' seconds.'])
 disp(['[TIME] Elapsed Time Encoding ' pointCloudFile ': ' num2str(encTime, '%2.1f') ' seconds.']);
 disp(['[FINAL RATE] Rate  = ' num2str(enc.rate_bpov,'%2.4f') ' bpov.']);
+bpovResult = enc.rate_bpov;
 % disp('==============================================')
